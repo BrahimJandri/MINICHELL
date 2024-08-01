@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 08:42:27 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 19:29:55 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_global
 	char			*value;
 	char			*equal_sign_pos;
 	char			*plus_equal_sign_pos;
-	int				end;
 	char			quote;
 	int				in_single_quotes;
 	int				in_double_quotes;

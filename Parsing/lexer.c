@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 18:41:22 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 19:37:08 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,31 @@ int	count_redirec(char *p, int index)
 	return (index);
 }
 
+static void	handle_character(t_mini *shell, int *i, int *start, int *end, int *inside)
+{
+	if (shell->rl[*i] == '"' || shell->rl[*i] == '\'')
+		step_one(shell->rl, inside, &g_global.quote, (*i)++);
+	else if (!(*inside) && (is_whitespace(shell->rl[*i]) || is_redirec(shell->rl[*i])))
+	{
+		*end = *i;
+		if (*end > *start)
+			make_words(shell, *start, *end);
+		if (shell->rl[*i] == '|')
+			make_words(shell, *i, *i + 1);
+		if (shell->rl[*i] == '>' || shell->rl[*i] == '<')
+		{
+			*end = count_redirec(shell->rl, *i);
+			make_words(shell, *i, *end);
+			*i = *end - 1;
+		}
+		while (is_whitespace(shell->rl[++(*i)]))
+			;
+		*start = *i;
+	}
+	else
+		(*i)++;
+}
+
 void	split_args(t_mini *shell, int start, int end, int inside)
 {
 	int	i;
@@ -75,31 +100,12 @@ void	split_args(t_mini *shell, int start, int end, int inside)
 	i = 0;
 	while (shell->rl[i])
 	{
-		if (shell->rl[i] == '"' || shell->rl[i] == '\'')
-			step_one(shell->rl, &inside, &g_global.quote, i++);
-		else if (!inside && (is_whitespace(shell->rl[i]) || (is_redirec(shell->rl[i]))))
-		{
-			end = i;
-			if (end > start) 
-				make_words(shell, start, end);
-			if (shell->rl[i] == '|')
-				make_words(shell, i, i + 1);
-			if(shell->rl[i] == '>' || shell->rl[i] == '<')
-			{
-				end = count_redirec(shell->rl, i);
-				make_words(shell, i, end);
-				i = end - 1;
-			}
-			while (is_whitespace(shell->rl[++i]))
-				;
-			start = i;
-		}
-		else
-			i++;
+		handle_character(shell, &i, &start, &end, &inside);
 	}
 	if (i > start)
 		make_words(shell, start, i);
 }
+
 
 int	is_redirec(char c)
 {
@@ -181,7 +187,6 @@ void	print_word(t_lexer **head)
 	while (tmp)
 	{
 		printf("ARGS ==> %s\n", tmp->word);
-		// free(tmp->word);
 		tmp = tmp->next;
 	}
 }
