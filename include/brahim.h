@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 11:11:36 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 16:39:29 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_lexer	*ft_new_token(char *content);
 char	*rm_quote(char *str);
 int		check_next(char *first, char next);
 int		type(char *p);
+int		count_redirec(char *p, int index);
 void	print_word(t_lexer **head);
 
 #endif

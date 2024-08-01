@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 11:14:18 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 16:48:42 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,13 @@ void	step_one(char *p, int *inside, char *quote, int i)
 	}
 }
 
+int	count_redirec(char *p, int index)
+{
+	while(p[index] == '>' || p[index] == '<')
+		index++;
+	return (index);
+}
+
 void	split_args(char *p, int start, int inside, t_lexer **head)
 {
 	int	i;
@@ -77,8 +84,14 @@ void	split_args(char *p, int start, int inside, t_lexer **head)
 			g_global.end = i;
 			if (g_global.end > start)
 				make_words(p, start, g_global.end, head);
-			if (p[i] == '|' || p[i] == '>' || p[i] == '<')
+			if (p[i] == '|')
 				make_words(p, i, i + 1, head);
+			if(p[i] == '>' || p[i] == '<')
+			{
+				g_global.end = count_redirec(p, i);
+				make_words(p, i, g_global.end, head);
+				i = g_global.end - 1;
+			}
 			while (is_whitespace(p[++i]))
 				;
 			start = i;
