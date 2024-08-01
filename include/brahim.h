@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 18:22:13 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 20:10:06 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ typedef enum s_tokens
 	APPEND,
 	ARG,
 }					t_tokens;
+
+typedef struct s_split_params
+{
+    int start;
+    int end;
+    int inside;
+} t_split_params;
 
 typedef struct s_lexer
 {

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 19:37:08 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 20:12:28 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,44 +68,51 @@ int	count_redirec(char *p, int index)
 	return (index);
 }
 
-static void	handle_character(t_mini *shell, int *i, int *start, int *end, int *inside)
+static void handle_character(t_mini *shell, int *i, t_split_params *params)
 {
-	if (shell->rl[*i] == '"' || shell->rl[*i] == '\'')
-		step_one(shell->rl, inside, &g_global.quote, (*i)++);
-	else if (!(*inside) && (is_whitespace(shell->rl[*i]) || is_redirec(shell->rl[*i])))
-	{
-		*end = *i;
-		if (*end > *start)
-			make_words(shell, *start, *end);
-		if (shell->rl[*i] == '|')
-			make_words(shell, *i, *i + 1);
-		if (shell->rl[*i] == '>' || shell->rl[*i] == '<')
-		{
-			*end = count_redirec(shell->rl, *i);
-			make_words(shell, *i, *end);
-			*i = *end - 1;
-		}
-		while (is_whitespace(shell->rl[++(*i)]))
-			;
-		*start = *i;
-	}
-	else
-		(*i)++;
+	char quote;
+
+	quote = 0;
+    if (shell->rl[*i] == '"' || shell->rl[*i] == '\'')
+        step_one(shell->rl, &params->inside, &quote, (*i)++);
+    else if (!(params->inside) && (is_whitespace(shell->rl[*i]) || is_redirec(shell->rl[*i])))
+    {
+        params->end = *i;
+        if (params->end > params->start)
+            make_words(shell, params->start, params->end);
+        if (shell->rl[*i] == '|')
+            make_words(shell, *i, *i + 1);
+        if (shell->rl[*i] == '>' || shell->rl[*i] == '<')
+        {
+            params->end = count_redirec(shell->rl, *i);
+            make_words(shell, *i, params->end);
+            *i = params->end - 1;
+        }
+        while (is_whitespace(shell->rl[++(*i)]))
+            ;
+        params->start = *i;
+    }
+    else
+        (*i)++;
 }
 
-void	split_args(t_mini *shell, int start, int end, int inside)
+void split_args(t_mini *shell, int start, int end, int inside)
 {
-	int	i;
+    int i;
+    t_split_params params;
 
-	i = 0;
-	while (shell->rl[i])
-	{
-		handle_character(shell, &i, &start, &end, &inside);
-	}
-	if (i > start)
-		make_words(shell, start, i);
+    params.start = start;
+    params.end = end;
+    params.inside = inside;
+
+    i = 0;
+    while (shell->rl[i])
+    {
+        handle_character(shell, &i, &params);
+    }
+    if (i > params.start)
+        make_words(shell, params.start, i);
 }
-
 
 int	is_redirec(char c)
 {
