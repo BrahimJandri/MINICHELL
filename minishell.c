@@ -6,57 +6,75 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/07/31 16:08:47 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 11:12:11 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "brahim.h"
-#include "rachid.h"
-#include "minishell.h"
+#include "./include/brahim.h"
+#include "./include/rachid.h"
+#include "./include/minishell.h"
+
+t_global	g_global;
 
 
+// void	init_mini(t_mini *shell, char **envm)
+// {
+// 	int	i;
 
-void	init_mini(t_mini *shell, char **envm)
-{
-	int	i;
-
-	i = 0;
-	while (envm[i])
-	{
-		if (ft_strncmp("PATH=", envm[i], 5) == 0)
-		{
-			shell->path = ft_split(envm[i] + 5, ':');
-			break ;
-		}
-		i++;
-	}
-	shell->envp = arr_dup(envm);
-	shell->env = create_env(envm);
-	shell->cmds = NULL;
-	shell->head = NULL;
-	shell->rl = NULL;
-	shell->pipes = 0;
-}
+// 	i = 0;
+// 	while (envm[i])
+// 	{
+// 		if (ft_strncmp("PATH=", envm[i], 5) == 0)
+// 		{
+// 			shell->path = ft_split(envm[i] + 5, ':');
+// 			break ;
+// 		}
+// 		i++;
+// 	}
+// 	shell->envp = arr_dup(envm);
+// 	shell->env = create_env(envm);
+// 	shell->cmds = NULL;
+// 	shell->head = NULL;
+// 	shell->rl = NULL;
+// 	shell->pipes = 0;
+// }
 
 void    shell_loop(t_mini shell)
 {
-    
+    while (1)
+	{
+		shell.rl = readline("MiniShell$ ");
+		add_history(shell.rl);
+		if (!shell.rl)
+			break ;
+		ft_lexer(shell.rl, &shell.head);
+		print_word(&shell.head);
+		// parsing(&shell);
+		// execute(shell.cmds, &shell, &shell.env);
+		free_tokens(shell.head);
+		// free_parser(shell.cmds);
+		shell.head = NULL;
+		// shell.cmds = NULL;
+	}
 }
-
+void	handle_sigint(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "\nMiniShell>", 12);
+}
 
 int main(int ac, char **av, char **envm)
 {
     (void)ac;
     (void)av;
+	(void)envm;
 	t_mini	shell;
-
-	(void)ac;
-	(void)av;
-	init_mini(&shell, envm);
+	
+	shell.head = NULL;
+	// init_mini(&shell, envm);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	shell_loop(shell);
 	free(shell.rl);
 	return (0);
-}
 }
