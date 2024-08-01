@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 11:12:11 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 18:42:11 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,16 @@ void    shell_loop(t_mini shell)
 {
     while (1)
 	{
-		shell.rl = readline("MiniShell$ ");
-		add_history(shell.rl);
-		if (!shell.rl)
+		char *input;
+		
+		input = readline("MiniShell$ ");
+		if (!input)
 			break ;
-		ft_lexer(shell.rl, &shell.head);
-		print_word(&shell.head);
+		shell.rl = ft_strdup(input);
+		free(input);
+		add_history(shell.rl);
+		ft_lexer(&shell);
+		// print_word(&shell.head);
 		// parsing(&shell);
 		// execute(shell.cmds, &shell, &shell.env);
 		free_tokens(shell.head);
@@ -57,6 +61,7 @@ void    shell_loop(t_mini shell)
 		// shell.cmds = NULL;
 	}
 }
+
 void	handle_sigint(int sig)
 {
 	(void)sig;
@@ -71,6 +76,7 @@ int main(int ac, char **av, char **envm)
 	t_mini	shell;
 	
 	shell.head = NULL;
+	shell.rl = NULL;
 	// init_mini(&shell, envm);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);

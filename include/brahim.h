@@ -6,13 +6,14 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 16:39:29 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 18:22:13 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BRAHIM_H
 # define BRAHIM_H
 
+typedef struct s_mini t_mini;
 
 typedef enum s_builtins
 {
@@ -55,12 +56,12 @@ typedef struct s_parser
 }					t_parser;
 
 
-void	ft_lexer(char *rl, t_lexer **head);
+void	ft_lexer(t_mini *shell);
 void	free_tokens(t_lexer *head);
 int		parse_quote(char *rl);
-void	make_words(char *p, int start, int end, t_lexer **head);
+void	make_words(t_mini *shell, int start, int end);
 void	step_one(char *p, int *inside, char *quote, int i);
-void	split_args(char *p, int start, int inside, t_lexer **head);
+void	split_args(t_mini *shell, int start, int end, int inside);
 int		is_redirec(char c);
 int		is_whitespace(char c);
 void	ft_lstadd_back(t_lexer **lst, t_lexer *new);

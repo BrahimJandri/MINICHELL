@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 16:48:42 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 18:41:22 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	type(char *p)
 		return (6);
 }
 
-void	make_words(char *p, int start, int end, t_lexer **head)
+void	make_words(t_mini *shell, int start, int end)
 {
 	char	*word;
 	int		i;
@@ -41,9 +41,9 @@ void	make_words(char *p, int start, int end, t_lexer **head)
 		return ;
 	}
 	while (start < end)
-		word[i++] = p[start++];
+		word[i++] = shell->rl[start++];
 	word[i] = '\0';
-	ft_lstadd_back(head, ft_new_token(word));
+	ft_lstadd_back(&shell->head, ft_new_token(word));
 }
 
 void	step_one(char *p, int *inside, char *quote, int i)
@@ -68,31 +68,29 @@ int	count_redirec(char *p, int index)
 	return (index);
 }
 
-void	split_args(char *p, int start, int inside, t_lexer **head)
+void	split_args(t_mini *shell, int start, int end, int inside)
 {
 	int	i;
 
 	i = 0;
-	g_global.end = 0;
-	rm_quote(p);
-	while (p[i])
+	while (shell->rl[i])
 	{
-		if (p[i] == '"' || p[i] == '\'')
-			step_one(p, &inside, &g_global.quote, i++);
-		else if (!inside && (is_whitespace(p[i]) || (is_redirec(p[i]))))
+		if (shell->rl[i] == '"' || shell->rl[i] == '\'')
+			step_one(shell->rl, &inside, &g_global.quote, i++);
+		else if (!inside && (is_whitespace(shell->rl[i]) || (is_redirec(shell->rl[i]))))
 		{
-			g_global.end = i;
-			if (g_global.end > start)
-				make_words(p, start, g_global.end, head);
-			if (p[i] == '|')
-				make_words(p, i, i + 1, head);
-			if(p[i] == '>' || p[i] == '<')
+			end = i;
+			if (end > start) 
+				make_words(shell, start, end);
+			if (shell->rl[i] == '|')
+				make_words(shell, i, i + 1);
+			if(shell->rl[i] == '>' || shell->rl[i] == '<')
 			{
-				g_global.end = count_redirec(p, i);
-				make_words(p, i, g_global.end, head);
-				i = g_global.end - 1;
+				end = count_redirec(shell->rl, i);
+				make_words(shell, i, end);
+				i = end - 1;
 			}
-			while (is_whitespace(p[++i]))
+			while (is_whitespace(shell->rl[++i]))
 				;
 			start = i;
 		}
@@ -100,7 +98,7 @@ void	split_args(char *p, int start, int inside, t_lexer **head)
 			i++;
 	}
 	if (i > start)
-		make_words(p, start, i, head);
+		make_words(shell, start, i);
 }
 
 int	is_redirec(char c)
@@ -139,30 +137,27 @@ int	parse_quote(char *rl)
 	return (0);
 }
 
-void	ft_lexer(char *rl, t_lexer **head)
+void	ft_lexer(t_mini *shell)
 {
 	int		i;
 	int		inside;
-	char	*trimmed_rl;
+	char	*tmp;
+	int end;
 
+	end = 0;
 	i = 0;
 	inside = 0;
-	trimmed_rl = ft_strtrim(rl, " \t\n");
-	free(rl);
-	// if (trimmed_rl[0] == '|' || trimmed_rl[ft_strlen(trimmed_rl) - 1] == '|')
-	// {
-	// 	printf("syntax error near unexpected token '|'\n");
-	// 	free(trimmed_rl);
-	// 	return ;
-	// }
-	if (parse_quote(trimmed_rl))
+	tmp = ft_strtrim(shell->rl, " \t\n");
+	free(shell->rl);
+	shell->rl = tmp;
+	if (parse_quote(shell->rl))
 	{
 		printf("Syntax Error: parsing quote error [KO]\n");
-		free(trimmed_rl);
+		free(shell->rl);
 		return ;
 	}
-	split_args(trimmed_rl, i, inside, head);
-	free(trimmed_rl);
+	split_args(shell, i, end, inside);
+	free(shell->rl);
 }
 
 void	free_tokens(t_lexer *head)
