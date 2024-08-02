@@ -13,17 +13,16 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "../Libft/libft.h"
+# include "brahim.h"
+# include "rachid.h"
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <fcntl.h>
-# include <signal.h>
-# include "rachid.h"
-# include "brahim.h"
-# include <readline/history.h>
-# include <readline/readline.h>
-#include "../Libft/libft.h"
-
 
 typedef struct s_global
 {

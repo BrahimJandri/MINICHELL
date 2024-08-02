@@ -6,29 +6,13 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 20:12:28 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/02 11:28:49 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	type(char *p)
-{
-	if (ft_strncmp(p, "|", ft_strlen(p)) == 0)
-		return (1);
-	else if (ft_strncmp(p, ">", ft_strlen(p)) == 0)
-		return (2);
-	else if (ft_strncmp(p, "<", ft_strlen(p)) == 0)
-		return (3);
-	else if (ft_strncmp(p, "<<", ft_strlen(p)) == 0)
-		return (4);
-	else if (ft_strncmp(p, ">>", ft_strlen(p)) == 0)
-		return (5);
-	else
-		return (6);
-}
-
-void	make_words(t_mini *shell, int start, int end)
+static void	make_words(t_mini *shell, int start, int end)
 {
 	char	*word;
 	int		i;
@@ -46,7 +30,7 @@ void	make_words(t_mini *shell, int start, int end)
 	ft_lstadd_back(&shell->head, ft_new_token(word));
 }
 
-void	step_one(char *p, int *inside, char *quote, int i)
+static void	step_one(char *p, int *inside, char *quote, int i)
 {
 	(void)inside;
 	if (*quote == 0)
@@ -61,93 +45,50 @@ void	step_one(char *p, int *inside, char *quote, int i)
 	}
 }
 
-int	count_redirec(char *p, int index)
+static void	handle_character(t_mini *shell, int *i, t_split_params *params)
 {
-	while(p[index] == '>' || p[index] == '<')
-		index++;
-	return (index);
-}
-
-static void handle_character(t_mini *shell, int *i, t_split_params *params)
-{
-	char quote;
+	char	quote;
 
 	quote = 0;
-    if (shell->rl[*i] == '"' || shell->rl[*i] == '\'')
-        step_one(shell->rl, &params->inside, &quote, (*i)++);
-    else if (!(params->inside) && (is_whitespace(shell->rl[*i]) || is_redirec(shell->rl[*i])))
-    {
-        params->end = *i;
-        if (params->end > params->start)
-            make_words(shell, params->start, params->end);
-        if (shell->rl[*i] == '|')
-            make_words(shell, *i, *i + 1);
-        if (shell->rl[*i] == '>' || shell->rl[*i] == '<')
-        {
-            params->end = count_redirec(shell->rl, *i);
-            make_words(shell, *i, params->end);
-            *i = params->end - 1;
-        }
-        while (is_whitespace(shell->rl[++(*i)]))
-            ;
-        params->start = *i;
-    }
-    else
-        (*i)++;
-}
-
-void split_args(t_mini *shell, int start, int end, int inside)
-{
-    int i;
-    t_split_params params;
-
-    params.start = start;
-    params.end = end;
-    params.inside = inside;
-
-    i = 0;
-    while (shell->rl[i])
-    {
-        handle_character(shell, &i, &params);
-    }
-    if (i > params.start)
-        make_words(shell, params.start, i);
-}
-
-int	is_redirec(char c)
-{
-	if (c == '|' || c == '>' || c == '<')
-		return (1);
-	return (0);
-}
-
-int	is_whitespace(char c)
-{
-	if (c == 32 || (c >= 9 && c <= 13))
-		return (1);
-	return (0);
-}
-
-int	parse_quote(char *rl)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (rl[i] == ' ' || rl[i] == '\t' || rl[i] == '\n')
-		i++;
-	while (rl[i])
+	if (shell->rl[*i] == '"' || shell->rl[*i] == '\'')
+		step_one(shell->rl, &params->inside, &quote, (*i)++);
+	else if (!(params->inside) && (is_whitespace(shell->rl[*i])
+			|| is_redirec(shell->rl[*i])))
 	{
-		if (rl[i] == '"' || rl[i] == '\'')
+		params->end = *i;
+		if (params->end > params->start)
+			make_words(shell, params->start, params->end);
+		if (shell->rl[*i] == '|')
+			make_words(shell, *i, *i + 1);
+		if (shell->rl[*i] == '>' || shell->rl[*i] == '<')
 		{
-			j = check_next(&rl[i + 1], rl[i]);
-			if (rl[i + j + 1] != rl[i])
-				return (1);
-			i += j + 1;
+			params->end = count_redirec(shell->rl, *i);
+			make_words(shell, *i, params->end);
+			*i = params->end - 1;
 		}
-		i++;
+		while (is_whitespace(shell->rl[++(*i)]))
+			;
+		params->start = *i;
 	}
-	return (0);
+	else
+		(*i)++;
+}
+
+static void	split_args(t_mini *shell, int start, int end, int inside)
+{
+	int				i;
+	t_split_params	params;
+
+	params.start = start;
+	params.end = end;
+	params.inside = inside;
+	i = 0;
+	while (shell->rl[i])
+	{
+		handle_character(shell, &i, &params);
+	}
+	if (i > params.start)
+		make_words(shell, params.start, i);
 }
 
 void	ft_lexer(t_mini *shell)
@@ -155,7 +96,7 @@ void	ft_lexer(t_mini *shell)
 	int		i;
 	int		inside;
 	char	*tmp;
-	int end;
+	int		end;
 
 	end = 0;
 	i = 0;
@@ -167,33 +108,9 @@ void	ft_lexer(t_mini *shell)
 	{
 		printf("Syntax Error: parsing quote error [KO]\n");
 		free(shell->rl);
+		g_global.exit_status = 127;
 		return ;
 	}
 	split_args(shell, i, end, inside);
 	free(shell->rl);
-}
-
-void	free_tokens(t_lexer *head)
-{
-	t_lexer	*tmp;
-
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		free(tmp->word);
-		free(tmp);
-	}
-}
-
-void	print_word(t_lexer **head)
-{
-	t_lexer *tmp;
-
-	tmp = *head;
-	while (tmp)
-	{
-		printf("ARGS ==> %s\n", tmp->word);
-		tmp = tmp->next;
-	}
 }

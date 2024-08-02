@@ -6,16 +6,15 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 19:31:04 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/02 12:00:41 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/brahim.h"
-#include "./include/rachid.h"
 #include "./include/minishell.h"
+#include "./include/rachid.h"
 
 t_global	g_global;
-
 
 // void	init_mini(t_mini *shell, char **envm)
 // {
@@ -39,12 +38,12 @@ t_global	g_global;
 // 	shell->pipes = 0;
 // }
 
-void    shell_loop(t_mini shell)
+void	shell_loop(t_mini shell)
 {
-    while (1)
+	char	*input;
+
+	while (1)
 	{
-		char *input;
-		
 		input = readline("MiniShell$ ");
 		if (!input)
 			break ;
@@ -53,7 +52,7 @@ void    shell_loop(t_mini shell)
 		add_history(shell.rl);
 		ft_lexer(&shell);
 		print_word(&shell.head);
-		// parsing(&shell);
+		ft_parsing(&shell.head);
 		// execute(shell.cmds, &shell, &shell.env);
 		free_tokens(shell.head);
 		// free_parser(shell.cmds);
@@ -68,13 +67,13 @@ void	handle_sigint(int sig)
 	write(STDOUT_FILENO, "\nMiniShell>", 12);
 }
 
-int main(int ac, char **av, char **envm)
+int	main(int ac, char **av, char **envm)
 {
-    (void)ac;
-    (void)av;
+	(void)ac;
+	(void)av;
 	(void)envm;
-	t_mini	shell;
-	
+	t_mini shell;
+
 	shell.head = NULL;
 	shell.rl = NULL;
 	// init_mini(&shell, envm);
