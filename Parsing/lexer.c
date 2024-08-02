@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/02 11:28:49 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/02 18:11:43 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	ft_lexer(t_mini *shell)
 	{
 		printf("Syntax Error: parsing quote error [KO]\n");
 		free(shell->rl);
-		g_global.exit_status = 127;
+		g_global.exit_status = 2;
 		return ;
 	}
 	split_args(shell, i, end, inside);

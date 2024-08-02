@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/02 12:00:04 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/02 16:22:23 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int						check_next(char *first, char next);
 int						type(char *p);
 int						count_redirec(char *p, int index);
 void					print_word(t_lexer **head);
-void    				ft_parsing(t_lexer **head);
+void    				ft_parsing(t_mini *shell);
 
 
 #endif
