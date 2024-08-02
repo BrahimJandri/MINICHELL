@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/02 12:09:16 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/02 12:24:03 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,6 @@ static void ft_check_error(t_lexer **head)
     last_node = get_last_node(*head);
     if((ft_strcmp(first_node->word, "|") == 0) || (ft_strcmp(last_node->word, "|") == 0))
         ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-    while (first_node)
-    {
-        if()
-    }
-    
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:10:03 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/02 11:10:25 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/02 12:25:14 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_word(t_lexer **head)
 	tmp = *head;
 	while (tmp)
 	{
-		printf("ARGS ==> %s\n", tmp->word);
+		printf("ARGS ==> %s || TYPE ==> %u\n", tmp->word, tmp->token);
 		tmp = tmp->next;
 	}
 }
