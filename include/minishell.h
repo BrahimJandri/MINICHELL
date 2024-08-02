@@ -6,24 +6,23 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 08:42:27 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/01 19:29:55 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "../Libft/libft.h"
+# include "brahim.h"
+# include "rachid.h"
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <fcntl.h>
-# include <signal.h>
-# include "rachid.h"
-# include "brahim.h"
-# include <readline/history.h>
-# include <readline/readline.h>
-#include "../Libft/libft.h"
-
 
 typedef struct s_global
 {
@@ -32,7 +31,6 @@ typedef struct s_global
 	char			*value;
 	char			*equal_sign_pos;
 	char			*plus_equal_sign_pos;
-	int				end;
 	char			quote;
 	int				in_single_quotes;
 	int				in_double_quotes;

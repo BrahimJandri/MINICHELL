@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rachid.h                                           :+:      :+:    :+:   */
+/*   ft_print_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/07/31 16:04:18 by bjandri          ###   ########.fr       */
+/*   Created: 2024/08/02 11:10:03 by bjandri           #+#    #+#             */
+/*   Updated: 2024/08/02 12:25:14 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RACHID_H
-# define RACHID_H
+#include "../include/minishell.h"
 
-# include "minishell.h"
+void	print_word(t_lexer **head)
+{
+	t_lexer	*tmp;
 
-#endif
+	tmp = *head;
+	while (tmp)
+	{
+		printf("ARGS ==> %s || TYPE ==> %u\n", tmp->word, tmp->token);
+		tmp = tmp->next;
+	}
+}

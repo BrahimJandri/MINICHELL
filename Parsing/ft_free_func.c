@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rachid.h                                           :+:      :+:    :+:   */
+/*   ft_free_func.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/07/31 16:04:18 by bjandri          ###   ########.fr       */
+/*   Created: 2024/08/02 11:08:55 by bjandri           #+#    #+#             */
+/*   Updated: 2024/08/02 11:09:24 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RACHID_H
-# define RACHID_H
+#include "../include/minishell.h"
 
-# include "minishell.h"
+void	free_tokens(t_lexer *head)
+{
+	t_lexer	*tmp;
 
-#endif
+	while (head)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp->word);
+		free(tmp);
+	}
+}
+
