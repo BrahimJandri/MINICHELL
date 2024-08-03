@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/02 11:28:49 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/03 13:23:42 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static void	handle_character(t_mini *shell, int *i, t_split_params *params)
 {
 	char	quote;
 
-	quote = 0;
 	if (shell->rl[*i] == '"' || shell->rl[*i] == '\'')
 		step_one(shell->rl, &params->inside, &quote, (*i)++);
 	else if (!(params->inside) && (is_whitespace(shell->rl[*i])
