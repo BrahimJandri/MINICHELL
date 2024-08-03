@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/03 13:23:42 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/03 13:41:26 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void	make_words(t_mini *shell, int start, int end)
 
 static void	step_one(char *p, int *inside, char *quote, int i)
 {
-	(void)inside;
 	if (*quote == 0)
 	{
 		*quote = p[i];
