@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/03 13:46:19 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/03 13:53:18 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,14 @@ static void	handle_character(t_mini *shell, int *i, t_split_params *params)
 		(*i)++;
 }
 
-static void	split_args(t_mini *shell, int start, int end, int inside)
+static void	split_args(t_mini *shell)
 {
 	int				i;
 	t_split_params	params;
 
-	params.start = start;
-	params.end = end;
-	params.inside = inside;
+	params.start = 0;
+	params.end = 0;
+	params.inside = 0;
 	i = 0;
 	while (shell->rl[i])
 	{
@@ -89,26 +89,41 @@ static void	split_args(t_mini *shell, int start, int end, int inside)
 		make_words(shell, params.start, i);
 }
 
+int parse_pipe(char *str)
+{
+	int len;
+
+	len = ft_strlen(str);
+	if(len == 0)
+		return 0;
+	if(str[0] == '|' || str[len -1 ] == '|')
+		return 1;
+	return 0;
+}
+
+
 void	ft_lexer(t_mini *shell)
 {
-	int		i;
-	int		inside;
 	char	*tmp;
-	int		end;
 
-	end = 0;
-	i = 0;
-	inside = 0;
+
 	tmp = ft_strtrim(shell->rl, " \t\n");
 	free(shell->rl);
 	shell->rl = tmp;
-	if (parse_quote(shell->rl))
+	if(parse_pipe(shell->rl))
 	{
-		printf("Syntax Error: parsing quote error [KO]\n");
+		printf("Syntax error near unexpected token `|'\n");
 		free(shell->rl);
-		g_global.exit_status = 127;
+		g_global.exit_status = 2;
 		return ;
 	}
-	split_args(shell, i, end, inside);
+	if (parse_quote(shell->rl))
+	{
+		printf("Syntax Error: parsing quote error\n");
+		free(shell->rl);
+		g_global.exit_status = 2;
+		return ;
+	}
+	split_args(shell);
 	free(shell->rl);
 }
