@@ -17,18 +17,15 @@ RM := rm -rf
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@echo "\033[0;32mCompiling libft.a..."
 	@$(AR) $(NAME) $(OBJS)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@echo "\033[0;31mCleaning up object files..."
 	@$(RM) $(OBJS)
 
 fclean: clean
-	@echo "\033[0;31mCleaning up library and object files..."
 	@$(RM) $(NAME)
 
 re: fclean all
