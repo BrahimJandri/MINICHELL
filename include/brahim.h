@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/02 16:22:23 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/03 16:16:36 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int						is_redirec(char c);
 int						is_whitespace(char c);
 void					ft_lstadd_back(t_lexer **lst, t_lexer *new);
 t_lexer					*ft_new_token(char *content);
-char					*rm_quote(char *str);
 int						check_next(char *first, char next);
 int						type(char *p);
 int						count_redirec(char *p, int index);

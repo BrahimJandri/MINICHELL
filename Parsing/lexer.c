@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/03 15:30:50 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/03 17:02:52 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,25 @@ int parse_pipe(char *str)
 	return 0;
 }
 
+static void	rm_quote(char *str)
+{
+	int		i;
+	int		j;
+	char	*dst;
+
+	dst = str;
+	j = 0;
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i \
+				+ 1] == '\''))
+			i += 2;
+		else
+			dst[j++] = str[i++];
+	}
+	dst[j] = '\0';
+}
 
 void	ft_lexer(t_mini *shell)
 {
@@ -124,6 +143,9 @@ void	ft_lexer(t_mini *shell)
 		g_global.exit_status = 2;
 		return ;
 	}
+	printf("args before remove quote %s\n", shell->rl);
+	rm_quote(shell->rl);
+	printf("args after remove quote == %s\n", shell->rl);
 	split_args(shell);
 	free(shell->rl);
 }
