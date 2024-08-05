@@ -14,7 +14,7 @@
 
 void	ft_lstadd_back(t_lexer **lst, t_lexer *new)
 {
-	t_lexer		*tmp;
+	t_lexer	*tmp;
 
 	if (!new)
 		return ;

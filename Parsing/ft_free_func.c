@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:08:55 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/05 12:34:31 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/05 15:11:14 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,43 +24,45 @@ void	free_tokens(t_lexer *head)
 		free(tmp);
 	}
 }
-void free_args(char **args)
+
+void	free_args(char **args)
 {
-    int i = 0;
-    if (!args)
-        return;
-    while (args[i])
-    {
-        free(args[i]);
-        i++;
-    }
-    free(args);
+	int	i;
+
+	i = 0;
+	if (!args)
+		return ;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
 }
 
-
-void free_redirections(t_lexer *redirections)
+void	free_redirections(t_lexer *redirections)
 {
-    t_lexer *tmp;
-    while (redirections)
-    {
-        tmp = redirections;
-        redirections = redirections->next;
-        free(tmp->word);
-        free(tmp);
-    }
+	t_lexer	*tmp;
+
+	while (redirections)
+	{
+		tmp = redirections;
+		redirections = redirections->next;
+		free(tmp->word);
+		free(tmp);
+	}
 }
 
-
-void free_parser(t_parser *parser_list)
+void	free_parser(t_parser *parser_list)
 {
-    t_parser *tmp;
-    while (parser_list)
-    {
-        tmp = parser_list;
-        parser_list = parser_list->next;
-        free_args(tmp->cmd);
-        free_redirections(tmp->redirections);
-        free(tmp);
-    }
-}
+	t_parser	*tmp;
 
+	while (parser_list)
+	{
+		tmp = parser_list;
+		parser_list = parser_list->next;
+		free_args(tmp->cmd);
+		free_redirections(tmp->redirections);
+		free(tmp);
+	}
+}
