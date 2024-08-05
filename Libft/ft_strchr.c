@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:18:31 by bjandri           #+#    #+#             */
-/*   Updated: 2023/11/22 12:18:33 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/05 16:14:37 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,3 @@ char	*ft_strchr(const char *str, int c)
 		return ((char *)str);
 	return (NULL);
 }
-
-// #include <stdio.h>
-// #include <string.h>
-
-// int main()
-// {
-// 	char str[] = {120, 64, -55};
-// 	char *ch = strchr(str, -55);
-// 	printf("%d", *ch);
-// }

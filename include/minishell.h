@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/04 10:13:37 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/05 15:43:59 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-// extern int	g_exit_status;
+extern int	g_exit_status;
 
 typedef struct s_env
 {

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/05 15:17:32 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/05 15:43:08 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_assign_tokens(t_lexer *head)
 			{
 				ft_putstr_fd("syntax error near unexpected token `newline'\n",
 					2);
-				// g_exit_status = 2;
+				g_exit_status = 2;
 				return -1;
 			}
 		}
