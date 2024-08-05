@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/05 12:09:43 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/05 12:31:29 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,19 +137,11 @@ void ft_add_parser_node(t_parser **head, t_parser *new_node)
 char **ft_store_args(t_lexer *start, int *arg_count)
 {
     t_lexer *tmp = start;
-    int count = 0;
-    while (tmp && tmp->token != PIPE)
-    {
-        if (tmp->token == ARG)
-            count++;
-        tmp = tmp->next;
-    }
+    int count = ft_count_args(tmp);
     *arg_count = count;
-
     char **args = (char **)malloc((count + 1) * sizeof(char *));
     if (!args)
         return NULL;
-
     tmp = start;
     int i = 0;
     while (tmp && tmp->token != PIPE)
@@ -227,37 +219,50 @@ void ft_parse_commands(t_mini *shell)
         if (tmp && tmp->token == PIPE)
             tmp = tmp->next;
     }
-
     shell->cmds = parser_list;
 }
 
-// void print_parser(t_parser **head)
-// {
-//     t_parser *tmp;
+void print_parser(t_parser **head)
+{
+    t_parser *tmp = *head;
 
-//     tmp = *head;
-//     while (tmp)
-//     {
-//         printf("CMD : \n");
-//         printf("cmd ==> [%s]\n", tmp->cmd[0]);
-//         printf("n_red ==> [%d]\n", tmp->n_redirections);
-//         printf("builtins ==> [%d]\n", tmp->builtin);
-//         t_lexer *redir_tmp = tmp->redirections;
-//         while (redir_tmp)
-//         {
-//             printf("  redirection type ==> [%d], file ==> [%s]\n", redir_tmp->token, redir_tmp->word);
-//             redir_tmp = redir_tmp->next;
-//         }
-//         tmp = tmp->next;
-//     }
-    
-// }
+    while (tmp)
+    {
+        printf("CMD : \n");
+        
+        if (tmp->cmd)
+        {
+            for (int i = 0; tmp->cmd[i]; i++)
+            {
+                printf("cmd[%d] ==> [%s]\n", i, tmp->cmd[i]);
+            }
+        }
+        else
+        {
+            printf("cmd ==> [NULL]\n");
+        }
+
+        printf("n_red ==> [%d]\n", tmp->n_redirections);
+        printf("builtins ==> [%d]\n", tmp->builtin);
+        
+        printf("Redirections: \n");
+        t_lexer *redir_tmp = tmp->redirections;
+        while (redir_tmp)
+        {
+            printf("redirection type ==> [%d], file ==> [%s]\n", redir_tmp->token, redir_tmp->word);
+            redir_tmp = redir_tmp->next;
+        }
+
+        tmp = tmp->next;
+    }
+}
+
 
 void ft_parsing(t_mini *shell)
 {
     ft_assign_tokens(shell->head);
     shell->pipes = ft_count_pipe(shell->head);
     ft_parse_commands(shell);
-    // print_parser(&shell->cmds);
+    print_parser(&shell->cmds);
 }
 
