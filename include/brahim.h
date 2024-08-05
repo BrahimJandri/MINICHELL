@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/02 12:00:04 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/05 11:46:53 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,30 @@
 
 typedef struct s_mini	t_mini;
 
+typedef enum e_tokens
+{
+    PIPE,
+    REDIR_OUT,
+    REDIR_IN,
+    REDIR_HEREDOC,
+    REDIR_APPEND,
+    ARG,
+    FILE_TARGET,
+    END_OF_CMD,
+    BUILTIN
+}		 t_tokens;
+
 typedef enum s_builtins
 {
-	ECHO = 1,
-	CD,
-	PWD,
-	EXPORT,
-	UNSET,
-	EXIT,
-	ENV,
-}						t_builtins;
-
-typedef enum s_tokens
-{
-	PIPE = 1,
-	OUTFILE,
-	INFILE,
-	HERDOC,
-	APPEND,
-	ARG,
-}						t_tokens;
+    NONE,
+    ECHO = 1,
+    CD,
+    PWD,
+    EXPORT,
+    UNSET,
+    EXIT,
+    ENV
+} t_builtins;
 
 typedef struct s_split_params
 {
@@ -47,14 +51,14 @@ typedef struct s_lexer
 {
 	char				*word;
 	t_tokens			token;
-	int					index;
+	t_builtins			builtins;
 	struct s_lexer		*next;
 	struct s_lexer		*prev;
 }						t_lexer;
 
 typedef struct s_parser
 {
-	char				**str;
+	char				**cmd;
 	int					n_redirections;
 	t_lexer				*redirections;
 	t_builtins			builtin;
@@ -68,17 +72,16 @@ typedef struct s_parser
 
 void					ft_lexer(t_mini *shell);
 void					free_tokens(t_lexer *head);
+void	                free_parser(t_parser *head);
 int						parse_quote(char *rl);
 int						is_redirec(char c);
 int						is_whitespace(char c);
 void					ft_lstadd_back(t_lexer **lst, t_lexer *new);
 t_lexer					*ft_new_token(char *content);
-char					*rm_quote(char *str);
 int						check_next(char *first, char next);
 int						type(char *p);
 int						count_redirec(char *p, int index);
-void					print_word(t_lexer **head);
-void    				ft_parsing(t_lexer **head);
+void    				ft_parsing(t_mini *shell);
 
 
 #endif

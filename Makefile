@@ -6,7 +6,7 @@ RM = rm -f
 LIBFT = Libft/libft.a
 
 SRC = minishell.c ./Parsing/lexer.c ./Parsing/ft_nodes.c ./Parsing/ft_lexer_hepler.c \
-	./Parsing/ft_free_func.c ./Parsing/ft_print_args.c ./Parsing/ft_lexer_helper2.c \
+	./Parsing/ft_free_func.c ./Parsing/ft_lexer_helper2.c \
 	./Parsing/ft_parsing.c
 
 OBJ = $(SRC:.c=.o)
@@ -14,7 +14,6 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@echo "\033[0;32mCompiling minishell..."
 	@make -C Libft
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) $(LDFLAGS)
 

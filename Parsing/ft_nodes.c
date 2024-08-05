@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 08:40:00 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/02 11:15:56 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/04 10:47:05 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	ft_lstadd_back(t_lexer **lst, t_lexer *new)
 {
-	static int	i;
 	t_lexer		*tmp;
 
 	if (!new)
@@ -22,7 +21,6 @@ void	ft_lstadd_back(t_lexer **lst, t_lexer *new)
 	if (!*lst)
 	{
 		*lst = new;
-		i = 0;
 		return ;
 	}
 	tmp = *lst;
@@ -30,7 +28,6 @@ void	ft_lstadd_back(t_lexer **lst, t_lexer *new)
 		tmp = tmp->next;
 	tmp->next = new;
 	new->prev = tmp;
-	new->index = ++i;
 }
 
 t_lexer	*ft_new_token(char *content)

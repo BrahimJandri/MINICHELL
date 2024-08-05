@@ -6,15 +6,13 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/03 13:11:01 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/05 10:10:57 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/brahim.h"
 #include "./include/minishell.h"
-#include "./include/rachid.h"
 
-t_global	g_global;
+// int g_exit_status = 0;
 
 // void	init_mini(t_mini *shell, char **envm)
 // {
@@ -51,11 +49,10 @@ void	shell_loop(t_mini shell)
 		free(input);
 		add_history(shell.rl);
 		ft_lexer(&shell);
-		print_word(&shell.head);
-		// ft_parsing(&shell.head);
+		ft_parsing(&shell);
 		// execute(shell.cmds, &shell, &shell.env);
 		free_tokens(shell.head);
-		// free_parser(shell.cmds);
+		free_parser(shell.cmds);
 		shell.head = NULL;
 		// shell.cmds = NULL;
 	}

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 19:29:55 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/04 10:13:37 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-typedef struct s_global
-{
-	int				exit_status;
-	char			*key;
-	char			*value;
-	char			*equal_sign_pos;
-	char			*plus_equal_sign_pos;
-	char			quote;
-	int				in_single_quotes;
-	int				in_double_quotes;
-	char			*src;
-	char			*dst;
-}					t_global;
-
-extern t_global		g_global;
+// extern int	g_exit_status;
 
 typedef struct s_env
 {
