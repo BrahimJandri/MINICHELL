@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/04 11:33:32 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/05 10:10:57 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	shell_loop(t_mini shell)
 		ft_lexer(&shell);
 		ft_parsing(&shell);
 		// execute(shell.cmds, &shell, &shell.env);
-		// free_tokens(shell.head);
-		// free_parser(shell.cmds);
+		free_tokens(shell.head);
+		free_parser(shell.cmds);
 		shell.head = NULL;
 		// shell.cmds = NULL;
 	}

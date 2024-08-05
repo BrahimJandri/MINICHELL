@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/04 15:33:00 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/05 11:46:53 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef enum e_tokens
 
 typedef enum s_builtins
 {
+    NONE,
     ECHO = 1,
     CD,
     PWD,
@@ -71,6 +72,7 @@ typedef struct s_parser
 
 void					ft_lexer(t_mini *shell);
 void					free_tokens(t_lexer *head);
+void	                free_parser(t_parser *head);
 int						parse_quote(char *rl);
 int						is_redirec(char c);
 int						is_whitespace(char c);
