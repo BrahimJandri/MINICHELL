@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/05 12:31:29 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/05 14:31:20 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int ft_count_args(t_lexer *start)
 
     while (tmp && tmp->token != PIPE)
     {
-        if (tmp->token == ARG)
+        if (tmp->token == ARG || tmp->token == BUILTIN)
             args_count++;
         tmp = tmp->next;
     }
@@ -134,11 +134,10 @@ void ft_add_parser_node(t_parser **head, t_parser *new_node)
     }
 }
 
-char **ft_store_args(t_lexer *start, int *arg_count)
+char **ft_store_args(t_lexer *start)
 {
     t_lexer *tmp = start;
     int count = ft_count_args(tmp);
-    *arg_count = count;
     char **args = (char **)malloc((count + 1) * sizeof(char *));
     if (!args)
         return NULL;
@@ -146,7 +145,7 @@ char **ft_store_args(t_lexer *start, int *arg_count)
     int i = 0;
     while (tmp && tmp->token != PIPE)
     {
-        if (tmp->token == ARG)
+        if (tmp->token == ARG || tmp->token == BUILTIN)
         {
             args[i] = ft_strdup(tmp->word);
             if (!args[i])
@@ -207,7 +206,7 @@ void ft_parse_commands(t_mini *shell)
         if (!new_cmd)
             return; // Handle malloc failure
 
-        new_cmd->cmd = ft_store_args(tmp, &new_cmd->n_redirections);
+        new_cmd->cmd = ft_store_args(tmp);
         ft_store_builtins(new_cmd, tmp);
         ft_store_redirections(new_cmd, tmp);
 
@@ -263,6 +262,5 @@ void ft_parsing(t_mini *shell)
     ft_assign_tokens(shell->head);
     shell->pipes = ft_count_pipe(shell->head);
     ft_parse_commands(shell);
-    print_parser(&shell->cmds);
 }
 
