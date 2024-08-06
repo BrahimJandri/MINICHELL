@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/05 16:22:15 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/06 11:00:23 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,24 +101,38 @@ int	parse_pipe(char *str)
 	return (0);
 }
 
-static void	rm_quote(char *str)
-{
-	int		i;
-	int		j;
-	char	*dst;
 
-	dst = str;
+static void	rm_quote(char *src)
+{
+	int		length;
+	char	*dst;
+	int		j;
+	int		i;
+
+	length = ft_strlen(src);
+	dst = (char *)malloc(length + 1);
 	j = 0;
 	i = 0;
-	while (str[i])
+	while (i < length)
 	{
-		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i
-				+ 1] == '\''))
-			i += 2;
+		if ((i < length - 1 && (src[i] == '"' && src[i + 1] == '"'))
+			|| (src[i] == '\'' && src[i + 1] == '\''))
+		{
+			if ((i == 0 || is_whitespace(src[i - 1])) && (i + 2 == length
+					|| is_whitespace(src[i + 2])))
+			{
+				dst[j++] = src[i++];
+				dst[j++] = src[i++];
+			}
+			else
+				i += 2;
+		}
 		else
-			dst[j++] = str[i++];
+			dst[j++] = src[i++];
 	}
 	dst[j] = '\0';
+	ft_strcpy(src, dst);
+	free(dst);
 }
 
 void	ft_lexer(t_mini *shell)
