@@ -6,13 +6,90 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/06 11:00:18 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/06 16:51:09 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
 int g_exit_status = 0;
+
+char **arr_dup(char **envm)
+{
+	int len;
+	char **arr;
+
+	len = 0;
+	while(envm[len])
+		len++;
+	arr = malloc(sizeof(char *) * (len +1));
+	if(!arr)
+		return NULL;
+	arr[len] = NULL;
+	len = 0;
+	while(envm[len])
+	{
+		arr[len] = ft_strdup(envm[len]);
+		len++;
+	}
+	return (arr);
+}
+
+char	*ft_strnlen(const char *str, char delimiter)
+{
+	int		i;
+	int		j;
+	char	*result;
+
+	i = 0;
+	j = 0;
+	while (str[i] && str[i] != delimiter)
+		i++;
+	result = malloc(i + 1);
+	if (!result)
+		return (NULL);
+	while (j < i)
+	{
+		result[j] = str[j];
+		j++;
+	}
+	result[i] = '\0';
+	return (result);
+}
+t_env	*ft_new_env(const char *key, const char *value)
+{
+	t_env	*new_node;
+
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
+		return (NULL);
+	new_node->key = ft_strdup(key);
+	if (value)
+		new_node->value = ft_strdup(value);
+	else
+		new_node->value = NULL;
+	new_node->next = NULL;
+	return (new_node);
+}
+
+t_env	*create_env(char **env)
+{
+	t_env	*head;
+	char	*key;
+	char	*value;
+	int		i;
+
+	i = 0;
+	head = NULL;
+	while (env[i])
+	{
+		key = ft_strnlen(env[i], '=');
+		value = ft_strdup(env[i] + ft_strlen(key) + 1);
+		ft_lstadd(&head, ft_new_env(key, value));
+		i++;
+	}
+	return (head);
+}
 
 void	init_mini(t_mini *shell, char **envm)
 {
@@ -28,6 +105,8 @@ void	init_mini(t_mini *shell, char **envm)
 		}
 		i++;
 	}
+	shell->envp = arr_dup(envm);
+	shell->env = create_env(envm);
 	shell->cmds = NULL;
 	shell->head = NULL;
 	shell->rl = NULL;
@@ -50,8 +129,8 @@ void	shell_loop(t_mini shell)
 		// ft_parsing(&shell);
 	    // print_parser(&shell.cmds);
 		// execute(shell.cmds, &shell, &shell.env);
-		free_tokens(shell.head);
-		free_parser(shell.cmds);
+		// free_tokens(shell.head);
+		// free_parser(shell.cmds);
 		shell.head = NULL;
 		shell.cmds = NULL;
 	}

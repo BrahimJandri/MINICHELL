@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/05 16:23:17 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/06 16:55:01 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define BRAHIM_H
 
 typedef struct s_mini	t_mini;
+typedef struct s_env	t_env;
 
 typedef enum e_tokens
 {
@@ -85,6 +86,7 @@ void    				ft_parsing(t_mini *shell);
 void                    print_parser(t_parser **head);
 void                    free_args(char **args);
 void                    ft_check_dollar(t_mini *shell);
+void	ft_lstadd(t_env **lst, t_env *new);
 
 
 #endif
