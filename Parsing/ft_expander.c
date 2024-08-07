@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/07 11:35:20 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/07 14:28:44 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ char	*getenv_value(t_env *env, const char *key)
 
 char *expander_parse(char *str, t_mini *shell)
 {
-    int i;
-    i = 0;
     if (is_quoted(str))
         remove_quotes(str);
     while(*str)

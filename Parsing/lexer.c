@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/07 12:29:28 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/07 14:52:05 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	ft_lexer(t_mini *shell)
 {
 	char	*tmp;
 
-	tmp = ft_strtrim(shell->rl, " \t\n");
+	tmp = ft_strtrim(shell->rl, " \t\n\\");
 	free(shell->rl);
 	shell->rl = tmp;
 	if (parse_pipe(shell->rl))
@@ -158,5 +158,4 @@ void	ft_lexer(t_mini *shell)
 	}
 	rm_quote(shell->rl);
 	split_args(shell);
-	// free(shell->rl);
 }

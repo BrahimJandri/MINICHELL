@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/07 11:37:06 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/07 14:48:26 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,8 +268,36 @@ void	print_parser(t_parser **head)
 	}
 }
 
+
+static int ft_check_error(t_lexer *head)
+{
+	t_lexer *tmp;
+	int i;
+
+	i = 0;
+	tmp = head;
+	while (tmp)
+	{
+		if((tmp->word[i] == '>') || (tmp->word[i] == '<'))
+		{
+			if(ft_strcmp(tmp->word, ">") || ft_strcmp(tmp->word, "<") \
+			|| ft_strcmp(tmp->word, ">>") || ft_strcmp(tmp->word, "<<"))
+			{
+				ft_putstr_fd("syntax error near unexpected token `newline'\n",
+					2);
+				g_exit_status = 2;
+				return -1;
+			}
+		}
+		tmp = tmp->next;
+	}
+	return 0;
+}
+
 void	ft_parsing(t_mini *shell)
 {
+	if(ft_check_error(shell->head) == -1)
+		return ;
 	if(ft_assign_tokens(shell->head) == -1)
         return ;
 	shell->pipes = ft_count_pipe(shell->head);
