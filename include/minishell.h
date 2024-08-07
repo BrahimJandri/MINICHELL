@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/05 15:43:59 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/07 12:05:17 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
-	char			*pwd;
-	char			*oldpwd;
 	struct s_env	*next;
 }					t_env;
 

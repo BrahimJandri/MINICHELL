@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/05 15:43:08 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/07 11:37:06 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,7 @@ void	ft_add_parser_node(t_parser **head, t_parser *new_node)
 	if (!head || !new_node)
 		return ;
 	if (*head == NULL)
-	{
 		*head = new_node;
-	}
 	else
 	{
 		tmp = *head;
@@ -222,17 +220,17 @@ void	ft_parse_commands(t_mini *shell)
 	{
 		new_cmd = ft_new_parser_node();
 		if (!new_cmd)
-			return ; // Handle malloc failure
+			return ;
 		new_cmd->cmd = ft_store_args(tmp);
 		ft_store_builtins(new_cmd, tmp);
 		ft_store_redirections(new_cmd, tmp);
 		ft_add_parser_node(&parser_list, new_cmd);
-		// Move tmp to the next command after a PIPE
 		while (tmp && tmp->token != PIPE)
 			tmp = tmp->next;
 		if (tmp && tmp->token == PIPE)
 			tmp = tmp->next;
 	}
+	ft_expander(shell);
 	shell->cmds = parser_list;
 }
 

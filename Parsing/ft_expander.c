@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/06 16:56:02 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/07 11:35:20 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,6 @@ static int is_quoted(char *str)
     else
         return 0;
 }
-char    *function(char *envm, char *str)
-{
-    // char *dup;
-    
-
-    str = ft_strdup(envm);
-    return str;
-}
 
 char	*getenv_value(t_env *env, const char *key)
 {
@@ -69,7 +61,7 @@ char	*getenv_value(t_env *env, const char *key)
 			return (env->value);
 		env = env->next;
 	}
-	return (NULL);
+	return ("\n");
 }
 
 char *expander_parse(char *str, t_mini *shell)
@@ -85,23 +77,22 @@ char *expander_parse(char *str, t_mini *shell)
         else
             break;
     }
-    printf("first-->%s\n", str);
     if(str)
     {
         return(getenv_value(shell->env, str));
     }
-    return("\n");
+    return(NULL);
 }
 
-void ft_check_dollar(t_mini *shell)
+void ft_expander(t_mini *shell)
 {
-    t_lexer *tmp = shell->head;
+    t_parser *tmp = shell->cmds;
     while (tmp)
     {
-        if (ft_strchr(tmp->word, '$'))
+        if (ft_strchr(*(tmp->cmd), '$'))
         {
-            tmp->word = expander_parse(tmp->word, shell);
-            printf("%s\n", tmp->word);
+            *(tmp->cmd) = expander_parse(*(tmp->cmd), shell);
+            printf("%s\n", *(tmp->cmd));
         }
         tmp = tmp->next;
     }
