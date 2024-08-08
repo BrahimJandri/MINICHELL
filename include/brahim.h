@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/07 12:27:50 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/08 10:12:20 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ void                    print_parser(t_parser **head);
 void                    free_args(char **args);
 void                    ft_expander(t_mini *shell);
 void	                ft_lstadd(t_env **lst, t_env *new);
-void free_env_node(t_env *node);
-void free_env(t_env *head);
-void free_arr_dup(char **arr);
-void free_path(char **path);
+void                    free_env_node(t_env *node);
+void                    free_env(t_env *head);
+void                    free_arr_dup(char **arr);
+
 
 #endif

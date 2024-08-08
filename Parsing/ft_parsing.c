@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/07 11:37:06 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/07 12:50:14 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,8 +230,8 @@ void	ft_parse_commands(t_mini *shell)
 		if (tmp && tmp->token == PIPE)
 			tmp = tmp->next;
 	}
-	ft_expander(shell);
 	shell->cmds = parser_list;
+	ft_expander(shell);
 }
 
 void	print_parser(t_parser **head)
