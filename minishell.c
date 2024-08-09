@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/08 21:56:57 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/09 10:18:49 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,18 @@ void init_mini(t_mini *shell, char **envm)
     shell->pipes = 0;
 }
 
+void	print_lexer(t_lexer *head)
+{
+	t_lexer *tmp = head;
+
+	while(tmp)
+	{
+		printf("WORD ==> [%s]\nTOKEN ==> [%d]\n", tmp->word, tmp->token);
+		tmp = tmp->next;
+	}
+}
+
+
 void shell_loop(t_mini *shell)
 {
     char *input;
@@ -167,6 +179,7 @@ void shell_loop(t_mini *shell)
         add_history(shell->rl);
         ft_lexer(shell);
         ft_parsing(shell);
+	    print_lexer(shell->head);
         // print_parser(&shell->cmds);
         // execute(shell->cmds, shell, &shell->env);
         free_tokens(shell->head);

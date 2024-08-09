@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/07 14:52:05 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/09 10:18:41 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ static void	rm_quote(char *src)
 	ft_strcpy(src, dst);
 	free(dst);
 }
+
 
 void	ft_lexer(t_mini *shell)
 {

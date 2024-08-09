@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/09 08:45:00 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/09 09:50:16 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,27 +65,24 @@ char	*getenv_value(t_env *env, const char *key)
 	return ("\n");
 }
 
-void expander_parse(t_parser *head, t_mini *shell)
+t_parser *expander_parse(t_parser *head, t_mini *shell)
 {
     (void)shell;
     t_parser *tmp = head;
     
-    while(tmp)
+    if(tmp->cmd)
     {
-        if(tmp->cmd)
+        int i = 0;
+        while(tmp->cmd[i])
         {
-            int i = 0;
-            while(tmp->cmd[i])
-            {
-                printf("FIRST CMD ==> [%s]\n", head->cmd[i]);
-                i++;    
-            }
+            if(ft_strcmp(tmp->cmd[i], "<<") && ft_strchr(tmp->cmd[i + 1], '$'))
+                return (tmp);
+            i++;    
         }
-        tmp = tmp->next;
     }
     // if (is_quoted(*(head->cmd)))
         // remove_quotes(*(head->cmd));
-        
+    return(NULL);
 }
 
 void ft_expander(t_mini *shell)

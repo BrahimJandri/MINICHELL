@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/08 15:10:56 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/09 10:21:45 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ void	ft_parse_commands(t_mini *shell)
 			tmp = tmp->next;
 	}
 	shell->cmds = parser_list;
-	ft_expander(shell);
+	// ft_expander(shell);
 }
 
 void	print_parser(t_parser **head)
@@ -273,13 +273,11 @@ void	print_parser(t_parser **head)
 static int ft_check_error(t_lexer *head)
 {
 	t_lexer *tmp;
-	int i;
 
-	i = 0;
 	tmp = head;
 	while (tmp)
 	{
-		if((tmp->word[i] == '>') || (tmp->word[i] == '<'))
+		if((tmp->word[0] == '>') || (tmp->word[0] == '<'))
 		{
 			if(ft_strcmp(tmp->word, ">") || ft_strcmp(tmp->word, "<") \
 			|| ft_strcmp(tmp->word, ">>") || ft_strcmp(tmp->word, "<<"))
