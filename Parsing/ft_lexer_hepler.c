@@ -64,5 +64,3 @@ int	parse_quote(char *rl)
 	}
 	return (0);
 }
-
-
