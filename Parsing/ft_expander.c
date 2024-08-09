@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/08 22:08:12 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/09 08:45:00 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ void ft_expander(t_mini *shell)
     t_parser *tmp = shell->cmds;
     while (tmp)
     {
-        int i = 0;
         if(tmp->cmd)
         {
+            int i = 0;
             while(tmp->cmd[i])
             {
                 if(ft_strchr(tmp->cmd[i], '$'))
