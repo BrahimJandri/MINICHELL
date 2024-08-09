@@ -6,13 +6,10 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/08/08 10:12:20 by bjandri          ###   ########.fr       */
-=======
-/*   Updated: 2024/08/07 14:59:02 by bjandri          ###   ########.fr       */
->>>>>>> 881173356401056d06a1a5e9449fc35be9c028ba
+/*   Updated: 2024/08/08 15:11:25 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef BRAHIM_H
 # define BRAHIM_H
@@ -94,10 +91,6 @@ void	                ft_lstadd(t_env **lst, t_env *new);
 void                    free_env_node(t_env *node);
 void                    free_env(t_env *head);
 void                    free_arr_dup(char **arr);
-<<<<<<< HEAD
-
-=======
 void                    free_path(char **path);
->>>>>>> 881173356401056d06a1a5e9449fc35be9c028ba
 
 #endif

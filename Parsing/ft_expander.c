@@ -6,13 +6,10 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/08/08 12:50:36 by bjandri          ###   ########.fr       */
-=======
-/*   Updated: 2024/08/07 14:28:44 by bjandri          ###   ########.fr       */
->>>>>>> 881173356401056d06a1a5e9449fc35be9c028ba
+/*   Updated: 2024/08/08 22:08:12 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../include/minishell.h"
 
@@ -70,19 +67,25 @@ char	*getenv_value(t_env *env, const char *key)
 
 void expander_parse(t_parser *head, t_mini *shell)
 {
-<<<<<<< HEAD
-    int i = 0;
     (void)shell;
-    while(head)
-=======
-    if (is_quoted(str))
-        remove_quotes(str);
-    while(*str)
->>>>>>> 881173356401056d06a1a5e9449fc35be9c028ba
+    t_parser *tmp = head;
+    
+    while(tmp)
     {
-        printf("FIRST CMD ==> [%s]\n", head->cmd[i]);
-        i++;    
+        if(tmp->cmd)
+        {
+            int i = 0;
+            while(tmp->cmd[i])
+            {
+                printf("FIRST CMD ==> [%s]\n", head->cmd[i]);
+                i++;    
+            }
+        }
+        tmp = tmp->next;
     }
+    // if (is_quoted(*(head->cmd)))
+        // remove_quotes(*(head->cmd));
+        
 }
 
 void ft_expander(t_mini *shell)
@@ -90,8 +93,16 @@ void ft_expander(t_mini *shell)
     t_parser *tmp = shell->cmds;
     while (tmp)
     {
-        if (ft_strchr(*(tmp->cmd), '$'))
-            expander_parse(tmp, shell);
+        int i = 0;
+        if(tmp->cmd)
+        {
+            while(tmp->cmd[i])
+            {
+                if(ft_strchr(tmp->cmd[i], '$'))
+                    expander_parse(tmp, shell);
+                i++;
+            } 
+        }
         tmp = tmp->next;
     }
 }
