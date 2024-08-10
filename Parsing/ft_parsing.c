@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/08 15:10:56 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/10 16:35:02 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,6 @@ void	ft_parse_commands(t_mini *shell)
 			tmp = tmp->next;
 	}
 	shell->cmds = parser_list;
-	ft_expander(shell);
 }
 
 void	print_parser(t_parser **head)
@@ -294,13 +293,86 @@ static int ft_check_error(t_lexer *head)
 	}
 	return 0;
 }
+static void exit_status(char *msg, char *str)
+{
+    char dst[256];
+    int i;
+	int j;
+	
+	j = 0;
+	i = 0;
+    ft_putstr_fd(msg, 2);
+    while (*str && !is_whitespace(*str) && j < 3)
+	{
+        dst[i++] = *str++;
+		j++;	
+	}
+    dst[i] = '\0';
+    ft_putstr_fd("'", 2);
+    ft_putstr_fd(dst, 2);
+    ft_putstr_fd("'", 2);
+    ft_putstr_fd("\n", 2);
+    g_exit_status = 2;
+    return;
+}
+
+static void	ft_syntax_err(char *str, int c)
+{
+	int i;
+
+	i = 0;
+	if(c == 1)
+	{
+		if(str[i + 1] == '>' && (str[i + 2] == '<' || str[i + 2] == '>'))
+			exit_status("minishell: syntax error near unexpected token ", str + 2);
+		else
+			exit_status("minishell: syntax error near unexpected token ", str + 1);
+	}
+	else
+	{
+		if(str[i + 1] == '<' && (str[i + 2] == '>' || str[i + 2] == '<'))
+			exit_status("minishell: syntax error near unexpected token ", str + 2);
+		else
+			exit_status("minishell: syntax error near unexpected token ", str + 1);
+	}
+}
+
+static int	check_redir(t_lexer *head)
+{
+	t_lexer *tmp;
+	int len;
+	
+	tmp = head;
+	while (tmp)
+	{
+		if(tmp->token == ARG)
+		{
+			len = ft_strlen(tmp->word);
+			if((tmp->word[0]) == '>')
+			{
+				ft_syntax_err(tmp->word, 1);
+				return (1);
+			}
+			if((tmp->word[0]) == '<' && len > 2 && tmp->word[2] != '<')
+			{
+				ft_syntax_err(tmp->word, 2);
+				return (1);
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
 
 void	ft_parsing(t_mini *shell)
 {
+	if(check_redir(shell->head) == 1)
+		return ;
 	if(ft_check_error(shell->head) == -1)
 		return ;
 	if(ft_assign_tokens(shell->head) == -1)
         return ;
 	shell->pipes = ft_count_pipe(shell->head);
 	ft_parse_commands(shell);
+	ft_expander(shell);
 }

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/07 14:52:05 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/10 15:35:15 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,23 @@ static void	rm_quote(char *src)
 	ft_strcpy(src, dst);
 	free(dst);
 }
+
+void exit_status(char *msg, char *str)
+{
+    char dst[256];
+    int i;
+	
+	i = 0;
+    ft_putstr_fd(msg, 2);
+    while (*str && !is_whitespace(*str))
+        dst[i++] = *str++;
+    dst[i] = '\0';
+    ft_putstr_fd(dst, 2);
+    ft_putstr_fd("\n", 2);
+    g_exit_status = 2;
+    return;
+}
+
 
 void	ft_lexer(t_mini *shell)
 {
