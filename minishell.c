@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/11 11:11:03 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/11 11:57:30 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,22 +163,22 @@ void shell_loop(t_mini *shell)
         input = readline("MiniShell$ ");
         if (!input)
             break;
-        else if (input && *input)
+        else if (input && *input && !is_whitespace(*input))
         {
-            free(shell->rl); // Free previous command string
+            free(shell->rl); 
             shell->rl = ft_strdup(input);
             free(input);
             if (!shell->rl)
                 break;
             add_history(shell->rl);
             ft_lexer(shell);
-            // ft_parsing(shell);
-            // print_parser(&shell->cmds);
+            ft_parsing(shell);
+            print_parser(&shell->cmds);
             // execute(shell->cmds, shell, &shell->env);
             free_tokens(shell->head);
-            // free_parser(shell->cmds);
+            free_parser(shell->cmds);
             shell->head = NULL;
-            // shell->cmds = NULL;
+            shell->cmds = NULL;
         }
     }
 }
