@@ -6,10 +6,9 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/10 16:35:02 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/10 19:46:47 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../include/minishell.h"
 
@@ -70,12 +69,12 @@ int	ft_assign_tokens(t_lexer *head)
 				ft_putstr_fd("syntax error near unexpected token `newline'\n",
 					2);
 				g_exit_status = 2;
-				return -1;
+				return (-1);
 			}
 		}
 		tmp = tmp->next;
 	}
-    return 0;
+	return (0);
 }
 
 int	ft_count_pipe(t_lexer *head)
@@ -187,8 +186,8 @@ void	ft_store_redirections(t_parser *parser, t_lexer *start)
 			if (!redir_node)
 				return ;
 			redir_node->token = tmp->token;
-            if(tmp->next != NULL)
-			    redir_node->word = ft_strdup(tmp->next->word);
+			if (tmp->next != NULL)
+				redir_node->word = ft_strdup(tmp->next->word);
 			redir_node->next = parser->redirections;
 			parser->redirections = redir_node;
 		}
@@ -268,92 +267,95 @@ void	print_parser(t_parser **head)
 	}
 }
 
-
-static int ft_check_error(t_lexer *head)
+static int	ft_check_error(t_lexer *head)
 {
-	t_lexer *tmp;
-	int i;
+	t_lexer	*tmp;
+	int		i;
 
 	i = 0;
 	tmp = head;
 	while (tmp)
 	{
-		if((tmp->word[i] == '>') || (tmp->word[i] == '<'))
+		if ((tmp->word[i] == '>') || (tmp->word[i] == '<'))
 		{
-			if(ft_strcmp(tmp->word, ">") || ft_strcmp(tmp->word, "<") \
-			|| ft_strcmp(tmp->word, ">>") || ft_strcmp(tmp->word, "<<"))
+			if (ft_strcmp(tmp->word, ">") || ft_strcmp(tmp->word, "<")
+				|| ft_strcmp(tmp->word, ">>") || ft_strcmp(tmp->word, "<<"))
 			{
 				ft_putstr_fd("syntax error near unexpected token `newline'\n",
 					2);
 				g_exit_status = 2;
-				return -1;
+				return (-1);
 			}
 		}
 		tmp = tmp->next;
 	}
-	return 0;
+	return (0);
 }
-static void exit_status(char *msg, char *str)
+static void	exit_status(char *msg, char *str)
 {
-    char dst[256];
-    int i;
-	int j;
-	
+	char	dst[256];
+	int		i;
+	int		j;
+
 	j = 0;
 	i = 0;
-    ft_putstr_fd(msg, 2);
-    while (*str && !is_whitespace(*str) && j < 3)
+	ft_putstr_fd(msg, 2);
+	while (*str && !is_whitespace(*str) && j < 3)
 	{
-        dst[i++] = *str++;
-		j++;	
+		dst[i++] = *str++;
+		j++;
 	}
-    dst[i] = '\0';
-    ft_putstr_fd("'", 2);
-    ft_putstr_fd(dst, 2);
-    ft_putstr_fd("'", 2);
-    ft_putstr_fd("\n", 2);
-    g_exit_status = 2;
-    return;
+	dst[i] = '\0';
+	ft_putstr_fd("'", 2);
+	ft_putstr_fd(dst, 2);
+	ft_putstr_fd("'", 2);
+	ft_putstr_fd("\n", 2);
+	g_exit_status = 2;
+	return ;
 }
 
 static void	ft_syntax_err(char *str, int c)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	if(c == 1)
+	if (c == 1)
 	{
-		if(str[i + 1] == '>' && (str[i + 2] == '<' || str[i + 2] == '>'))
-			exit_status("minishell: syntax error near unexpected token ", str + 2);
+		if (str[i + 1] == '>' && (str[i + 2] == '<' || str[i + 2] == '>'))
+			exit_status("minishell: syntax error near unexpected token ", str
+				+ 2);
 		else
-			exit_status("minishell: syntax error near unexpected token ", str + 1);
+			exit_status("minishell: syntax error near unexpected token ", str
+				+ 1);
 	}
 	else
 	{
-		if(str[i + 1] == '<' && (str[i + 2] == '>' || str[i + 2] == '<'))
-			exit_status("minishell: syntax error near unexpected token ", str + 2);
+		if (str[i + 1] == '<' && (str[i + 2] == '>' || str[i + 2] == '<'))
+			exit_status("minishell: syntax error near unexpected token ", str
+				+ 2);
 		else
-			exit_status("minishell: syntax error near unexpected token ", str + 1);
+			exit_status("minishell: syntax error near unexpected token ", str
+				+ 1);
 	}
 }
 
 static int	check_redir(t_lexer *head)
 {
-	t_lexer *tmp;
-	int len;
-	
+	t_lexer	*tmp;
+	int		len;
+
 	tmp = head;
 	while (tmp)
 	{
-		if(tmp->token == ARG)
+		if (tmp->token == ARG)
 		{
 			len = ft_strlen(tmp->word);
-			if((tmp->word[0]) == '>')
+			if ((tmp->word[0]) == '>')
 			{
 				ft_syntax_err(tmp->word, 1);
 				return (1);
 			}
-			if((tmp->word[0]) == '<' && len > 2 && tmp->word[2] != '<')
+			if ((tmp->word[0]) == '<' && len > 2 && tmp->word[2] != '<')
 			{
 				ft_syntax_err(tmp->word, 2);
 				return (1);
@@ -366,12 +368,12 @@ static int	check_redir(t_lexer *head)
 
 void	ft_parsing(t_mini *shell)
 {
-	if(check_redir(shell->head) == 1)
+	if (ft_check_error(shell->head) == -1)
 		return ;
-	if(ft_check_error(shell->head) == -1)
+	if (check_redir(shell->head) == 1)
 		return ;
-	if(ft_assign_tokens(shell->head) == -1)
-        return ;
+	if (ft_assign_tokens(shell->head) == -1)
+		return ;
 	shell->pipes = ft_count_pipe(shell->head);
 	ft_parse_commands(shell);
 	ft_expander(shell);

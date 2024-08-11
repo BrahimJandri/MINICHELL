@@ -39,7 +39,7 @@ char	*rm_quote(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i \
+		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i
 				+ 1] == '\''))
 			i += 2;
 		else
