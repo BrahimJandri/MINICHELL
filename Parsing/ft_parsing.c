@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/11 17:13:00 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/11 17:14:09 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,7 +314,7 @@ static int check_redir(t_lexer *head)
     tmp = head;
     while (tmp)
     {
-        if (tmp->token == ARG && (tmp->word[0] == '>' || tmp->word[0] == '<'))
+        if (tmp->token == ARG && (tmp->word[0] == '>' || tmp->word[0] == '<') && !tmp->next)
         {
 			ft_syntax_err(tmp->word);
 			return 1;
