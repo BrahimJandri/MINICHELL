@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/08 15:11:25 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/12 10:47:07 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,5 @@ void	                ft_lstadd(t_env **lst, t_env *new);
 void                    free_env_node(t_env *node);
 void                    free_env(t_env *head);
 void                    free_arr_dup(char **arr);
-void                    free_path(char **path);
-
+int                     check_redir(t_lexer *head);
 #endif
