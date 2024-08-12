@@ -6,10 +6,9 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/09 10:21:45 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/12 11:18:31 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../include/minishell.h"
 
@@ -70,12 +69,12 @@ int	ft_assign_tokens(t_lexer *head)
 				ft_putstr_fd("syntax error near unexpected token `newline'\n",
 					2);
 				g_exit_status = 2;
-				return -1;
+				return (-1);
 			}
 		}
 		tmp = tmp->next;
 	}
-    return 0;
+	return (0);
 }
 
 int	ft_count_pipe(t_lexer *head)
@@ -187,8 +186,8 @@ void	ft_store_redirections(t_parser *parser, t_lexer *start)
 			if (!redir_node)
 				return ;
 			redir_node->token = tmp->token;
-            if(tmp->next != NULL)
-			    redir_node->word = ft_strdup(tmp->next->word);
+			if (tmp->next != NULL)
+				redir_node->word = ft_strdup(tmp->next->word);
 			redir_node->next = parser->redirections;
 			parser->redirections = redir_node;
 		}
@@ -232,7 +231,6 @@ void	ft_parse_commands(t_mini *shell)
 			tmp = tmp->next;
 	}
 	shell->cmds = parser_list;
-	// ft_expander(shell);
 }
 
 void	print_parser(t_parser **head)
@@ -252,9 +250,7 @@ void	print_parser(t_parser **head)
 			}
 		}
 		else
-		{
 			printf("cmd ==> [NULL]\n");
-		}
 		printf("n_red ==> [%d]\n", tmp->n_redirections);
 		printf("builtins ==> [%d]\n", tmp->builtin);
 		printf("Redirections: \n");
@@ -269,36 +265,13 @@ void	print_parser(t_parser **head)
 	}
 }
 
-
-static int ft_check_error(t_lexer *head)
-{
-	t_lexer *tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		if((tmp->word[0] == '>') || (tmp->word[0] == '<'))
-		{
-			if(ft_strcmp(tmp->word, ">") || ft_strcmp(tmp->word, "<") \
-			|| ft_strcmp(tmp->word, ">>") || ft_strcmp(tmp->word, "<<"))
-			{
-				ft_putstr_fd("syntax error near unexpected token `newline'\n",
-					2);
-				g_exit_status = 2;
-				return -1;
-			}
-		}
-		tmp = tmp->next;
-	}
-	return 0;
-}
-
 void	ft_parsing(t_mini *shell)
 {
-	if(ft_check_error(shell->head) == -1)
+	if (ft_assign_tokens(shell->head) == -1)
 		return ;
-	if(ft_assign_tokens(shell->head) == -1)
-        return ;
+	if (check_redir(shell->head) == 1)
+		return ;
 	shell->pipes = ft_count_pipe(shell->head);
 	ft_parse_commands(shell);
+	ft_expander(shell);
 }
