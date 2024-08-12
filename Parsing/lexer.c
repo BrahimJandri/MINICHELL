@@ -212,4 +212,3 @@ void ft_lexer(t_mini *shell)
     rm_quote(shell->rl);
     split_args(shell);
 }
-
