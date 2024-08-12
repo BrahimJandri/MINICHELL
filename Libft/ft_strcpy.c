@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/12 10:20:53 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/05 15:29:35 by bjandri          ###   ########.fr       */
+/*   Created: 2024/08/06 10:28:43 by bjandri           #+#    #+#             */
+/*   Updated: 2024/08/06 10:29:14 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *str)
+char    *ft_strcpy(char *s1, char *s2)
 {
-	size_t	i;
+    int i;
 
-	i = 0;
-	if(!str)
-		return 0;
-
-	while (str[i])
-		i++;
-	return (i);
+    i = 0;
+    while (s2[i])
+    {
+        s1[i] = s2[i];
+        i++;
+    }
+    s1[i] = s2[i];
+    return (s1);
 }

@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #ifndef RACHID_H
-#define RACHID_H
+# define RACHID_H
 
-#include "minishell.h"
+# include "minishell.h"
 
 #endif

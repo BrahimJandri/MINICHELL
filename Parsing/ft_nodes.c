@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 08:40:00 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/01 08:44:28 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/06 16:53:45 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 void	ft_lstadd_back(t_lexer **lst, t_lexer *new)
 {
-	static int	i;
-	t_lexer		*tmp;
+	t_lexer	*tmp;
 
 	if (!new)
 		return ;
 	if (!*lst)
 	{
 		*lst = new;
-		i = 0;
 		return ;
 	}
 	tmp = *lst;
@@ -30,7 +28,6 @@ void	ft_lstadd_back(t_lexer **lst, t_lexer *new)
 		tmp = tmp->next;
 	tmp->next = new;
 	new->prev = tmp;
-	new->index = ++i;
 }
 
 t_lexer	*ft_new_token(char *content)
@@ -47,35 +44,19 @@ t_lexer	*ft_new_token(char *content)
 	return (new_node);
 }
 
-char	*rm_quote(char *str)
+void	ft_lstadd(t_env **lst, t_env *new)
 {
-	int		i;
-	int		j;
-	char	*dst;
+	t_env	*tmp;
 
-	dst = str;
-	j = 0;
-	i = 0;
-	while (str[i])
+	if (!new)
+		return ;
+	if (!*lst)
 	{
-		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i \
-				+ 1] == '\''))
-			i += 2;
-		else
-			dst[j++] = str[i++];
+		*lst = new;
+		return ;
 	}
-	if (j > 0 && (dst[j - 1] == '"' || dst[j - 1] == '\''))
-		j--;
-	dst[j] = '\0';
-	return (str);
-}
-
-int	check_next(char *first, char next)
-{
-	int	i;
-
-	i = 0;
-	while (first[i] && first[i] != next)
-		i++;
-	return (i);
+	tmp = *lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
 }
