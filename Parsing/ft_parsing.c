@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/12 10:46:25 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/12 11:18:31 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,9 +250,7 @@ void	print_parser(t_parser **head)
 			}
 		}
 		else
-		{
 			printf("cmd ==> [NULL]\n");
-		}
 		printf("n_red ==> [%d]\n", tmp->n_redirections);
 		printf("builtins ==> [%d]\n", tmp->builtin);
 		printf("Redirections: \n");
