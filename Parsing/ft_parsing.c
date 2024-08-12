@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/12 11:18:31 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/12 17:12:09 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,33 @@ int	ft_assign_tokens(t_lexer *head)
 			ft_get_type(tmp);
 			ft_get_builtin(tmp);
 		}
-		else if (tmp->token >= REDIR_OUT && tmp->token <= REDIR_APPEND)
+		else if (tmp->token >= OUTFILE && tmp->token <= APPEND)
 		{
 			if (tmp->next && tmp->next->token == ARG)
-				tmp->next->token = FILE_TARGET;
-			else
 			{
-				ft_putstr_fd("syntax error near unexpected token `newline'\n",
-					2);
-				g_exit_status = 2;
-				return (-1);
+				if(tmp->next->word[0] == '$')
+				{
+					ft_putstr_fd("minishell: ",2);
+					ft_putstr_fd(tmp->next->word, 2);
+					ft_putstr_fd(": ambiguous redirect\n", 2);
+					g_exit_status = 2;
+					return (-1);
+				}
+				else
+					tmp->next->token = FILE_TARGET;
 			}
+		}
+		else if(tmp->token == HEREDOC)
+		{
+			if (tmp->next && tmp->next->token == ARG)
+				tmp->next->token = DELIME;
+		}
+		else
+		{
+			ft_putstr_fd("syntax error near unexpected token `newline'\n",
+				2);
+			g_exit_status = 2;
+			return (-1);
 		}
 		tmp = tmp->next;
 	}
@@ -179,7 +195,7 @@ void	ft_store_redirections(t_parser *parser, t_lexer *start)
 	parser->n_redirections = 0;
 	while (tmp && tmp->token != PIPE)
 	{
-		if (tmp->token >= REDIR_OUT && tmp->token <= REDIR_APPEND)
+		if (tmp->token >= OUTFILE && tmp->token <= APPEND)
 		{
 			parser->n_redirections++;
 			redir_node = (t_lexer *)malloc(sizeof(t_lexer));
