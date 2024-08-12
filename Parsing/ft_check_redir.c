@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:52:45 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/12 10:46:41 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/12 11:38:31 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void ft_syntax_err(char *str)
         	return(exit_status("minishell: syntax error near unexpected token `", str + 1, 1));
 		if(str[0] == str[1] && str[1] == str[2])
         	return(exit_status("minishell: syntax error near unexpected token `", str + 2, 1));
-		if(str[1] == '>' && (str[2] == '>' || str[2] == '<'))
+		if((str[1] == '>' || str[1] == '<' )&& (str[2] == '>' || str[2] == '<'))
         	return(exit_status("minishell: syntax error near unexpected token `", str + 2, 1));
 
 	}
@@ -53,7 +53,7 @@ static void ft_syntax_err(char *str)
         	return(exit_status("minishell: syntax error near unexpected token `", "newline", 2));
 		if((str[0] == str[1] && str[1] == str[2]))
         	return(exit_status("minishell: syntax error near unexpected token `", "newline", 2));
-		if(str[1] == '>' && (str[2] == '<' || str[2] == '>'))
+		if((str[1] == '>' || str[1] == '<') && (str[2] == '<' || str[2] == '>'))
         	return(exit_status("minishell: syntax error near unexpected token `", str + 2, 1));
 	}
 }
@@ -65,12 +65,12 @@ int check_redir(t_lexer *head)
     tmp = head;
     while (tmp)
     {
-        if (tmp->token == ARG && (tmp->word[0] == '>' || tmp->word[0] == '<') && !tmp->next)
+        if (tmp->token == ARG && (tmp->word[0] == '>' || tmp->word[0] == '<'))
         {
 			ft_syntax_err(tmp->word);
-			return 1;
+			return (1);
         }
         tmp = tmp->next;
     }
-    return 0;
+    return (0);
 }
