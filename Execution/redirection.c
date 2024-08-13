@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 08:41:20 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/13 11:23:03 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/13 19:47:28 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int    handle_outfile(t_lexer *redirection, char *file)
 {
-    int fd;
+    int fd = 0;//initialize it just to silence the warning
 
     if(redirection->token == REDIR_APPEND)
         fd = open(file, O_CREAT | O_APPEND | O_RDWR, 0664);
@@ -80,4 +80,9 @@ int    which_redirection(t_lexer *redirection)
     }
     redirection = head;
     return 0;   
+}
+
+void    check_heredoc(t_parser *cmds)
+{
+    
 }
