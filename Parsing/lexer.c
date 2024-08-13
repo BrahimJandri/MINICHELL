@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/13 16:09:32 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/13 17:04:51 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,38 +141,38 @@ int parse_pipe(char *str)
     return (0);
 }
 
-// static void	rm_quote(char *src)
-// {
-// 	int		length;
-// 	char	*dst;
-// 	int		j;
-// 	int		i;
+static void	rm_quote(char *src)
+{
+	int		length;
+	char	*dst;
+	int		j;
+	int		i;
 
-// 	length = ft_strlen(src);
-// 	dst = (char *)malloc(length + 1);
-// 	j = 0;
-// 	i = 0;
-// 	while (i < length)
-// 	{
-// 		if ((i < length - 1 && (src[i] == '"' && src[i + 1] == '"'))
-// 			|| (src[i] == '\'' && src[i + 1] == '\''))
-// 		{
-// 			if ((i == 0 || is_whitespace(src[i - 1])) && (i + 2 == length
-// 					|| is_whitespace(src[i + 2])))
-// 			{
-// 				dst[j++] = src[i++];
-// 				dst[j++] = src[i++];
-// 			}
-// 			else
-// 				i += 2;
-// 		}
-// 		else
-// 			dst[j++] = src[i++];
-// 	}
-// 	dst[j] = '\0';
-// 	ft_strcpy(src, dst);
-// 	free(dst);
-// }
+	length = ft_strlen(src);
+	dst = (char *)malloc(length + 1);
+	j = 0;
+	i = 0;
+	while (i < length)
+	{
+		if ((i < length - 1 && (src[i] == '"' && src[i + 1] == '"'))
+			|| (src[i] == '\'' && src[i + 1] == '\''))
+		{
+			if ((i == 0 || is_whitespace(src[i - 1])) && (i + 2 == length
+					|| is_whitespace(src[i + 2])))
+			{
+				dst[j++] = src[i++];
+				dst[j++] = src[i++];
+			}
+			else
+				i += 2;
+		}
+		else
+			dst[j++] = src[i++];
+	}
+	dst[j] = '\0';
+	ft_strcpy(src, dst);
+	free(dst);
+}
 
 void	exit_status(char *msg, char *str)
 {
@@ -209,6 +209,6 @@ void ft_lexer(t_mini *shell)
         g_exit_status = 2;
         return;
     }
-    // rm_quote(shell->rl);
     split_args(shell);
+    rm_quote(shell->head->word);
 }
