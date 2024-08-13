@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/12 16:19:25 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/13 12:14:54 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	check_quotes(char *str, int indx)
 	return (flag);
 }
 
+
 char	*ft_joinchar(char *str, char c)
 {
 	char	*str2;
@@ -54,22 +55,21 @@ char	*ft_joinchar(char *str, char c)
 
 char	*if_contain_env_var(char *str, t_mini *context)
 {
-	t_env		*ptr;
-	int			len;
-	char		*copy;
+	t_env	*ptr;
 
 	ptr = context->env;
-	len = ft_strlen(str);
-	while (ptr && str[0])
+	while (ptr)
 	{
-		copy = ptr->key;
-		if (copy[len] && !ft_strncmp(copy, str, len)
-			&& copy[len] == '=' && copy[len + 1])
-			return (ft_strdup(copy + len + 1));
+		if (ft_strcmp(ptr->key, str) == 0)
+		{
+			return ft_strdup(ptr->value);
+		}
 		ptr = ptr->next;
 	}
-	return (ft_strdup(""));
+	return ft_strdup("");
 }
+
+
 
 char	*extract_value_checkname(char *val, int	*idx, t_mini *context)
 {
@@ -130,7 +130,6 @@ void	append_char_str(char *val, char **str, int i)
 }
 
 
-// Function to handle expansion of a single variable
 char *expand_single_var(char *var, t_mini *shell)
 {
     if (!var || !*var)
@@ -145,12 +144,12 @@ char *expand_single_var(char *var, t_mini *shell)
     return ft_strdup("");
 }
 
-// Main function to expand variables in a string
 char *expand_var(char *val, t_mini *shell)
 {
 	char	*str;
 	int i = 0;
-	
+	int quote_state;
+
     if (!val || !shell || !shell->env)
 	{
         return ft_strdup(val);
@@ -158,8 +157,9 @@ char *expand_var(char *val, t_mini *shell)
 	str = ft_strdup("");
 	while (val[i])
 	{
+		quote_state = check_quotes(val, i);
 		if (val[i] == '$' && is_val_char(val[i + 1])
-			&& (check_quotes(val, i) == 0 || check_quotes(val, i) == 1))
+			&& (quote_state == 0 || quote_state == 1))
 		{
 			if (val[i + 1] != '$' && !ft_isdigit(val[i + 1]))
 				get_val_concat(val, &i, &str, shell);
@@ -174,17 +174,21 @@ char *expand_var(char *val, t_mini *shell)
 }
 
 
-// Function to expand all variables in a command
 void ft_expander(t_mini *shell)
 {
-    t_parser *tmp = shell->cmds;
+    int i;
+    t_parser *tmp;
 
-    while (tmp) {
-        if (tmp->cmd) {
-            int i = 0;
-            while (tmp->cmd[i]) {
+	tmp = shell->cmds;
+    while (tmp)
+	{
+        if (tmp->cmd)
+		{
+			i = 0;
+            while (tmp->cmd[i])
+			{
                 char *expanded = expand_var(tmp->cmd[i], shell);
-                free(tmp->cmd[i]);  // Free the old string
+                // free(tmp->cmd[i]);
                 tmp->cmd[i] = expanded;
                 i++;
             }
