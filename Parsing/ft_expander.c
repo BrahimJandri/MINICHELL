@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/13 12:14:54 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/13 12:23:21 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ int	is_val_char(int c)
 	return (0);
 }
 
-
 void	append_char_str(char *val, char **str, int i)
 {
 	if (val[i] != '\'' && val[i] != '\"')
@@ -128,7 +127,6 @@ void	append_char_str(char *val, char **str, int i)
 	if (val[i] == '\"' && check_quotes(val, i) == 2)
 		*str = ft_joinchar(*str, val[i]);
 }
-
 
 char *expand_single_var(char *var, t_mini *shell)
 {
@@ -196,4 +194,5 @@ void ft_expander(t_mini *shell)
         tmp = tmp->next;
     }
 }
+
 
