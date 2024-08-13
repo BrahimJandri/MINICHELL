@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/09 10:18:41 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/11 11:10:47 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,57 @@ static void	split_args(t_mini *shell)
 		make_words(shell, params.start, i);
 }
 
-int	parse_pipe(char *str)
+// int	parse_pipe(char *str)
+// {
+// 	int	len;
+// 	int i;
+// 	int	j;
+
+// 	i = 0;
+// 	len = ft_strlen(str);
+// 	if (len == 0)
+// 		return (0);
+// 	if (str[0] == '|' || str[len - 1] == '|')
+// 		return (1);
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '|')
+// 		{
+// 			j = check_next(&str[i + 1], str[i]);
+// 			if (str[i + j + 1] == str[i])
+// 				return (1);
+// 			i += j + 1;
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+int parse_pipe(char *str)
 {
-	int	len;
+    int i;
+    int len;
 
-	len = ft_strlen(str);
-	if (len == 0)
-		return (0);
-	if (str[0] == '|' || str[len - 1] == '|')
-		return (1);
-	return (0);
+	i = 0;
+    len = ft_strlen(str);
+    if(len == 0)
+        return (0);
+    if(str[0] == '|' || str[len - 1] == '|')
+        return (1);
+    while (str[i])
+    {
+        if (str[i] == '|')
+        {
+            i++;
+            while (is_whitespace(str[i]))
+                i++;
+            if (str[i] == '|')
+                return (1);
+        }
+        i++;
+    }
+    return (0);
 }
-
 
 static void	rm_quote(char *src)
 {
@@ -135,28 +174,41 @@ static void	rm_quote(char *src)
 	free(dst);
 }
 
-
-void	ft_lexer(t_mini *shell)
+void	exit_status(char *msg, char *str)
 {
-	char	*tmp;
+	char	dst[256];
+	int		i;
 
-	tmp = ft_strtrim(shell->rl, " \t\n\\");
-	free(shell->rl);
-	shell->rl = tmp;
-	if (parse_pipe(shell->rl))
-	{
-		printf("Syntax error near unexpected token `|'\n");
-		free(shell->rl);
-		g_exit_status = 2;
-		return ;
-	}
-	if (parse_quote(shell->rl))
-	{
-		printf("Syntax Error: parsing quote error\n");
-		free(shell->rl);
-		g_exit_status = 2;
-		return ;
-	}
-	rm_quote(shell->rl);
-	split_args(shell);
+	i = 0;
+	ft_putstr_fd(msg, 2);
+	while (*str && !is_whitespace(*str))
+		dst[i++] = *str++;
+	dst[i] = '\0';
+	ft_putstr_fd(dst, 2);
+	ft_putstr_fd("\n", 2);
+	g_exit_status = 2;
+	return ;
+}
+
+void ft_lexer(t_mini *shell)
+{
+    char *tmp;
+
+    tmp = ft_strtrim(shell->rl, " \t\n\\");
+    free(shell->rl);
+    shell->rl = tmp;
+    if (parse_pipe(shell->rl))
+    {
+        printf("Syntax error near unexpected token `|'\n");
+        g_exit_status = 2;
+        return;
+    }
+    if (parse_quote(shell->rl))
+    {
+        printf("Syntax Error: parsing quote error\n");
+        g_exit_status = 2;
+        return;
+    }
+    rm_quote(shell->rl);
+    split_args(shell);
 }

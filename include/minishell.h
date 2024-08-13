@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/07 12:05:17 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/10 16:06:04 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <sys/wait.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>

@@ -92,5 +92,6 @@ void                    free_env_node(t_env *node);
 void                    free_env(t_env *head);
 void                    free_arr_dup(char **arr);
 void                    free_path(char **path);
+int                     check_redir(t_lexer *head);
 
 #endif

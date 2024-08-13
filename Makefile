@@ -1,13 +1,14 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g #-fsanitize=address
 LDFLAGS = -lreadline
 RM = rm -f
 LIBFT = Libft/libft.a
 
 SRC = minishell.c ./Parsing/lexer.c ./Parsing/ft_nodes.c ./Parsing/ft_lexer_hepler.c \
 	./Parsing/ft_free_func.c ./Parsing/ft_lexer_helper2.c ./Parsing/ft_expander.c \
-	./Parsing/ft_parsing.c
+	./Parsing/ft_parsing.c ./Parsing/ft_check_redir.c \
+	./Execution/ft_execution.c ./Execution/execution_utils.c ./Execution/redirection.c
 
 OBJ = $(SRC:.c=.o)
 
