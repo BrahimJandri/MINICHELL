@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/13 12:23:21 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/13 15:58:58 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ char	*ft_joinchar(char *str, char c)
 		i++;
 	}
 	str2[i++] = c;
-	str2[i] = 0;
+	str2[i] = '\0';
 	free(str);
 	return (str2);
 }
 
-char	*if_contain_env_var(char *str, t_mini *context)
+char	*get_value_env(char *str, t_mini *context)
 {
 	t_env	*ptr;
 
@@ -91,7 +91,7 @@ char	*extract_value_checkname(char *val, int	*idx, t_mini *context)
 		str = ft_joinchar(str, val[i]);
 	i--;
 	*idx = i;
-	ptr = if_contain_env_var(str, context);
+	ptr = get_value_env(str, context);
 	free(str);
 	return (ptr);
 }
@@ -130,13 +130,15 @@ void	append_char_str(char *val, char **str, int i)
 
 char *expand_single_var(char *var, t_mini *shell)
 {
+	char *value;
+	
     if (!var || !*var)
         return ft_strdup("$");
     if (*var == '?')
         return ft_itoa(g_exit_status);
     if (ft_isdigit(*var))
         return ft_strdup("");
-    char *value = if_contain_env_var(var, shell);
+    value = get_value_env(var, shell);
     if (value)
         return ft_strdup(value);
     return ft_strdup("");
@@ -164,6 +166,11 @@ char *expand_var(char *val, t_mini *shell)
 			else
 				i++;
 		}
+		else if(val[i] == '$' && quote_state == 0)
+		{
+			i++;
+			append_char_str(val, &str, i);
+		}
 		else
 			append_char_str(val, &str, i);
 		i++;
@@ -172,9 +179,11 @@ char *expand_var(char *val, t_mini *shell)
 }
 
 
+
 void ft_expander(t_mini *shell)
 {
     int i;
+	char *expanded;
     t_parser *tmp;
 
 	tmp = shell->cmds;
@@ -185,14 +194,16 @@ void ft_expander(t_mini *shell)
 			i = 0;
             while (tmp->cmd[i])
 			{
-                char *expanded = expand_var(tmp->cmd[i], shell);
-                // free(tmp->cmd[i]);
-                tmp->cmd[i] = expanded;
+				if(ft_strchr(tmp->cmd[i], '$'))
+				{
+                	expanded = expand_var(tmp->cmd[i], shell);
+                	// free(tmp->cmd[i]);
+                	tmp->cmd[i] = expanded;
+				}
                 i++;
             }
         }
         tmp = tmp->next;
     }
 }
-
 
