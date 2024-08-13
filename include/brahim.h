@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/12 10:47:07 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/12 17:12:25 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ typedef struct s_env	t_env;
 typedef enum e_tokens
 {
     PIPE,
-    REDIR_OUT,
-    REDIR_IN,
-    REDIR_HEREDOC,
-    REDIR_APPEND,
+    OUTFILE,
+    INFILE,
+    APPEND,
+    HEREDOC,
     ARG,
     FILE_TARGET,
     END_OF_CMD,
+    DELIME,
     BUILTIN
 }		 t_tokens;
 

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/11 15:43:29 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/12 12:31:39 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->cmds = NULL;
 	shell->head = NULL;
 	shell->rl = NULL;
+	shell->flag = 0;
 	shell->pipes = 0;
 }
 
