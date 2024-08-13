@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/07 12:05:17 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/12 12:31:00 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_mini
 	char			**envp;
 	char			**path;
 	char			*rl;
+	int				flag;
 	t_env			*env;
 	t_parser		*cmds;
 	t_lexer			*head;

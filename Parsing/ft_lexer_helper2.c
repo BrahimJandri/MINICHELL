@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:15:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/05 15:11:50 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/12 18:02:29 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ int	type(char *p)
 	if (ft_strcmp(p, "|") == 0)
 		return (PIPE);
 	else if (ft_strcmp(p, ">") == 0)
-		return (REDIR_OUT);
+		return (OUTFILE);
 	else if (ft_strcmp(p, "<") == 0)
-		return (REDIR_IN);
+		return (INFILE);
 	else if (ft_strcmp(p, "<<") == 0)
-		return (REDIR_HEREDOC);
+		return (HEREDOC);
 	else if (ft_strcmp(p, ">>") == 0)
-		return (REDIR_APPEND);
+		return (APPEND);
 	else
 		return (ARG);
 }

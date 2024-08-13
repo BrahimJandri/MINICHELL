@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/12 17:12:09 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/13 10:48:10 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,19 @@ void	ft_get_builtin(t_lexer *tmp)
 	else if (ft_strcmp(tmp->word, "env") == 0)
 		tmp->builtins = ENV;
 }
+void error_newline()
+{
+	ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+	g_exit_status = 2;
+}
+
+void	ambiguous_redirec(t_lexer	*tmp)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(tmp->next->word, 2);
+	ft_putstr_fd(": ambiguous redirect\n", 2);
+	g_exit_status = 2;
+}
 
 int	ft_assign_tokens(t_lexer *head)
 {
@@ -64,34 +77,25 @@ int	ft_assign_tokens(t_lexer *head)
 		{
 			if (tmp->next && tmp->next->token == ARG)
 			{
-				if(tmp->next->word[0] == '$')
-				{
-					ft_putstr_fd("minishell: ",2);
-					ft_putstr_fd(tmp->next->word, 2);
-					ft_putstr_fd(": ambiguous redirect\n", 2);
-					g_exit_status = 2;
-					return (-1);
-				}
-				else
-					tmp->next->token = FILE_TARGET;
+				if (tmp->next->word[0] == '$')
+					return (ambiguous_redirec(tmp), -1);
+				tmp->next->token = FILE_TARGET;
 			}
+			else
+				return (error_newline(),-1);
 		}
-		else if(tmp->token == HEREDOC)
+		else if (tmp->token == HEREDOC)
 		{
 			if (tmp->next && tmp->next->token == ARG)
 				tmp->next->token = DELIME;
-		}
-		else
-		{
-			ft_putstr_fd("syntax error near unexpected token `newline'\n",
-				2);
-			g_exit_status = 2;
-			return (-1);
+			else
+				return (error_newline(), -1);
 		}
 		tmp = tmp->next;
 	}
 	return (0);
 }
+
 
 int	ft_count_pipe(t_lexer *head)
 {
@@ -195,7 +199,7 @@ void	ft_store_redirections(t_parser *parser, t_lexer *start)
 	parser->n_redirections = 0;
 	while (tmp && tmp->token != PIPE)
 	{
-		if (tmp->token >= OUTFILE && tmp->token <= APPEND)
+		if (tmp->token >= OUTFILE && tmp->token <= HEREDOC)
 		{
 			parser->n_redirections++;
 			redir_node = (t_lexer *)malloc(sizeof(t_lexer));
@@ -204,8 +208,8 @@ void	ft_store_redirections(t_parser *parser, t_lexer *start)
 			redir_node->token = tmp->token;
 			if (tmp->next != NULL)
 				redir_node->word = ft_strdup(tmp->next->word);
-			redir_node->next = parser->redirections;
-			parser->redirections = redir_node;
+			redir_node->next = NULL;
+			ft_lstadd((t_env **)&parser->redirections, (t_env *)redir_node);
 		}
 		tmp = tmp->next;
 	}
@@ -289,5 +293,5 @@ void	ft_parsing(t_mini *shell)
 		return ;
 	shell->pipes = ft_count_pipe(shell->head);
 	ft_parse_commands(shell);
-	ft_expander(shell);
+	// ft_expander(shell);
 }
