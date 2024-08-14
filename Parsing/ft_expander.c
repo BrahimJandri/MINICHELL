@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 15:00:34 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/14 18:13:50 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ static char *expand_var(char *val, t_mini *shell)
 	char	*str; 
 	int		i;
 
-	i = -1;
 	str = ft_strdup("");
 	if (!val || !shell || !shell->env)
-		return ft_strdup(val);
+		return (free(str), ft_strdup(val));
+	i = -1;
 	while (val[++i])
 	{
 		if (val[i] == '$' && is_val_char(val[i + 1]) && check_quotes(val, i) <= 1)
@@ -95,28 +95,26 @@ static char *expand_var(char *val, t_mini *shell)
 		else
 			add_to_str(val, &str, i);
 	}
-	return (free(val), str);
+	return (str);
 }
 
 void ft_expander(t_mini *shell)
 {
     int i;
-	char *expanded;
+    char *expanded;
     t_parser *tmp;
 
-	tmp = shell->cmds;
+    tmp = shell->cmds;
     while (tmp)
-	{
+    {
         if (tmp->cmd)
-		{
-			i = 0;
+        {
+            i = 0;
             while (tmp->cmd[i])
-			{
-				if(ft_strchr(tmp->cmd[i], '$'))
-				{
-                	expanded = expand_var(tmp->cmd[i], shell);
-                	tmp->cmd[i] = expanded;
-				}
+            {
+                expanded = expand_var(tmp->cmd[i], shell);
+                free(tmp->cmd[i]);
+                tmp->cmd[i] = expanded;
                 i++;
             }
         }

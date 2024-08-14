@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:26:53 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 14:28:08 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/14 18:10:54 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ char	*ft_joinchar(char *str, char c)
 
 	i = 0;
 	str2 = (char *)malloc(ft_strlen(str) + 2);
+	if(!str2)
+		return NULL;
 	while (str[i])
 	{
 		str2[i] = str[i];

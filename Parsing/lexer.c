@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 14:35:24 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/14 16:33:58 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void ft_lexer(t_mini *shell)
 {
     char *tmp;
 
-    tmp = ft_strtrim(shell->rl, " \t\n\\");
+    tmp = ft_strtrim(shell->rl, " \t\n");
     free(shell->rl);
     shell->rl = tmp;
     if (parse_pipe(shell->rl))
