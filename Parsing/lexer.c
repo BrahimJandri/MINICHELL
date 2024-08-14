@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/13 17:04:51 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/14 14:35:24 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	make_words(t_mini *shell, int start, int end)
 	word = (char *)malloc((end - start + 1) * sizeof(char));
 	if (!word)
 	{
-		printf("Failed to allocate memory for word");
+		ft_putstr_fd("Failed to allocate memory for word", 2);
+		g_exit_status = 2;
 		return ;
 	}
 	while (start < end)
@@ -87,107 +88,6 @@ static void	split_args(t_mini *shell)
 	}
 	if (i > params.start)
 		make_words(shell, params.start, i);
-}
-
-// int	parse_pipe(char *str)
-// {
-// 	int	len;
-// 	int i;
-// 	int	j;
-
-// 	i = 0;
-// 	len = ft_strlen(str);
-// 	if (len == 0)
-// 		return (0);
-// 	if (str[0] == '|' || str[len - 1] == '|')
-// 		return (1);
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '|')
-// 		{
-// 			j = check_next(&str[i + 1], str[i]);
-// 			if (str[i + j + 1] == str[i])
-// 				return (1);
-// 			i += j + 1;
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-int parse_pipe(char *str)
-{
-    int i;
-    int len;
-
-	i = 0;
-    len = ft_strlen(str);
-    if(len == 0)
-        return (0);
-    if(str[0] == '|' || str[len - 1] == '|')
-        return (1);
-    while (str[i])
-    {
-        if (str[i] == '|')
-        {
-            i++;
-            while (is_whitespace(str[i]))
-                i++;
-            if (str[i] == '|')
-                return (1);
-        }
-        i++;
-    }
-    return (0);
-}
-
-static void	rm_quote(char *src)
-{
-	int		length;
-	char	*dst;
-	int		j;
-	int		i;
-
-	length = ft_strlen(src);
-	dst = (char *)malloc(length + 1);
-	j = 0;
-	i = 0;
-	while (i < length)
-	{
-		if ((i < length - 1 && (src[i] == '"' && src[i + 1] == '"'))
-			|| (src[i] == '\'' && src[i + 1] == '\''))
-		{
-			if ((i == 0 || is_whitespace(src[i - 1])) && (i + 2 == length
-					|| is_whitespace(src[i + 2])))
-			{
-				dst[j++] = src[i++];
-				dst[j++] = src[i++];
-			}
-			else
-				i += 2;
-		}
-		else
-			dst[j++] = src[i++];
-	}
-	dst[j] = '\0';
-	ft_strcpy(src, dst);
-	free(dst);
-}
-
-void	exit_status(char *msg, char *str)
-{
-	char	dst[256];
-	int		i;
-
-	i = 0;
-	ft_putstr_fd(msg, 2);
-	while (*str && !is_whitespace(*str))
-		dst[i++] = *str++;
-	dst[i] = '\0';
-	ft_putstr_fd(dst, 2);
-	ft_putstr_fd("\n", 2);
-	g_exit_status = 2;
-	return ;
 }
 
 void ft_lexer(t_mini *shell)

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:15:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/12 18:02:29 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/14 14:35:52 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,84 @@ int	type(char *p)
 		return (ARG);
 }
 
-char	*rm_quote(char *str)
-{
-	int		i;
-	int		j;
-	char	*dst;
+// char	*rm_quote(char *str)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*dst;
 
-	dst = str;
+// 	dst = str;
+// 	j = 0;
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i
+// 				+ 1] == '\''))
+// 			i += 2;
+// 		else
+// 			dst[j++] = str[i++];
+// 	}
+// 	if (j > 0 && (dst[j - 1] == '"' || dst[j - 1] == '\''))
+// 		j--;
+// 	dst[j] = '\0';
+// 	return (str);
+// }
+
+void	rm_quote(char *src)
+{
+	int		length;
+	char	*dst;
+	int		j;
+	int		i;
+
+	length = ft_strlen(src);
+	dst = (char *)malloc(length + 1);
 	j = 0;
 	i = 0;
-	while (str[i])
+	while (i < length)
 	{
-		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i
-				+ 1] == '\''))
-			i += 2;
+		if ((i < length - 1 && (src[i] == '"' && src[i + 1] == '"'))
+			|| (src[i] == '\'' && src[i + 1] == '\''))
+		{
+			if ((i == 0 || is_whitespace(src[i - 1])) && (i + 2 == length
+					|| is_whitespace(src[i + 2])))
+			{
+				dst[j++] = src[i++];
+				dst[j++] = src[i++];
+			}
+			else
+				i += 2;
+		}
 		else
-			dst[j++] = str[i++];
+			dst[j++] = src[i++];
 	}
-	if (j > 0 && (dst[j - 1] == '"' || dst[j - 1] == '\''))
-		j--;
 	dst[j] = '\0';
-	return (str);
+	ft_strcpy(src, dst);
+	free(dst);
+}
+
+int parse_pipe(char *str)
+{
+    int i;
+    int len;
+
+	i = 0;
+    len = ft_strlen(str);
+    if(len == 0)
+        return (0);
+    if(str[0] == '|' || str[len - 1] == '|')
+        return (1);
+    while (str[i])
+    {
+        if (str[i] == '|')
+        {
+            i++;
+            while (is_whitespace(str[i]))
+                i++;
+            if (str[i] == '|')
+                return (1);
+        }
+        i++;
+    }
+    return (0);
 }
