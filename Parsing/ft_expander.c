@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 13:00:56 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 13:07:15 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char	*extract_name(char *val, int *index, t_mini *shell)
 	return (ptr);
 }
 
-static void get_val_concat(char *val, int *i, char **str, t_mini *shell)
+static void get_value(char *val, int *i, char **str, t_mini *shell)
 {
     char *tmp;
     char *new_str;
@@ -65,11 +65,9 @@ static void get_val_concat(char *val, int *i, char **str, t_mini *shell)
     }
     else
         tmp = extract_name(val, i, shell);
-
     new_str = ft_strjoin(*str, tmp);
     free(*str);
     free(tmp);
-
     *str = new_str;
 }
 
@@ -90,7 +88,7 @@ static char	*expand_var(char *val, t_mini *shell)
 				i) <= 1)
 		{
 			if (val[i + 1] != '$' && !ft_isdigit(val[i + 1]))
-				get_val_concat(val, &i, &str, shell);
+				get_value(val, &i, &str, shell);
 			else
 				i++;
 		}

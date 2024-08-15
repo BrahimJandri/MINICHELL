@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 09:56:01 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 13:07:34 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef enum e_tokens
 typedef enum s_builtins
 {
     NONE,
-    ECHO = 1,
+    ECHO,
     CD,
     PWD,
     EXPORT,
