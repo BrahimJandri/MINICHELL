@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
 /*   Updated: 2024/08/14 15:02:40 by bjandri          ###   ########.fr       */
@@ -130,6 +130,7 @@ t_env	*create_env(char **env)
 		i++;
 	}
 	return (head);
+
 }
 
 void	init_mini(t_mini *shell, char **envm)
@@ -178,7 +179,7 @@ void shell_loop(t_mini *shell)
             ft_lexer(shell);
             ft_parsing(shell);
             print_parser(&shell->cmds);
-            // execute(shell->cmds, shell, &shell->env);
+            ft_execution(shell->cmds, shell, shell->envp);
             free_tokens(shell->head);
             free_parser(shell->cmds);
             shell->head = NULL;
@@ -243,4 +244,5 @@ int	main(int ac, char **av, char **envm)
 	free_env(shell.env);
 	free_arr_dup(shell.envp);
 	return (0);
+
 }

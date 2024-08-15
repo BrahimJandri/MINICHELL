@@ -26,6 +26,7 @@ static char	*get_value_env(char *str, t_mini *shell)
 		ptr = ptr->next;
 	}
 	return (ft_strdup(""));
+
 }
 
 static char	*extract_name(char *val, int *index, t_mini *shell)
@@ -102,11 +103,8 @@ static char	*expand_var(char *val, t_mini *shell)
 
 void	ft_expander(t_mini *shell)
 {
-	int			i;
-	char		*expanded;
-	t_parser	*tmp;
-
-	tmp = shell->cmds;
+	t_parser *tmp = shell->cmds;
+  
 	while (tmp)
 	{
 		if (tmp->cmd)
@@ -117,6 +115,7 @@ void	ft_expander(t_mini *shell)
 				expanded = expand_var(tmp->cmd[i], shell);
 				free(tmp->cmd[i]);
 				tmp->cmd[i] = expanded;
+
 				i++;
 			}
 		}
