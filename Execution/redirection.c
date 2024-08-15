@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 08:41:20 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/13 19:47:28 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:00:19 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int    handle_outfile(t_lexer *redirection, char *file)
 {
     int fd = 0;//initialize it just to silence the warning
 
-    if(redirection->token == REDIR_APPEND)
+    if(redirection->token == APPEND)
         fd = open(file, O_CREAT | O_APPEND | O_RDWR, 0664);
-    else if(redirection->token == REDIR_OUT)
+    else if(redirection->token == OUTFILE)
         fd = open(file, O_CREAT | O_TRUNC | O_RDWR , 0664);
     
     if(fd == -1)
@@ -64,12 +64,12 @@ int    which_redirection(t_lexer *redirection)
     head = redirection;
     while(redirection)
     {
-        if(redirection->token == REDIR_APPEND || redirection->token == REDIR_OUT)
+        if(redirection->token == APPEND || redirection->token == OUTFILE)
         {
             if(handle_outfile(redirection, redirection->word))
                 return(1);
         }
-        else if(redirection->token == REDIR_IN)
+        else if(redirection->token == INFILE)
         {
             if(handle_infile(redirection->word))
                 return 1;
@@ -82,7 +82,7 @@ int    which_redirection(t_lexer *redirection)
     return 0;   
 }
 
-void    check_heredoc(t_parser *cmds)
-{
+// void    check_heredoc(t_parser *cmds)
+// {
     
-}
+// }
