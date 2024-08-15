@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 13:07:15 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 17:58:00 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ static char	*expand_var(char *val, t_mini *shell)
 void	ft_expander(t_mini *shell)
 {
 	t_parser *tmp = shell->cmds;
-  
+	char *expanded;
+	int i;
+	
 	while (tmp)
 	{
 		if (tmp->cmd)

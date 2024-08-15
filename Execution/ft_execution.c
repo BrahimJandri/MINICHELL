@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/13 11:25:42 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/15 18:01:22 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void    single_command(t_mini *shell, t_parser *cmds)
 {
     int pid; 
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sign
-    check_heredoc(cmds);
+    // check_heredoc(cmds);
     pid = fork();
     if(pid < 0)
     {
