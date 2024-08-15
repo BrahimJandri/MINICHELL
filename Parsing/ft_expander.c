@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 09:55:16 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 13:00:56 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*extract_name(char *val, int *index, t_mini *shell)
 	int		i;
 
 	str = ft_strdup("");
-	i = *index;
+	i = *index; 
 	if (!check_quotes(val, i + 2) && !ft_isalnum(val[i + 1]) && val[i
 		+ 1] != '?' && val[i + 1] != '_')
 	{
@@ -46,26 +46,31 @@ static char	*extract_name(char *val, int *index, t_mini *shell)
 	}
 	while (val[++i] && (ft_isalnum(val[i]) || val[i] == '_'))
 		str = ft_append_char(str, val[i]);
-	i--;
-	*index = i;
+	i--;  
+	*index = i;  
 	ptr = get_value_env(str, shell);
 	free(str);
 	return (ptr);
 }
 
-static void	get_val_concat(char *val, int *i, char **str, t_mini *shell)
+static void get_val_concat(char *val, int *i, char **str, t_mini *shell)
 {
-	char	*tmp;
+    char *tmp;
+    char *new_str;
 
-	if (val[*i + 1] == '?')
-	{
-		(*i)++;
-		tmp = ft_itoa(g_exit_status);
-	}
-	else
-		tmp = extract_name(val, i, shell);
-	*str = ft_strjoin(*str, tmp);
-	free(tmp);
+    if (val[*i + 1] == '?')
+    {
+        (*i)++;
+        tmp = ft_itoa(g_exit_status);
+    }
+    else
+        tmp = extract_name(val, i, shell);
+
+    new_str = ft_strjoin(*str, tmp);
+    free(*str);
+    free(tmp);
+
+    *str = new_str;
 }
 
 static char	*expand_var(char *val, t_mini *shell)
@@ -73,9 +78,11 @@ static char	*expand_var(char *val, t_mini *shell)
 	char	*str;
 	int		i;
 
-	str = ft_strdup("");
 	if (!val || !shell || !shell->env)
-		return (free(str), ft_strdup(val));
+		return (ft_strdup(val));
+	str = ft_strdup("");
+	if(!str)
+		return NULL;
 	i = -1;
 	while (val[++i])
 	{
