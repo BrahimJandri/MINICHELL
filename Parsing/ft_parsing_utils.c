@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:39:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 15:09:11 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 17:12:40 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static void	ambiguous_redirec(t_lexer *tmp)
 	ft_putstr_fd(": ambiguous redirect\n", 2);
 	g_exit_status = 1;
 }
+
+
 
 int	ft_assign_tokens(t_lexer *head)
 {
