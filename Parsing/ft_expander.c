@@ -6,86 +6,105 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/10 16:37:04 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 13:07:15 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	remove_quotes(char *str)
+static char	*get_value_env(char *str, t_mini *shell)
 {
-	char	*src;
-	char	*dst;
-	int		in_single_quotes;
-	int		in_double_quotes;
+	t_env	*ptr;
 
-	in_single_quotes = 0;
-	in_double_quotes = 0;
-	src = str;
-	dst = str;
-	while (*src)
+	ptr = shell->env;
+	while (ptr)
 	{
-		if (*src == '"' && !in_single_quotes)
+		if (ft_strcmp(ptr->key, str) == 0)
 		{
-			in_double_quotes = !in_double_quotes;
-			src++;
+			return (ft_strdup(ptr->value));
 		}
-		else if (*src == '\'' && !in_double_quotes)
+		ptr = ptr->next;
+	}
+	return (ft_strdup(""));
+
+}
+
+static char	*extract_name(char *val, int *index, t_mini *shell)
+{
+	char	*ptr;
+	char	*str;
+	int		i;
+
+	str = ft_strdup("");
+	i = *index; 
+	if (!check_quotes(val, i + 2) && !ft_isalnum(val[i + 1]) && val[i
+		+ 1] != '?' && val[i + 1] != '_')
+	{
+		while (val[i] && val[i] != '$')
+			str = ft_append_char(str, val[i++]);
+		if (val[i] == '$')
+			str = ft_append_char(str, val[i++]);
+	}
+	while (val[++i] && (ft_isalnum(val[i]) || val[i] == '_'))
+		str = ft_append_char(str, val[i]);
+	i--;  
+	*index = i;  
+	ptr = get_value_env(str, shell);
+	free(str);
+	return (ptr);
+}
+
+static void get_value(char *val, int *i, char **str, t_mini *shell)
+{
+    char *tmp;
+    char *new_str;
+
+    if (val[*i + 1] == '?')
+    {
+        (*i)++;
+        tmp = ft_itoa(g_exit_status);
+    }
+    else
+        tmp = extract_name(val, i, shell);
+    new_str = ft_strjoin(*str, tmp);
+    free(*str);
+    free(tmp);
+    *str = new_str;
+}
+
+static char	*expand_var(char *val, t_mini *shell)
+{
+	char	*str;
+	int		i;
+
+	if (!val || !shell || !shell->env)
+		return (ft_strdup(val));
+	str = ft_strdup("");
+	if(!str)
+		return NULL;
+	i = -1;
+	while (val[++i])
+	{
+		if (val[i] == '$' && is_val_char(val[i + 1]) && check_quotes(val,
+				i) <= 1)
 		{
-			in_single_quotes = !in_single_quotes;
-			src++;
+			if (val[i + 1] != '$' && !ft_isdigit(val[i + 1]))
+				get_value(val, &i, &str, shell);
+			else
+				i++;
 		}
-		else if (!in_single_quotes && !in_double_quotes && (*src == '"'
-				|| *src == '\''))
-			src++;
+		else if (val[i] == '$' && !check_quotes(val, i))
+			add_to_str(val, &str, ++i);
 		else
-			*dst++ = *src++;
+			add_to_str(val, &str, i);
 	}
-	*dst = '\0';
+	return (str);
 }
 
-static int	is_quoted(char *str)
+void	ft_expander(t_mini *shell)
 {
-	int	i;
-
-	i = 0;
-	if (str[i] == '"' || str[i] == '\'')
-		return (1);
-	else
-		return (0);
-}
-
-char	*getenv_value(t_env *env, const char *key)
-{
-	while (env)
-	{
-		if (ft_strcmp(env->key, key) == 0)
-			return (env->value);
-		env = env->next;
-	}
-	return ("\n");
-}
-void	expand_extand(char *str, t_mini *shell)
-{
-	char	*res;
-	t_env	*tmp;
-
-	tmp = shell->env;
-	if (is_quoted(str))
-		remove_quotes(str);
-	printf("STR : %s\n", str);
-	str++;
-	res = getenv_value(tmp, str);
-	printf("RES : %s\n", res);
-}
-
-void	expander_parse(t_parser *head, t_mini *shell)
-{
-	t_parser	*tmp;
-	int			i;
-
-	(void)shell;
-	tmp = head;
+	t_parser *tmp = shell->cmds;
+  
 	while (tmp)
 	{
 		if (tmp->cmd)
@@ -93,28 +112,10 @@ void	expander_parse(t_parser *head, t_mini *shell)
 			i = 0;
 			while (tmp->cmd[i])
 			{
-				expand_extand(tmp->cmd[i], shell);
-				i++;
-			}
-		}
-		tmp = tmp->next;
-	}
-	// if (is_quoted(*(head->cmd)))
-	// remove_quotes(*(head->cmd));
-}
+				expanded = expand_var(tmp->cmd[i], shell);
+				free(tmp->cmd[i]);
+				tmp->cmd[i] = expanded;
 
-void	ft_expander(t_mini *shell)
-{
-	t_parser *tmp = shell->cmds;
-	int i = 0;
-	while (tmp)
-	{
-		if (tmp->cmd)
-		{
-			while (tmp->cmd[i])
-			{
-				if (ft_strchr(tmp->cmd[i], '$'))
-					expander_parse(tmp, shell);
 				i++;
 			}
 		}

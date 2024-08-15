@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/10 16:06:04 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/14 16:08:59 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <sys/wait.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -40,6 +39,7 @@ typedef struct s_mini
 	char			**envp;
 	char			**path;
 	char			*rl;
+	int				flag;
 	t_env			*env;
 	t_parser		*cmds;
 	t_lexer			*head;
