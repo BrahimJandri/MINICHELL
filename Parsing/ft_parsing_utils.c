@@ -28,7 +28,7 @@ void	ft_get_type(t_lexer *tmp)
 		tmp->token = BUILTIN;
 	else if (ft_strcmp(tmp->word, "env") == 0)
 		tmp->token = BUILTIN;
-    ft_get_builtin(tmp);
+	ft_get_builtin(tmp);
 }
 
 void	ft_get_builtin(t_lexer *tmp)
@@ -49,13 +49,13 @@ void	ft_get_builtin(t_lexer *tmp)
 		tmp->builtins = ENV;
 }
 
-static void error_newline()
+static void	error_newline(void)
 {
 	ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 	g_exit_status = 2;
 }
 
-static void	ambiguous_redirec(t_lexer	*tmp)
+static void	ambiguous_redirec(t_lexer *tmp)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(tmp->next->word, 2);
@@ -81,7 +81,7 @@ int	ft_assign_tokens(t_lexer *head)
 				tmp->next->token = FILE_TARGET;
 			}
 			else
-				return (error_newline(),-1);
+				return (error_newline(), -1);
 		}
 		else if (tmp->token == HEREDOC)
 		{

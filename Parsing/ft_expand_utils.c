@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:26:53 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 18:10:54 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 09:57:00 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	check_quotes(char *str, int indx)
 {
-	int		i;
-	int		flag;
+	int	i;
+	int	flag;
 
 	i = 0;
 	flag = 0;
@@ -26,7 +26,7 @@ int	check_quotes(char *str, int indx)
 		else if (flag == 1 && str[i] == '\"')
 			flag = 0;
 		else if (flag == 0 && str[i] == '\'')
-			flag = 2;		
+			flag = 2;
 		else if (flag == 2 && str[i] == '\'')
 			flag = 0;
 		i++;
@@ -34,15 +34,15 @@ int	check_quotes(char *str, int indx)
 	return (flag);
 }
 
-char	*ft_joinchar(char *str, char c)
+char	*ft_append_char(char *str, char c)
 {
 	char	*str2;
 	int		i;
 
 	i = 0;
 	str2 = (char *)malloc(ft_strlen(str) + 2);
-	if(!str2)
-		return NULL;
+	if (!str2)
+		return (NULL);
 	while (str[i])
 	{
 		str2[i] = str[i];
@@ -64,9 +64,9 @@ int	is_val_char(int c)
 void	add_to_str(char *val, char **str, int i)
 {
 	if (val[i] != '\'' && val[i] != '\"')
-		*str = ft_joinchar(*str, val[i]);
+		*str = ft_append_char(*str, val[i]);
 	if (val[i] == '\'' && check_quotes(val, i) == 1)
-		*str = ft_joinchar(*str, val[i]);
+		*str = ft_append_char(*str, val[i]);
 	if (val[i] == '\"' && check_quotes(val, i) == 2)
-		*str = ft_joinchar(*str, val[i]);
+		*str = ft_append_char(*str, val[i]);
 }

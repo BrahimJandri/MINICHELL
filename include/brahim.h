@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 15:17:46 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 09:56:01 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	    ft_lstadd(t_env **lst, t_env *new);
 void        ft_expander(t_mini *shell);
 void	    add_to_str(char *val, char **str, int i);
 int	        is_val_char(int c);
-char	    *ft_joinchar(char *str, char c);
+char	    *ft_append_char(char *str, char c);
 int	        check_quotes(char *str, int indx);
 
 /* minishell */

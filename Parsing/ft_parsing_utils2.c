@@ -76,4 +76,3 @@ void	ft_add_parser_node(t_parser **head, t_parser *new_node)
 		new_node->prev = tmp;
 	}
 }
-

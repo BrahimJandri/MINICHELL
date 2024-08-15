@@ -84,28 +84,28 @@ void	rm_quote(char *src)
 	free(dst);
 }
 
-int parse_pipe(char *str)
+int	parse_pipe(char *str)
 {
-    int i;
-    int len;
+	int	i;
+	int	len;
 
 	i = 0;
-    len = ft_strlen(str);
-    if(len == 0)
-        return (0);
-    if(str[0] == '|' || str[len - 1] == '|')
-        return (1);
-    while (str[i])
-    {
-        if (str[i] == '|')
-        {
-            i++;
-            while (is_whitespace(str[i]))
-                i++;
-            if (str[i] == '|')
-                return (1);
-        }
-        i++;
-    }
-    return (0);
+	len = ft_strlen(str);
+	if (len == 0)
+		return (0);
+	if (str[0] == '|' || str[len - 1] == '|')
+		return (1);
+	while (str[i])
+	{
+		if (str[i] == '|')
+		{
+			i++;
+			while (is_whitespace(str[i]))
+				i++;
+			if (str[i] == '|')
+				return (1);
+		}
+		i++;
+	}
+	return (0);
 }

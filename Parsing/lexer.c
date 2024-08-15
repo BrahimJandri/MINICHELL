@@ -90,25 +90,25 @@ static void	split_args(t_mini *shell)
 		make_words(shell, params.start, i);
 }
 
-void ft_lexer(t_mini *shell)
+void	ft_lexer(t_mini *shell)
 {
-    char *tmp;
+	char	*tmp;
 
-    tmp = ft_strtrim(shell->rl, " \t\n");
-    free(shell->rl);
-    shell->rl = tmp;
-    if (parse_pipe(shell->rl))
-    {
-        printf("Syntax error near unexpected token `|'\n");
-        g_exit_status = 2;
-        return;
-    }
-    if (parse_quote(shell->rl))
-    {
-        printf("Syntax Error: parsing quote error\n");
-        g_exit_status = 2;
-        return;
-    }
-    split_args(shell);
-    rm_quote(shell->head->word);
+	tmp = ft_strtrim(shell->rl, " \t\n");
+	free(shell->rl);
+	shell->rl = tmp;
+	if (parse_pipe(shell->rl))
+	{
+		printf("Syntax error near unexpected token `|'\n");
+		g_exit_status = 2;
+		return ;
+	}
+	if (parse_quote(shell->rl))
+	{
+		printf("Syntax Error: parsing quote error\n");
+		g_exit_status = 2;
+		return ;
+	}
+	split_args(shell);
+	rm_quote(shell->head->word);
 }
