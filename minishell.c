@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/12 12:31:39 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/14 15:02:40 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,6 @@ void shell_loop(t_mini *shell)
         }
     }
 }
-
 
 
 void	handle_sigint(int sig)
