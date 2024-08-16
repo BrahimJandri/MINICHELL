@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 17:58:00 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 18:25:31 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,23 +103,16 @@ static char	*expand_var(char *val, t_mini *shell)
 
 void	ft_expander(t_mini *shell)
 {
-	t_parser *tmp = shell->cmds;
+	t_lexer *tmp = shell->head;
 	char *expanded;
-	int i;
 	
 	while (tmp)
 	{
-		if (tmp->cmd)
+		if (tmp->token == ARG || tmp->token == FILE_TARGET)
 		{
-			i = 0;
-			while (tmp->cmd[i])
-			{
-				expanded = expand_var(tmp->cmd[i], shell);
-				free(tmp->cmd[i]);
-				tmp->cmd[i] = expanded;
-
-				i++;
-			}
+			expanded = expand_var(tmp->word, shell);
+			free(tmp->word);
+			tmp->word = expanded;
 		}
 		tmp = tmp->next;
 	}

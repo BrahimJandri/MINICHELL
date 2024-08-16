@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:49:05 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 14:49:42 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 18:07:13 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@ void	print_parser(t_parser **head)
 				redir_tmp->token, redir_tmp->word);
 			redir_tmp = redir_tmp->next;
 		}
+		tmp = tmp->next;
+	}
+}
+
+
+void 	print_lexer(t_lexer **head)
+{
+	t_lexer	*tmp;
+
+	tmp = *head;
+	while (tmp)
+	{
+		printf("word ==> [%s], token ==> [%d]\n", tmp->word, tmp->token);
 		tmp = tmp->next;
 	}
 }

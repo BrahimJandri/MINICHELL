@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 15:02:40 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 18:32:02 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,9 +177,10 @@ void shell_loop(t_mini *shell)
                 break;
             add_history(shell->rl);
             ft_lexer(shell);
+			ft_expander(shell);
             ft_parsing(shell);
             print_parser(&shell->cmds);
-            ft_execution(shell->cmds, shell, shell->envp);
+            // ft_execution(shell->cmds, shell, shell->envp);
             free_tokens(shell->head);
             free_parser(shell->cmds);
             shell->head = NULL;
