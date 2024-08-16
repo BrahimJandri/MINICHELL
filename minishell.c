@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 15:02:40 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/16 10:20:14 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,14 @@ void	init_mini(t_mini *shell, char **envm)
 	int	i;
 
 	i = 0;
+	// printf("----------------------------------------");
+	// for(int y = 0; envm[y] != NULL; y++)
+	// 	printf("%s\n", envm[y]);
+	// printf("----------------------------------------");
+
 	while (envm[i])
 	{
-		if (ft_strcmp("PATH=", envm[i]) == 0)
+		if (ft_strncmp("PATH=", envm[i], 5) == 0)
 		{
 			shell->path = ft_split(envm[i] + 5, ':');
 			break ;
@@ -178,7 +183,7 @@ void shell_loop(t_mini *shell)
             add_history(shell->rl);
             ft_lexer(shell);
             ft_parsing(shell);
-            print_parser(&shell->cmds);
+            // print_parser(&shell->cmds);
             ft_execution(shell->cmds, shell, shell->envp);
             free_tokens(shell->head);
             free_parser(shell->cmds);
@@ -230,6 +235,19 @@ void	free_arr_dup(char **arr)
 	}
 }
 
+void	free_path(char **path)
+{
+	int i;
+
+	i = 0;
+	while(path[i])
+	{
+		free(path[i]);
+		i++;
+	}
+	free(path);
+	return ;
+}
 int	main(int ac, char **av, char **envm)
 {
 	t_mini	shell;
@@ -243,6 +261,7 @@ int	main(int ac, char **av, char **envm)
 	free(shell.rl);
 	free_env(shell.env);
 	free_arr_dup(shell.envp);
+	free_path(shell.path);
 	return (0);
 
 }

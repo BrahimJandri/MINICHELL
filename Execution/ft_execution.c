@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/15 18:01:22 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/16 10:28:13 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,16 @@ void    handle_cmd(t_mini *shell, t_parser *cmds)
         exec_cmd(shell, shell->envp, shell->cmds);
     
 }
+void    check_heredoc(t_parser *cmd)
+{
+    
+}
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
     int pid; 
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sign
-    // check_heredoc(cmds);
+    check_heredoc(cmds);
     pid = fork();
     if(pid < 0)
     {
