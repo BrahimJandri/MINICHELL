@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 18:31:09 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 10:34:18 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ static void	ft_parse_commands(t_mini *shell)
 
 void	ft_parsing(t_mini *shell)
 {
+	if (shell->syntax_error)
+		return ;
 	if (check_redir(shell->head) == 1)
 		return ;
 	shell->pipes = ft_count_pipe(shell->head);

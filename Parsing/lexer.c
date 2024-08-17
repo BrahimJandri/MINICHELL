@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 18:49:02 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 10:35:59 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ static void	split_args(t_mini *shell)
 	params.start = 0;
 	params.end = 0;
 	params.inside = 0;
+	if(shell->syntax_error)
+		return ;
 	i = 0;
 	while (shell->rl[i])
 	{
@@ -90,10 +92,22 @@ static void	split_args(t_mini *shell)
 		make_words(shell, params.start, i);
 }
 
+int is_empty(char *str)
+{
+	int i = -1;
+	while(str && str[++i] && is_whitespace(str[i]))
+		;
+	if (str[i])
+		return 0;
+	return 1;
+}
+
 void	ft_lexer(t_mini *shell)
 {
 	char	*tmp;
 
+	if(is_empty(shell->rl))
+		return ;
 	tmp = ft_strtrim(shell->rl, " \t\n");
 	free(shell->rl);
 	shell->rl = tmp;
@@ -101,16 +115,18 @@ void	ft_lexer(t_mini *shell)
 	{
 		printf("Syntax error near unexpected token `|'\n");
 		g_exit_status = 2;
+		shell->syntax_error = 1;
 		return ;
 	}
 	if (parse_quote(shell->rl))
 	{
 		printf("Syntax Error: parsing quote error\n");
 		g_exit_status = 2;
+		shell->syntax_error = 1;
 		return ;
 	}
 	split_args(shell);
-	rm_quote(shell->head->word);
+	rm_quote(shell);
 	if (ft_assign_tokens(shell->head) == -1)
 		return ;
 }

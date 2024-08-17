@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:15:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 14:35:52 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 10:38:20 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,36 +51,38 @@ int	type(char *p)
 // 	return (str);
 // }
 
-void	rm_quote(char *src)
+void	rm_quote(t_mini *shell)
 {
 	int		length;
 	char	*dst;
 	int		j;
 	int		i;
 
-	length = ft_strlen(src);
+	if(shell->head->word == NULL || shell->syntax_error)
+		return ;
+	length = ft_strlen(shell->head->word);
 	dst = (char *)malloc(length + 1);
 	j = 0;
 	i = 0;
 	while (i < length)
 	{
-		if ((i < length - 1 && (src[i] == '"' && src[i + 1] == '"'))
-			|| (src[i] == '\'' && src[i + 1] == '\''))
+		if ((i < length - 1 && (shell->head->word[i] == '"' && shell->head->word[i + 1] == '"'))
+			|| (shell->head->word[i] == '\'' && shell->head->word[i + 1] == '\''))
 		{
-			if ((i == 0 || is_whitespace(src[i - 1])) && (i + 2 == length
-					|| is_whitespace(src[i + 2])))
+			if ((i == 0 || is_whitespace(shell->head->word[i - 1])) && (i + 2 == length
+					|| is_whitespace(shell->head->word[i + 2])))
 			{
-				dst[j++] = src[i++];
-				dst[j++] = src[i++];
+				dst[j++] = shell->head->word[i++];
+				dst[j++] = shell->head->word[i++];
 			}
 			else
 				i += 2;
 		}
 		else
-			dst[j++] = src[i++];
+			dst[j++] = shell->head->word[i++];
 	}
 	dst[j] = '\0';
-	ft_strcpy(src, dst);
+	ft_strcpy(shell->head->word, dst);
 	free(dst);
 }
 

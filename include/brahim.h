@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 18:08:04 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 10:38:06 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_split_params
 
 typedef struct s_lexer
 {
+    int                 quoted;
 	char				*word;
 	t_tokens			token;
 	t_builtins			builtins;
@@ -78,7 +79,7 @@ void 	    print_lexer(t_lexer **head);
 void        ft_lexer(t_mini *shell);
 int         parse_pipe(char *str);
 int	        parse_quote(char *rl);
-void	    rm_quote(char *src);
+void	    rm_quote(t_mini *shell);
 int	        count_redirec(char *p, int index);
 int	        is_redirec(char c);
 int	        is_whitespace(char c);

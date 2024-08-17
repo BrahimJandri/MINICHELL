@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 18:32:02 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 10:34:57 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->cmds = NULL;
 	shell->head = NULL;
 	shell->rl = NULL;
-	shell->flag = 0;
+	shell->syntax_error = 0;
 	shell->pipes = 0;
 }
 
@@ -168,7 +168,7 @@ void shell_loop(t_mini *shell)
 			printf("exit\n");
             break;
 		}
-        else if (input && *input && !is_whitespace(*input))
+        else if (input && *input)
         {
             free(shell->rl); 
             shell->rl = ft_strdup(input);
@@ -193,7 +193,8 @@ void shell_loop(t_mini *shell)
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	write(STDOUT_FILENO, "\nMiniShell>", 12);
+	rl_replace_line("", 0);
+	write(STDOUT_FILENO, "\nMiniShell$ ", 13);
 }
 
 void	free_env_node(t_env *node)

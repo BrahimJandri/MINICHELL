@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 18:25:31 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 10:34:01 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ void	ft_expander(t_mini *shell)
 	t_lexer *tmp = shell->head;
 	char *expanded;
 	
+	if(shell->syntax_error)
+		return ;
 	while (tmp)
 	{
 		if (tmp->token == ARG || tmp->token == FILE_TARGET)
