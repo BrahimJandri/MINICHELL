@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 16:34:47 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/16 10:20:14 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,11 @@ void	init_mini(t_mini *shell, char **envm)
 	int	i;
 
 	i = 0;
+	// printf("----------------------------------------");
+	// for(int y = 0; envm[y] != NULL; y++)
+	// 	printf("%s\n", envm[y]);
+	// printf("----------------------------------------");
+
 	while (envm[i])
 	{
 		if (ft_strncmp("PATH=", envm[i], 5) == 0)
@@ -191,7 +196,6 @@ void	free_path(char **path)
 	free(path);
 	return ;
 }
-
 int	main(int ac, char **av, char **envm)
 {
 	t_mini	shell;
@@ -206,6 +210,7 @@ int	main(int ac, char **av, char **envm)
 	free_env(shell.env);
 	free_path(shell.path);
 	free_arr_dup(shell.envp);
+	free_path(shell.path);
 	return (0);
 
 }

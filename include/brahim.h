@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   brahim.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
 /*   Updated: 2024/08/17 13:04:00 by bjandri          ###   ########.fr       */
@@ -60,7 +60,7 @@ typedef struct s_lexer
 }						t_lexer;
 
 typedef struct s_parser
-{
+{   
 	char				**cmd;
 	int					n_redirections;
 	t_lexer				*redirections;
