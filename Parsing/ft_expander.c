@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 17:58:00 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 16:08:13 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,26 +101,76 @@ static char	*expand_var(char *val, t_mini *shell)
 	return (str);
 }
 
+int	is_whitespace_in_string(char *str)
+{
+	while (*str)
+	{
+		if (*str == ' ' || *str == '\t' || *str == '\n' || *str == '\v' || *str == '\f' || *str == '\r')
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
+
+int has_double_quotes(const char *str)
+{
+    if (str == NULL)
+		return 0;
+
+    while (*str)
+	{
+        if (*str == '\"')
+            return 1;
+        str++;
+    }
+    return 0;
+}
+
+
+
 void	ft_expander(t_mini *shell)
 {
-	t_parser *tmp = shell->cmds;
+	t_lexer *tmp = shell->head;
+	t_lexer *new_node;
+	t_lexer *next_node;
 	char *expanded;
+	char **split_words;
 	int i;
-	
+
 	while (tmp)
 	{
-		if (tmp->cmd)
+		next_node = tmp->next;
+		if (tmp->token == FILE_TARGET || tmp->token == ARG)
 		{
-			i = 0;
-			while (tmp->cmd[i])
+			int has_quotes = has_double_quotes(tmp->word);
+			expanded = expand_var(tmp->word, shell);
+			free(tmp->word);
+			tmp->word = expanded;
+			if (tmp->token == ARG && has_quotes == 0 && is_whitespace_in_string(expanded))
 			{
-				expanded = expand_var(tmp->cmd[i], shell);
-				free(tmp->cmd[i]);
-				tmp->cmd[i] = expanded;
-
-				i++;
+				split_words = ft_split(expanded, ' ');
+				free(expanded);
+				tmp->word = split_words[0];
+				i = 1;
+				while (split_words[i])
+				{
+					new_node = ft_new_token_expand(split_words[i], ARG);
+					ft_lstadd_back(&tmp, new_node);
+					i++;
+				}
+				free(split_words);
 			}
 		}
-		tmp = tmp->next;
+		tmp = next_node;
 	}
 }
+
+
+
+
+
+
+
+
+

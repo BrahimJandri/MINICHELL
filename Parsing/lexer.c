@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 16:33:58 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 16:09:30 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ void	ft_lexer(t_mini *shell)
 {
 	char	*tmp;
 
+	if(is_empty(shell->rl))
+		return ;
 	tmp = ft_strtrim(shell->rl, " \t\n");
 	free(shell->rl);
 	shell->rl = tmp;
@@ -101,14 +103,18 @@ void	ft_lexer(t_mini *shell)
 	{
 		printf("Syntax error near unexpected token `|'\n");
 		g_exit_status = 2;
+		shell->syntax_error = 1;
 		return ;
 	}
 	if (parse_quote(shell->rl))
 	{
 		printf("Syntax Error: parsing quote error\n");
 		g_exit_status = 2;
+		shell->syntax_error = 1;
 		return ;
 	}
 	split_args(shell);
-	rm_quote(shell->head->word);
+	// rm_quote(shell);
+	if (ft_assign_tokens(shell->head) == -1)
+		return ;
 }

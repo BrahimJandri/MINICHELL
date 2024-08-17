@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 15:02:40 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 16:34:47 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,32 +57,6 @@ char	*ft_strnlen(const char *str, char delimiter)
 	return (result);
 }
 
-t_env	*ft_new_env(const char *key, const char *value)
-{
-	t_env	*new_node;
-
-	new_node = malloc(sizeof(t_env));
-	if (!new_node)
-		return (NULL);
-	new_node->key = ft_strdup(key);
-	if (!new_node->key)
-	{
-		free(new_node);
-		return (NULL);
-	}
-	if (value)
-		new_node->value = ft_strdup(value);
-	else
-		new_node->value = NULL;
-	if (value && !new_node->value)
-	{
-		free(new_node->key);
-		free(new_node);
-		return (NULL);
-	}
-	new_node->next = NULL;
-	return (new_node);
-}
 
 void	free_return(t_env *head, char *file, int c)
 {
@@ -104,34 +78,6 @@ void	free_return(t_env *head, char *file, int c)
 	}
 }
 
-t_env	*create_env(char **env)
-{
-	t_env	*head;
-	int		i;
-	t_env	*new_node;
-
-	head = NULL;
-	char *key, *value;
-	i = 0;
-	while (env[i])
-	{
-		key = ft_strnlen(env[i], '=');
-		if (!key)
-			free_return(head, NULL, 3);
-		value = ft_strdup(env[i] + ft_strlen(key) + 1);
-		if (!value)
-			free_return(head, key, 1);
-		new_node = ft_new_env(key, value);
-		free(key);
-		free(value);
-		if (!new_node)
-			free_return(head, NULL, 3);
-		ft_lstadd(&head, new_node);
-		i++;
-	}
-	return (head);
-
-}
 
 void	init_mini(t_mini *shell, char **envm)
 {
@@ -140,7 +86,7 @@ void	init_mini(t_mini *shell, char **envm)
 	i = 0;
 	while (envm[i])
 	{
-		if (ft_strcmp("PATH=", envm[i]) == 0)
+		if (ft_strncmp("PATH=", envm[i], 5) == 0)
 		{
 			shell->path = ft_split(envm[i] + 5, ':');
 			break ;
@@ -152,7 +98,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->cmds = NULL;
 	shell->head = NULL;
 	shell->rl = NULL;
-	shell->flag = 0;
+	shell->syntax_error = 0;
 	shell->pipes = 0;
 }
 
@@ -168,7 +114,7 @@ void shell_loop(t_mini *shell)
 			printf("exit\n");
             break;
 		}
-        else if (input && *input && !is_whitespace(*input))
+        else if (input && *input)
         {
             free(shell->rl); 
             shell->rl = ft_strdup(input);
@@ -177,8 +123,9 @@ void shell_loop(t_mini *shell)
                 break;
             add_history(shell->rl);
             ft_lexer(shell);
+			ft_expander(shell);
             ft_parsing(shell);
-            print_parser(&shell->cmds);
+            // print_parser(&shell->cmds);
             ft_execution(shell->cmds, shell, shell->envp);
             free_tokens(shell->head);
             free_parser(shell->cmds);
@@ -192,7 +139,8 @@ void shell_loop(t_mini *shell)
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	write(STDOUT_FILENO, "\nMiniShell>", 12);
+	rl_replace_line("", 0);
+	write(STDOUT_FILENO, "\nMiniShell$ ", 13);
 }
 
 void	free_env_node(t_env *node)
@@ -230,6 +178,20 @@ void	free_arr_dup(char **arr)
 	}
 }
 
+void	free_path(char **path)
+{
+	int i;
+
+	i = 0;
+	while(path[i])
+	{
+		free(path[i]);
+		i++;
+	}
+	free(path);
+	return ;
+}
+
 int	main(int ac, char **av, char **envm)
 {
 	t_mini	shell;
@@ -242,6 +204,7 @@ int	main(int ac, char **av, char **envm)
 	shell_loop(&shell);
 	free(shell.rl);
 	free_env(shell.env);
+	free_path(shell.path);
 	free_arr_dup(shell.envp);
 	return (0);
 

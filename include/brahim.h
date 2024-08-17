@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 13:07:34 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 13:04:00 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_split_params
 
 typedef struct s_lexer
 {
+    int                 quoted;
 	char				*word;
 	t_tokens			token;
 	t_builtins			builtins;
@@ -71,13 +72,15 @@ typedef struct s_parser
 /******************* print **********************************/
 
 void	    print_parser(t_parser **head);
+void 	    print_lexer(t_lexer **head);
 
 /*************************** Lexer ***************************/
 
 void        ft_lexer(t_mini *shell);
 int         parse_pipe(char *str);
 int	        parse_quote(char *rl);
-void	    rm_quote(char *src);
+void	    rm_quote(t_mini *shell);
+int         is_empty(char *str);
 int	        count_redirec(char *p, int index);
 int	        is_redirec(char c);
 int	        is_whitespace(char c);
@@ -97,6 +100,7 @@ void	    ft_add_parser_node(t_parser **head, t_parser *new_node);
 int	        ft_count_args(t_lexer *start);
 void	    ft_lstadd_back(t_lexer **lst, t_lexer *new);
 t_lexer	    *ft_new_token(char *content);
+t_lexer	    *ft_new_token_expand(char *content, int token);
 void	    ft_lstadd(t_env **lst, t_env *new);
 
 /*************************** Expander ***************************/
@@ -106,6 +110,7 @@ void	    add_to_str(char *val, char **str, int i);
 int	        is_val_char(int c);
 char	    *ft_append_char(char *str, char c);
 int	        check_quotes(char *str, int indx);
+int	        is_whitespace_in_string(char *str);
 
 /* minishell */
 
