@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 10:56:43 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 16:09:30 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ static void	split_args(t_mini *shell)
 	params.start = 0;
 	params.end = 0;
 	params.inside = 0;
-	if(shell->syntax_error)
-		return ;
 	i = 0;
 	while (shell->rl[i])
 	{

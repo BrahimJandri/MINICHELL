@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 12:59:57 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 16:08:13 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,6 @@ void	ft_expander(t_mini *shell)
 	char **split_words;
 	int i;
 
-	if (shell->syntax_error)
-		return;
 	while (tmp)
 	{
 		next_node = tmp->next;
