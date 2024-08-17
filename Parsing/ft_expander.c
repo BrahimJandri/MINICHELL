@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 10:34:01 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 12:59:57 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,21 +101,78 @@ static char	*expand_var(char *val, t_mini *shell)
 	return (str);
 }
 
+int	is_whitespace_in_string(char *str)
+{
+	while (*str)
+	{
+		if (*str == ' ' || *str == '\t' || *str == '\n' || *str == '\v' || *str == '\f' || *str == '\r')
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
+
+int has_double_quotes(const char *str)
+{
+    if (str == NULL)
+		return 0;
+
+    while (*str)
+	{
+        if (*str == '\"')
+            return 1;
+        str++;
+    }
+    return 0;
+}
+
+
+
 void	ft_expander(t_mini *shell)
 {
 	t_lexer *tmp = shell->head;
+	t_lexer *new_node;
+	t_lexer *next_node;
 	char *expanded;
-	
-	if(shell->syntax_error)
-		return ;
+	char **split_words;
+	int i;
+
+	if (shell->syntax_error)
+		return;
 	while (tmp)
 	{
-		if (tmp->token == ARG || tmp->token == FILE_TARGET)
+		next_node = tmp->next;
+		if (tmp->token == FILE_TARGET || tmp->token == ARG)
 		{
+			int has_quotes = has_double_quotes(tmp->word);
 			expanded = expand_var(tmp->word, shell);
 			free(tmp->word);
 			tmp->word = expanded;
+			if (tmp->token == ARG && has_quotes == 0 && is_whitespace_in_string(expanded))
+			{
+				split_words = ft_split(expanded, ' ');
+				free(expanded);
+				tmp->word = split_words[0];
+				i = 1;
+				while (split_words[i])
+				{
+					new_node = ft_new_token_expand(split_words[i], ARG);
+					ft_lstadd_back(&tmp, new_node);
+					i++;
+				}
+				free(split_words);
+			}
 		}
-		tmp = tmp->next;
+		tmp = next_node;
 	}
 }
+
+
+
+
+
+
+
+
+

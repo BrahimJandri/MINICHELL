@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:15:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 10:38:20 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 10:42:56 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,4 +111,14 @@ int	parse_pipe(char *str)
 		i++;
 	}
 	return (0);
+}
+
+int is_empty(char *str)
+{
+	int i = -1;
+	while(str && str[++i] && is_whitespace(str[i]))
+		;
+	if (str[i])
+		return 0;
+	return 1;
 }

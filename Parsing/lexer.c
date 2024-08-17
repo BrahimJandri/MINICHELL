@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 10:35:59 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 10:56:43 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,6 @@ static void	split_args(t_mini *shell)
 		make_words(shell, params.start, i);
 }
 
-int is_empty(char *str)
-{
-	int i = -1;
-	while(str && str[++i] && is_whitespace(str[i]))
-		;
-	if (str[i])
-		return 0;
-	return 1;
-}
-
 void	ft_lexer(t_mini *shell)
 {
 	char	*tmp;
@@ -126,7 +116,7 @@ void	ft_lexer(t_mini *shell)
 		return ;
 	}
 	split_args(shell);
-	rm_quote(shell);
+	// rm_quote(shell);
 	if (ft_assign_tokens(shell->head) == -1)
 		return ;
 }
