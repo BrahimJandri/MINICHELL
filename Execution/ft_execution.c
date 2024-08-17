@@ -13,6 +13,7 @@
 #include "../include/rachid.h"
 
 
+
 void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 {
     char *joined_cmd;
@@ -57,40 +58,43 @@ void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 //     //expand here.    
 // }
 
-// int    which_builtin(t_builtins *cmd)
-// {
-//     if(cmd == ECHO);
-//         my_echo();
-//     if(cmd == ENV)
-//         my_env();
-//     if(cmd == EXIT)
-//         my_exit();
-//     if(cmd == EXPORT);
-//         my_export();
-//     if(cmd == UNSET)
-//         my_unset();
-//     if(cmd == CD)
-//         my_cd();
-//     if(cmd == PWD)
-//         my_pwd();
-//     return (0);
-// }
+void	execute_builtin(t_parser *args, t_env **env)
+{
+	if (args->cmd[0] == NULL || args->cmd[0][0] == '\0')
+		return ;
+	if (ft_strncmp(args->cmd[0], "echo", 4) == 0)
+		echo_builtin(args->cmd);
+	else if (ft_strncmp(args->cmd[0], "pwd", 3) == 0)
+		pwd_builtin();
+	else if (ft_strncmp(args->cmd[0], "cd", 2) == 0)
+		cd_builtin(args->cmd, env);
+	else if (ft_strncmp(args->cmd[0], "export", 6) == 0)
+		export_builtin(args->cmd, env);
+	else if (ft_strncmp(args->cmd[0], "unset", 5) == 0)
+		unset_builtin(args->cmd, env);
+	else if (ft_strncmp(args->cmd[0], "env", 3) == 0)
+		env_builtin(env);
+	else if (ft_strncmp(args->cmd[0], "exit", 4) == 0)
+		exit_builtin(args->cmd);
+	else
+		ft_putendl_fd("minishell: command not found", 2);
+}
 
 void    handle_cmd(t_mini *shell, t_parser *cmds)
 {
     // int err;
     
-    if(cmds->redirections)  
-    {
-        if(which_redirection(cmds->redirections))
-            exit(1);
-    }
-    // if(cmds->builtin)
+    // if(cmds->redirections)  
     // {
-    //     if(err = which_builtin(cmds->builtin))
-    //         return(err);
+    //     if(which_redirection(cmds->redirections))
+    //         exit(1);
     // }
-    if(cmds->cmd)
+    
+    if(cmds->builtin)
+    {
+        execute_builtin(cmds, &shell->env);
+    }
+    else if(cmds->cmd)
         exec_cmd(shell, shell->envp, shell->cmds);
     
 }
@@ -101,8 +105,8 @@ void    handle_cmd(t_mini *shell, t_parser *cmds)
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
-    int pid; 
-    // cmds->str = expander(cmds->str);// you expand if there is a dollar sign
+    // int pid; 
+    // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
     check_heredoc(shell, cmds);
     pid = fork();
     if(pid < 0)
@@ -120,6 +124,8 @@ void    single_command(t_mini *shell, t_parser *cmds)
 void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
 {
     (void)env;
+    if(!cmds)
+        return ;
         // we will see how many pipes are there to see whether it was one command or multiple commands
     if(shell->pipes == 0)
     {

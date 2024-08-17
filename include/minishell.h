@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 17:59:01 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 15:10:17 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,24 @@
 
 extern int	g_exit_status;
 
+typedef struct s_export_norm
+{
+    char	*existing_value;
+	char	*new_value_part;
+    char	*equal_sign_pos;
+	char	*plus_equal_sign_pos;
+    char    *key;
+    char    *value;
+}               t_export_norm;
+
 typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	t_export_norm	*export;
 	struct s_env	*next;
 }					t_env;
+
 
 typedef struct s_mini
 {
@@ -40,7 +52,7 @@ typedef struct s_mini
 	char			**envp;
 	char			**path;
 	char			*rl;
-	int				flag;
+	int				syntax_error;
 	t_env			*env;
 	t_parser		*cmds;
 	t_lexer			*head;

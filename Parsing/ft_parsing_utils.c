@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:39:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 17:12:40 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/15 19:12:43 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,6 @@ static void	error_newline(void)
 	g_exit_status = 2;
 }
 
-static void	ambiguous_redirec(t_lexer *tmp)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(tmp->next->word, 2);
-	ft_putstr_fd(": ambiguous redirect\n", 2);
-	g_exit_status = 1;
-}
-
-
-
 int	ft_assign_tokens(t_lexer *head)
 {
 	t_lexer	*tmp;
@@ -76,12 +66,8 @@ int	ft_assign_tokens(t_lexer *head)
 			ft_get_type(tmp);
 		else if (tmp->token >= OUTFILE && tmp->token <= APPEND)
 		{
-			if (tmp->next && tmp->next->token == ARG)
-			{
-				if (tmp->next->word[0] == '$')
-					return (ambiguous_redirec(tmp), -1);
+			if (tmp->next && tmp->next->token == ARG && tmp->token != PIPE)
 				tmp->next->token = FILE_TARGET;
-			}
 			else
 				return (error_newline(), -1);
 		}
