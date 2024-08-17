@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/16 10:28:13 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/17 10:37:20 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,16 @@ void    handle_cmd(t_mini *shell, t_parser *cmds)
         exec_cmd(shell, shell->envp, shell->cmds);
     
 }
-void    check_heredoc(t_parser *cmd)
-{
+// void    check_heredoc(t_parser *cmd)
+// {
     
-}
+// }
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
     int pid; 
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sign
-    check_heredoc(cmds);
+    check_heredoc(shell, cmds);
     pid = fork();
     if(pid < 0)
     {
@@ -129,3 +129,25 @@ void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
         //     multipl_command();            
 }
     
+
+void    check_heredoc(t_mini *shell, t_parser *cmds)
+{
+    int fd;
+    t_lexer *tmp;
+
+    tmp = cmds->redirections;
+
+    while(cmds->redirections)
+    {
+        if(tmp->token == HEREDOC)
+        {
+            fd = open("heredoc_file", O_CREAT | O_RDWR);
+            if(fd < 0)
+                ft_putstr_fd("open_error", 2);
+            here_doc(fd, shell, cmds->redirections);
+        }
+        cmds->redirections = cmds->redirections->next;
+    }
+}
+
+void    here_doc(int fd, t_mini *shell)

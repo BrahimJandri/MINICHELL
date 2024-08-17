@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 08:41:20 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/15 18:00:19 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/17 09:59:47 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,3 @@ int    which_redirection(t_lexer *redirection)
     return 0;   
 }
 
-// void    check_heredoc(t_parser *cmds)
-// {
-    
-// }
