@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 16:08:13 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/18 11:46:10 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,17 @@ int has_double_quotes(const char *str)
     return 0;
 }
 
-
+char *skip_tabs(char *str)
+{
+	int i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\t')
+			str[i] = ' ';
+		i++;
+	}
+	return (str);
+}
 
 void	ft_expander(t_mini *shell)
 {
@@ -146,7 +156,10 @@ void	ft_expander(t_mini *shell)
 			int has_quotes = has_double_quotes(tmp->word);
 			expanded = expand_var(tmp->word, shell);
 			free(tmp->word);
-			tmp->word = expanded;
+			if(!has_quotes)
+				tmp->word = skip_tabs(expanded);
+			else
+				tmp->word = expanded;
 			if (tmp->token == ARG && has_quotes == 0 && is_whitespace_in_string(expanded))
 			{
 				split_words = ft_split(expanded, ' ');
