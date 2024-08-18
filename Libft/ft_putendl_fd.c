@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:17:13 by bjandri           #+#    #+#             */
-/*   Updated: 2023/11/22 12:17:14 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/18 15:39:44 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,3 @@ void	ft_putendl_fd(char *s, int fd)
 	}
 	ft_putchar_fd('\n', fd);
 }
-
-// int main()
-// {
-// 	ft_putendl_fd("hello world", 1);
-// }

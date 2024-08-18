@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 13:31:57 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/18 15:49:26 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	cd_builtin(char **args, t_env **env)
 	if (args[1] != NULL && args[2] != NULL)
 	{
 		ft_putendl_fd("minishell: cd: too many arguments", 2);
+		g_exit_status = 1;
 		return ;
 	}
 	oldpwd = getenv_value(*env, "PWD");
@@ -30,7 +31,10 @@ void	cd_builtin(char **args, t_env **env)
 	else
 		path = args[1];
 	if (chdir(path) == -1)
+	{
 		ft_putendl_fd("cd: no such file or directory", 2);
+		g_exit_status = 1;
+	}
 	else
 		update_env(env, oldpwd, path);
 }

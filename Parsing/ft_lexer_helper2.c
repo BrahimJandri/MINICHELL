@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:15:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 10:42:56 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/18 14:49:54 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,29 +27,6 @@ int	type(char *p)
 	else
 		return (ARG);
 }
-
-// char	*rm_quote(char *str)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*dst;
-
-// 	dst = str;
-// 	j = 0;
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i
-// 				+ 1] == '\''))
-// 			i += 2;
-// 		else
-// 			dst[j++] = str[i++];
-// 	}
-// 	if (j > 0 && (dst[j - 1] == '"' || dst[j - 1] == '\''))
-// 		j--;
-// 	dst[j] = '\0';
-// 	return (str);
-// }
 
 void	rm_quote(t_mini *shell)
 {
