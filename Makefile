@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g #-fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 LDFLAGS = -lreadline
 RM = rm -f
 LIBFT = Libft/libft.a
@@ -15,7 +15,7 @@ SRC = minishell.c ./Parsing/lexer.c ./Parsing/ft_nodes.c ./Parsing/ft_lexer_hepl
 
 OBJ = $(SRC:.c=.o)
 
-all: $(NAME)
+all: $(NAME) clean
 
 $(NAME): $(OBJ)
 	@make -C Libft

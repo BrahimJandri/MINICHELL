@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:21 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 16:23:09 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/18 11:14:10 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,70 +25,70 @@ int	is_valid_identifier(const char *str)
 	return (1);
 }
 
-void	handle_assignment(char *arg, t_env **env)
+void	handle_assignment(char *arg, t_mini *shell)
 {
     char *existing_value;
     char *new_value_part;
 
-    if ((*env)->export->plus_equal_sign_pos)
+    if (shell->export->plus_equal_sign_pos)
     {
-        (*env)->export->key = ft_substr(arg, 0, (*env)->export->plus_equal_sign_pos - arg);
-        existing_value = getenv_value((*env), (*env)->export->key);  // Pass the pointer correctly
-        new_value_part = ft_strdup((*env)->export->plus_equal_sign_pos + 2);
+        shell->export->key = ft_substr(arg, 0, shell->export->plus_equal_sign_pos - arg);
+        existing_value = getenv_value((shell->env), shell->export->key);  // Pass the pointer correctly
+        new_value_part = ft_strdup(shell->export->plus_equal_sign_pos + 2);
         if (existing_value)
-            (*env)->export->value = ft_strjoin(existing_value, new_value_part);
+            shell->export->value = ft_strjoin(existing_value, new_value_part);
         else
-            (*env)->export->value = ft_strdup(new_value_part);
+            shell->export->value = ft_strdup(new_value_part);
         free(existing_value);  // Free existing_value after use
         free(new_value_part);  // Free new_value_part after use
     }
     else
     {
-        (*env)->export->key = ft_substr(arg, 0, (*env)->export->equal_sign_pos - arg);
-        (*env)->export->value = ft_strdup((*env)->export->equal_sign_pos + 1);
+        shell->export->key = ft_substr(arg, 0, shell->export->equal_sign_pos - arg);
+        shell->export->value = ft_strdup(shell->export->equal_sign_pos + 1);
     }
 }
 
-void	process_arg(char *arg, t_env **env)
+void	process_arg(char *arg, t_mini *shell)
 {
     remove_quotes(arg);
-    (*env)->export->equal_sign_pos = ft_strchr(arg, '=');
-    (*env)->export->plus_equal_sign_pos = strstr(arg, "+=");
-    if ((*env)->export->equal_sign_pos || (*env)->export->plus_equal_sign_pos)
-        handle_assignment(arg, env);
+    shell->export->equal_sign_pos = ft_strchr(arg, '=');
+    shell->export->plus_equal_sign_pos = strstr(arg, "+=");
+    if (shell->export->equal_sign_pos || shell->export->plus_equal_sign_pos)
+        handle_assignment(arg, shell);
     else
     {
-        (*env)->export->key = ft_strdup(arg);
-        (*env)->export->value = NULL;
+        shell->export->key = ft_strdup(arg);
+        shell->export->value = NULL;
     }
-    if (!is_valid_identifier((*env)->export->key))
+    if (!is_valid_identifier(shell->export->key))
     {
         ft_putendl_fd("minishell: export: not a valid identifier", 2);
-        free((*env)->export->key);
-        if ((*env)->export->value)
-            free((*env)->export->value);
+        free(shell->export->key);
+        if (shell->export->value)
+            free(shell->export->value);
         return;
     }
-    update_env(env, (*env)->export->key, (*env)->export->value);
-    free((*env)->export->key);
-    if ((*env)->export->value)
-        free((*env)->export->value);
+    update_env(&shell->env, shell->export->key, shell->export->value);
+    free(shell->export->key);
+    if (shell->export->value)
+        free(shell->export->value);
 }
 
 
-void	export_builtin(char **args, t_env **env)
+void	export_builtin(char **args, t_mini *shell)
 {
-	int	i;
+    int i;
 
-	if (!args[1])
-	{
-		sorted_env(env);
-		return ;
-	}
-	i = 1;
-	while (args[i])
-	{
-		process_arg(args[i], env);
-		i++;
-	}
+    if (!args[1])
+    {
+        sorted_env(&shell->env);
+        return ;
+    }
+    i = 1;
+    while (args[i])
+    {
+        process_arg(args[i], shell);
+        i++;
+    }
 }

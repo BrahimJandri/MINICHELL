@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 16:19:21 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/18 11:15:40 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 void    ft_execution(t_parser *cmds, t_mini *shell, char **env);
 void    single_command(t_mini *shell, t_parser *cmds);
 void    handle_cmd(t_mini *shell, t_parser *cmds);
-void	execute_builtin(t_parser *args, t_env **env);
+void	execute_builtin(t_parser *args, t_mini *shell);
 
 // void    check_heredoc(t_parser *cmds);
 void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds);
@@ -48,9 +48,9 @@ void	sorted_env(t_env **env);
 void	sort_env(t_env **env_array, int count);
 void	swap_env(t_env **a, t_env **b);
 int	    count_env(t_env *env);
-void	export_builtin(char **args, t_env **env);
-void	process_arg(char *arg, t_env **env);
-void	handle_assignment(char *arg, t_env **env);
+void	export_builtin(char **args, t_mini *shell);
+void	process_arg(char *arg, t_mini *shell);
+void	handle_assignment(char *arg, t_mini *shell);
 int	    is_valid_identifier(const char *str);
 int	    pwd_builtin(void);
 void	unset_builtin(char **args, t_env **env);

@@ -20,9 +20,9 @@ int	pwd_builtin(void)
 	buf = getcwd(NULL, 0);
 	if (!buf)
 	{
-		ft_putendl_fd("minishell: pwd: error retrieving current directory: \
-		getcwd: cannot access parent directories: ",
-			2);
+		ft_putendl_fd("minishell: pwd: error retrieving current directory: getcwd: \
+cannot access parent directories: No such file or directory", 2);
+		g_exit_status = 1;
 		return (1);
 	}
 	ft_putendl_fd(buf, 1);

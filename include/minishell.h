@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 15:10:17 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/18 11:07:48 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
-	t_export_norm	*export;
 	struct s_env	*next;
 }					t_env;
 
@@ -54,6 +53,7 @@ typedef struct s_mini
 	char			*rl;
 	int				syntax_error;
 	t_env			*env;
+	t_export_norm	*export;
 	t_parser		*cmds;
 	t_lexer			*head;
 }					t_mini;
