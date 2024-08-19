@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/18 15:26:00 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/19 12:42:34 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,12 +171,14 @@ void expand_and_replace_word(t_lexer *tmp, t_mini *shell)
     }
 }
 
-void split_and_add_nodes(t_lexer *tmp, char *expanded)
+void split_and_add_nodes(t_lexer *tmp, t_mini *shell)
 {
     char **split_words;
+    char *expanded;
     t_lexer *new_node;
     int i;
-
+    
+    expanded = expand_var(tmp->word, shell);
     split_words = ft_split(expanded, ' ');
     free(expanded);
     tmp->word = split_words[0];
@@ -191,28 +193,50 @@ void split_and_add_nodes(t_lexer *tmp, char *expanded)
     free(split_words);
 }
 
-void ft_expander(t_mini *shell)
+void    ft_split_args(t_lexer *tmp, char *expanded)
 {
-    t_lexer *tmp = shell->head;
-    t_lexer *next_node;
+	char **split_words;
+    char *word;
+	int i;
+	t_lexer *new_node;
 
-    while (tmp)
+    
+    word = skip_tabs(expanded);
+    split_words = ft_split(word, ' ');
+    free(word);
+    tmp->word = split_words[0];
+    i = 1;
+    while (split_words[i])
     {
-        next_node = tmp->next;
-        
-        if (ft_strchr(tmp->word, '$'))
-        {
-            if (tmp->token == FILE_TARGET || tmp->token == ARG)
-            {
-                expand_and_replace_word(tmp, shell);
-                if (tmp->token == ARG && !has_double_quotes(tmp->word) && is_whitespace_in_string(tmp->word))
-                {
-                    split_and_add_nodes(tmp, tmp->word);
-                }
-            }
-        }
-        tmp = next_node;
+        new_node = ft_new_token_expand(split_words[i], ARG);
+        ft_lstadd_back(&tmp, new_node);
+        i++;
     }
+    free(split_words);
+}
+
+void	ft_expander(t_mini *shell)
+{
+	t_lexer *tmp = shell->head;
+	t_lexer *next_node;
+	char *expanded;
+
+	while (tmp)
+	{
+		next_node = tmp->next;
+		if (tmp->token == FILE_TARGET || tmp->token == ARG)
+		{
+			int has_quotes = has_double_quotes(tmp->word);
+			expanded = expand_var(tmp->word, shell);
+			free(tmp->word);
+			tmp->word = expanded;
+			if (tmp->token == ARG && has_quotes == 0 && is_whitespace_in_string(expanded))
+			{
+                ft_split_args(tmp, expanded);
+			}
+		}
+		tmp = next_node;
+	}
 }
 
 
