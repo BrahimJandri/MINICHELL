@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 08:40:00 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 11:36:18 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/19 13:23:11 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,6 @@ void	ft_lstadd(t_env **lst, t_env *new)
 	tmp = *lst;
 	while (tmp->next)
 		tmp = tmp->next;
-	tmp->next = new;
+	tmp->next = new; 
 }
+

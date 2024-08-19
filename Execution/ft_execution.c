@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/19 11:52:01 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/19 14:20:33 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,20 +106,20 @@ void    handle_cmd(t_mini *shell, t_parser *cmds)
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
-    int pid; 
-    // // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
-    // // check_heredoc(shell, cmds);
-    pid = fork();
-    if(pid < 0)
-    {
-        perror("fork failed");
-    //     //fork failed.  
-    }
-    if(pid == 0)
-    {
+    // int pid; 
+    // // // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
+    // // // check_heredoc(shell, cmds);
+    // pid = fork();
+    // if(pid < 0)
+    // {
+    //     perror("fork failed");
+    // //     //fork failed.  
+    // }
+    // if(pid == 0)
+    // {
         handle_cmd(shell, cmds);
-    }
-    wait(NULL);
+    // }
+    // wait(NULL);
 }
 
 void    ft_execution(t_parser *cmds, t_mini *shell, char **env)

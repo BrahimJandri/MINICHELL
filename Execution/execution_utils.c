@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:41:00 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/10 19:20:09 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/19 13:30:40 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,4 @@ char *join_path(char *path, char *command)
     joined[len] = '/';
     ft_strcpy(joined + len + 1, command);
     return joined;
-    
-    
 }

@@ -1,7 +1,0 @@
-one B
-two 3
-three 1 
-four 5
-five 2
-sikx
-nanaju

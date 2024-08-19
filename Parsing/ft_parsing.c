@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/18 14:37:42 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/19 13:27:55 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,39 @@ static char	**ft_store_args(t_lexer *start)
 	return (args);
 }
 
+t_lexer	*ft_create_redir_node(t_lexer *tmp)
+{
+	t_lexer	*redir_node;
+
+	redir_node = (t_lexer *)malloc(sizeof(t_lexer));
+	if (!redir_node)
+		return (NULL);
+	redir_node->token = tmp->token;
+	if (tmp->next != NULL)
+		redir_node->word = ft_strdup(tmp->next->word);
+	else
+		redir_node->word = NULL;
+	redir_node->next = NULL;
+	return (redir_node);
+}
+
+
+void	ft_add_redir_node(t_lexer **redirections, t_lexer *redir_node)
+{
+	t_lexer	*last;
+
+	if (!*redirections)
+		*redirections = redir_node;
+	else
+	{
+		last = *redirections;
+		while (last->next)
+			last = last->next;
+		last->next = redir_node;
+	}
+}
+
+
 static void	ft_store_redirections(t_parser *parser, t_lexer *start)
 {
 	t_lexer	*tmp;
@@ -52,14 +85,10 @@ static void	ft_store_redirections(t_parser *parser, t_lexer *start)
 		if (tmp->token >= OUTFILE && tmp->token <= HEREDOC)
 		{
 			parser->n_redirections++;
-			redir_node = (t_lexer *)malloc(sizeof(t_lexer));
+			redir_node = ft_create_redir_node(tmp);
 			if (!redir_node)
 				return ;
-			redir_node->token = tmp->token;
-			if (tmp->next != NULL)
-				redir_node->word = ft_strdup(tmp->next->word);
-			redir_node->next = NULL;
-			ft_lstadd((t_env **)&parser->redirections, (t_env *)redir_node);
+			ft_add_redir_node(&parser->redirections, redir_node);
 		}
 		tmp = tmp->next;
 	}
