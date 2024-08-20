@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/18 11:15:40 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/20 14:54:22 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,26 @@ int    handle_outfile(t_lexer *redirection, char *file);
 
 /************************** Builtins ************************************/
 
-void	cd_builtin(char **args, t_env **env);
-void	echo_builtin(char **args);
+int 	cd_builtin(char **args, t_env **env);
+int 	echo_builtin(char **args);
 int	    is_n_flag(char *arg);
-void	env_builtin(t_env **env);
+int 	env_builtin(t_env **env);
 void	update_env(t_env **env, const char *key, const char *value);
 t_env	*ft_new_env(const char *key, const char *value);
 char	*getenv_value(t_env *env, const char *key);
 t_env	*create_env(char **env);
-void	exit_builtin(char **args);
+int 	exit_builtin(char **args);
 void	print_sorted(t_env **env_array, int count);
 void	sorted_env(t_env **env);
 void	sort_env(t_env **env_array, int count);
 void	swap_env(t_env **a, t_env **b);
 int	    count_env(t_env *env);
-void	export_builtin(char **args, t_mini *shell);
+int 	export_builtin(char **args, t_mini *shell);
 void	process_arg(char *arg, t_mini *shell);
 void	handle_assignment(char *arg, t_mini *shell);
 int	    is_valid_identifier(const char *str);
 int	    pwd_builtin(void);
-void	unset_builtin(char **args, t_env **env);
+int 	unset_builtin(char **args, t_env **env);
 void	unsetenv_custom(t_env **env, const char *key);
 void	remove_quotes(char *str);
 

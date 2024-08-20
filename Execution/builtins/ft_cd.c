@@ -6,13 +6,13 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/18 15:49:26 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/20 13:24:27 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	cd_builtin(char **args, t_env **env)
+int		cd_builtin(char **args, t_env **env)
 {
 	char	*path;
 	char	*oldpwd;
@@ -20,8 +20,7 @@ void	cd_builtin(char **args, t_env **env)
 	if (args[1] != NULL && args[2] != NULL)
 	{
 		ft_putendl_fd("minishell: cd: too many arguments", 2);
-		g_exit_status = 1;
-		return ;
+		return (1);
 	}
 	oldpwd = getenv_value(*env, "PWD");
 	if (!args[1])
@@ -33,8 +32,9 @@ void	cd_builtin(char **args, t_env **env)
 	if (chdir(path) == -1)
 	{
 		ft_putendl_fd("cd: no such file or directory", 2);
-		g_exit_status = 1;
+		return (1);
 	}
 	else
 		update_env(env, oldpwd, path);
+	return (0);
 }

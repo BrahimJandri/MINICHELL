@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   brahim.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 13:04:00 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/19 16:53:16 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ typedef struct s_split_params
 	int					end;
 	int					inside;
 }						t_split_params;
+
+typedef struct s_remove_quote
+{
+   int sngl_qt;
+    int dbl_qt;
+    char *src;
+    char *dst;
+}						t_remove_quote;
 
 typedef struct s_lexer
 {

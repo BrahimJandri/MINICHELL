@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:21 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/19 11:55:23 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/20 13:21:58 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ void handle_plus_equal_assignment(char *arg, t_mini *shell)
         shell->export->value = ft_strjoin(existing_value, new_value_part);
     else
         shell->export->value = ft_strdup(new_value_part);
-    
-    free(existing_value);
     free(new_value_part);
 }
 
@@ -105,14 +103,14 @@ void	process_arg(char *arg, t_mini *shell)
         free(shell->export->value);
 }
 
-void	export_builtin(char **args, t_mini *shell)
+int	export_builtin(char **args, t_mini *shell)
 {
     int i;
 
     if (!args[1])
     {
         sorted_env(&shell->env);
-        return ;
+        return 0;
     }
     i = 1;
     while (args[i])
@@ -120,4 +118,5 @@ void	export_builtin(char **args, t_mini *shell)
         process_arg(args[i], shell);
         i++;
     }
+    return (0);
 }

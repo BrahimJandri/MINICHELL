@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:43 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 13:36:42 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/20 14:43:04 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	unsetenv_custom(t_env **env, const char *key)
 	}
 }
 
-void	unset_builtin(char **args, t_env **env)
+int	unset_builtin(char **args, t_env **env)
 {
 	int	i;
 
@@ -47,4 +47,5 @@ void	unset_builtin(char **args, t_env **env)
 		unsetenv_custom(env, args[i]);
 		i++;
 	}
+	return (0);
 }

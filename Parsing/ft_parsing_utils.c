@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:39:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 19:12:43 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/19 16:10:15 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ int	ft_assign_tokens(t_lexer *head)
 		else if (tmp->token == HEREDOC)
 		{
 			if (tmp->next && tmp->next->token == ARG)
+			{
+				remove_quotes(tmp->next->word);
 				tmp->next->token = DELIME;
+			}
 			else
 				return (error_newline(), -1);
 		}

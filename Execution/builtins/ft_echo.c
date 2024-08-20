@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/19 11:44:14 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/20 13:20:00 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,33 @@ int	is_n_flag(char *arg)
 
 void	remove_quotes(char *str)
 {
-	int in_single_quotes = 0;
-	int in_double_quotes = 0;
-	char *src = str;
-	char *dst = str;
-	while (*src)
+	t_remove_quote rm_quote;
+	ft_memset(&rm_quote, 0, sizeof(t_remove_quote));
+	rm_quote.src = str;
+	rm_quote.dst = str;
+	
+	while (*rm_quote.src)
 	{
-		if (*src == '"' && !in_single_quotes)
+		if (*rm_quote.src == '"' && !rm_quote.sngl_qt)
 		{
-			in_double_quotes = !in_double_quotes;
-			src++;
+			rm_quote.dbl_qt = !rm_quote.dbl_qt;
+			rm_quote.src++;
 		}
-		else if (*src == '\'' && !in_double_quotes)
+		else if (*rm_quote.src == '\'' && !rm_quote.dbl_qt)
 		{
-			in_single_quotes = !in_single_quotes;
-			src++;
+			rm_quote.sngl_qt = !rm_quote.sngl_qt;
+			rm_quote.src++;
 		}
-		else if (!in_single_quotes && !in_double_quotes
-			&& (*src == '"' || *src == '\''))
-			src++;
+		else if (!rm_quote.sngl_qt && !rm_quote.dbl_qt
+			&& (*rm_quote.src == '"' || *rm_quote.src == '\''))
+			rm_quote.src++;
 		else
-			*dst++ = *src++;
+			*rm_quote.dst++ = *rm_quote.src++;
 	}
-	*dst = '\0';
+	*rm_quote.dst = '\0';
 }
 
-void	echo_builtin(char **args)
+int	echo_builtin(char **args)
 {
 	int	i;
 	int	n_flag;
@@ -67,7 +68,7 @@ void	echo_builtin(char **args)
 	if (!args[i])
 	{
 		write(1, "\n", 1);
-		return ;
+		return (0);
 	}
 	while (args[i] && is_n_flag(args[i]))
 	{
@@ -82,4 +83,5 @@ void	echo_builtin(char **args)
 	}
 	if (!n_flag)
 		write(1, "\n", 1);
+	return (0);
 }

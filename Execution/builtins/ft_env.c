@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:01:13 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 16:33:58 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/20 14:43:39 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	update_env(t_env **env, const char *key, const char *value)
 	ft_lstadd(env, new_node);
 }
 
-void	env_builtin(t_env **env)
+int		env_builtin(t_env **env)
 {
 	t_env	*tmp;
 
@@ -95,4 +95,5 @@ void	env_builtin(t_env **env)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
+	return (0);
 }

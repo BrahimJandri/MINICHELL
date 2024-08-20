@@ -6,13 +6,12 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/19 13:28:23 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/20 13:02:46 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
-int		g_exit_status = 0;
 
 char	**arr_dup(char **envm)
 {
@@ -210,6 +209,8 @@ void free_export(t_export_norm *export)
 {
 	free(export);
 }
+
+int		g_exit_status = 0;
 
 int	main(int ac, char **av, char **envm)
 {
