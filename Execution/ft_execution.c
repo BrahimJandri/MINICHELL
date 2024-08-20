@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/20 14:54:30 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/20 16:13:15 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	execute_builtin(t_parser *args, t_mini *shell)
     else if (ft_strncmp(args->cmd[0], "pwd", 3) == 0)
       g_exit_status = pwd_builtin();
     else if (ft_strncmp(args->cmd[0], "cd", 2) == 0)
-        cd_builtin(args->cmd, &shell->env);
+      g_exit_status = cd_builtin(args->cmd, &shell->env);
     else if (ft_strncmp(args->cmd[0], "export", 6) == 0)
        g_exit_status = export_builtin(args->cmd, shell);
     else if (ft_strncmp(args->cmd[0], "unset", 5) == 0)
@@ -112,8 +112,8 @@ void    single_command(t_mini *shell, t_parser *cmds)
     // pid = fork();
     // if(pid < 0)
     // {
-    //     perror("fork failed");
-    // // //     //fork failed.  
+        // perror("fork failed");
+         //fork failed.  
     // }
     // if(pid == 0)
     // {

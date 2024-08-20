@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:39:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/19 16:10:15 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/20 16:20:49 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	ft_assign_tokens(t_lexer *head)
 	t_lexer	*tmp;
 
 	tmp = head;
+	remove_quotes(tmp->word);
 	while (tmp)
 	{
 		if (tmp->token == ARG)
