@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/20 14:32:06 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/20 14:44:38 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,8 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
     if(!line) // there is still something global for the heredoc
         return 1;
     close(fd);
-    free(shell->heredoc_file);
+    // if(shell->heredoc_file)
+    //     free(shell->heredoc_file);
     return 0;
     
 }

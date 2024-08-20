@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:41:00 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/10 19:20:09 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/20 15:01:30 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,12 @@ char *join_path(char *path, char *command)
     joined = malloc(len + cmd_len + 2);
     if(!joined)
         return NULL;
-    ft_strcpy(joined, path);
+    while(*path)
+        *joined++ = *path++;
     joined[len] = '/';
-    ft_strcpy(joined + len + 1, command);
+    while(*command)
+        *joined++ = *command;
+    *joined = '\0'; 
     return joined;
     
     
