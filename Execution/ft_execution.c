@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/17 10:37:20 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/20 14:32:06 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 //     //expand here.    
 // }
 
-void	execute_builtin(t_parser *args, t_env **env)
+void	execute_builtin(t_parser *args, t_env  **env)
 {
 	if (args->cmd[0] == NULL || args->cmd[0][0] == '\0')
 		return ;
@@ -84,15 +84,15 @@ void    handle_cmd(t_mini *shell, t_parser *cmds)
 {
     // int err;
     
-    // if(cmds->redirections)  
-    // {
-    //     if(which_redirection(cmds->redirections))
-    //         exit(1);
-    // }
-    
+    if(cmds->redirections)  
+    {
+        if(which_redirection(shell, cmds->redirections))
+            exit(1);
+    }
     if(cmds->builtin)
     {
         execute_builtin(cmds, &shell->env);
+        exit(0);
     }
     else if(cmds->cmd)
         exec_cmd(shell, shell->envp, shell->cmds);
@@ -105,8 +105,16 @@ void    handle_cmd(t_mini *shell, t_parser *cmds)
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
-    // int pid; 
+    int pid; 
+    t_builtins built;
+
+    built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
+    if(built == CD || built == EXIT || built == EXPORT || built == UNSET)
+    {
+        execute_builtin(cmds, &shell->env);
+        return ;
+    }
     check_heredoc(shell, cmds);
     pid = fork();
     if(pid < 0)
@@ -121,6 +129,12 @@ void    single_command(t_mini *shell, t_parser *cmds)
     wait(NULL);
 }
 
+
+// void    multiple_command(t_mini *shell, t_parser *cmds)
+// {
+//     int *fd
+// }
+
 void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
 {
     (void)env;
@@ -131,29 +145,76 @@ void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
     {
         single_command(shell, cmds);
     }
-        // else
-        //     multipl_command();            
+    // else
+    //     multipl_command(shell, cmds);            
 }
     
 
 void    check_heredoc(t_mini *shell, t_parser *cmds)
 {
-    int fd;
     t_lexer *tmp;
+    int exit;
 
     tmp = cmds->redirections;
-
+    exit = 0;
     while(cmds->redirections)
     {
         if(tmp->token == HEREDOC)
         {
-            fd = open("heredoc_file", O_CREAT | O_RDWR);
-            if(fd < 0)
-                ft_putstr_fd("open_error", 2);
-            here_doc(fd, shell, cmds->redirections);
+            if(shell->heredoc_file)
+                free(shell->heredoc_file);
+            shell->heredoc_file = ft_strdup("/tmp/heredoc_file");
+            exit = here_doc(shell->heredoc_file, shell, cmds->redirections);
+            if(exit)
+            {
+                return ;
+            }
         }
         cmds->redirections = cmds->redirections->next;
     }
+    cmds->redirections = tmp;
+    
 }
 
-void    here_doc(int fd, t_mini *shell)
+int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
+{
+    char *delimiter;
+    int quote;
+    int exit;
+    
+    delimiter = heredoc->word;
+    if((delimiter[0] == '\'' && delimiter[ft_strlen(delimiter) - 1] == '\'') 
+    || (delimiter[0] == '\"' && delimiter[ft_strlen(delimiter) - 1] == '\"'))
+        quote = 1;
+    else
+        quote = 0;
+    remove_quotes(delimiter);
+    exit = exec_heredoc(shell, file_name, delimiter, quote);
+    return(exit);
+}
+
+int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
+{
+    int     fd;
+    char    *line; 
+
+    fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
+    // if(fd < 0)
+        // ft_error();
+    line = readline("> ");
+    while(line && ft_strncmp(delimiter, line, ft_strlen(delimiter)))
+    {
+        if(!quote)
+            line = expand_var(line, shell);
+        write(fd, line, ft_strlen(line));
+        write(fd, "\n", 1);
+        free(line);
+        line = readline("> ");
+    }
+    if(!line) // there is still something global for the heredoc
+        return 1;
+    close(fd);
+    free(shell->heredoc_file);
+    return 0;
+    
+}

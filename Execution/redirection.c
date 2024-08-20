@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 08:41:20 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/17 09:59:47 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/19 20:05:32 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,27 @@ int     handle_infile(char *file)
     return 0;
 }
 
-int    which_redirection(t_lexer *redirection)
+int     handle_heredoc(char *file_name)
+{
+    int fd;
+
+    fd = open(file_name, O_RDONLY);
+    if(fd == -1)
+    {
+        ft_putstr_fd("Error: File does not exist\n",2);
+        return 1;
+    }
+    if(dup2(fd, STDIN_FILENO) == -1)
+    {
+        perror("dup2");
+        return 1;
+    }
+    if(fd)
+        close(fd);
+    return 0;
+}
+
+int    which_redirection(t_mini *shell, t_lexer *redirection)
 {
     t_lexer *head;
 
@@ -74,8 +94,11 @@ int    which_redirection(t_lexer *redirection)
             if(handle_infile(redirection->word))
                 return 1;
         }
-        // else if(redirection->token == REDIR_HEREDOC)
-        //     handle_heredoc();
+        else if(redirection->token == HEREDOC)
+        {
+            if(handle_infile(shell->heredoc_file))
+                return 1;
+        }
         redirection = redirection->next;
     }
     redirection = head;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/16 10:20:14 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/20 12:28:32 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->cmds = NULL;
 	shell->head = NULL;
 	shell->rl = NULL;
+	shell->heredoc_file = NULL;
 	shell->syntax_error = 0;
 	shell->pipes = 0;
 }
@@ -210,7 +211,7 @@ int	main(int ac, char **av, char **envm)
 	free_env(shell.env);
 	free_path(shell.path);
 	free_arr_dup(shell.envp);
-	free_path(shell.path);
+	// free_path(shell.path);
 	return (0);
 
 }

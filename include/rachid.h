@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 16:19:21 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/19 18:55:03 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,12 @@ void	execute_builtin(t_parser *args, t_env **env);
 void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds);
 char    *join_path(char *path, char *command);
 
-int    which_redirection(t_lexer *redirection);
+int    which_redirection(t_mini *shell, t_lexer *redirection);
 int    handle_outfile(t_lexer *redirection, char *file);
 
+void    check_heredoc(t_mini *shell, t_parser *cmds);
+int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc);
+int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote);
 
 /************************** Builtins ************************************/
 
@@ -57,5 +60,7 @@ void	unset_builtin(char **args, t_env **env);
 void	unsetenv_custom(t_env **env, const char *key);
 void	remove_quotes(char *str);
 
+
+char *expand_var(char *val, t_mini *shell); 
 
 #endif
