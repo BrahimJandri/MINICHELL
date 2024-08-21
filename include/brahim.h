@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 18:18:31 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 18:21:24 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int						is_whitespace(char c);
 int						check_next(char *first, char next);
 int						type(char *p);
 int						check_pipe(t_lexer *redirection);
+int						handle_quotes(char *dst, const char *src, int i, int length);
 
 /*************************** Parsing ***************************/
 
