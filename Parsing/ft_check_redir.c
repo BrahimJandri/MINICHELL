@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:52:45 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 13:05:34 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/18 14:36:13 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,6 @@ static void	ft_syntax_err(char *str)
 	}
 }
 
-static void	ambiguous_redirec(void)
-{
-	ft_putstr_fd("minishell: ambiguous redirect\n", 2);
-	g_exit_status = 1;
-}
-
 int	check_redir(t_lexer *head)
 {
 	t_lexer	*tmp;
@@ -76,13 +70,14 @@ int	check_redir(t_lexer *head)
 			ft_syntax_err(tmp->word);
 			return (1);
 		}
-		else if(tmp->token >= OUTFILE && tmp->token <= APPEND)
+		else if (tmp->token >= OUTFILE && tmp->token <= APPEND)
 		{
-			if(!tmp->next || tmp->next->token == PIPE)
-				return 1;
-			if(!tmp->next->word[0] || is_whitespace_in_string(tmp->next->word))
+			if (!tmp->next || tmp->next->token == PIPE)
+				return (1);
+			if (!tmp->next->word[0] || is_whitespace_in_string(tmp->next->word))
 			{
-				ambiguous_redirec();
+				ft_putstr_fd("minishell: ambiguous redirect\n", 2);
+				g_exit_status = 1;
 				return (1);
 			}
 		}

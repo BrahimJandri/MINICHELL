@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/19 18:47:23 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/18 11:07:48 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,28 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
-#include <sys/wait.h>
 # include <stdlib.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
-extern int	g_exit_status;
+extern int			g_exit_status;
 
 typedef struct s_export_norm
 {
-    char	*existing_value;
-	char	*new_value_part;
-    char	*equal_sign_pos;
-	char	*plus_equal_sign_pos;
-    char    *key;
-    char    *value;
-}               t_export_norm;
+	char			*existing_value;
+	char			*new_value_part;
+	char			*equal_sign_pos;
+	char			*plus_equal_sign_pos;
+	char			*key;
+	char			*value;
+}					t_export_norm;
 
 typedef struct s_env
 {
 	char			*key;
 	char			*value;
-	t_export_norm	*export;
 	struct s_env	*next;
 }					t_env;
-
 
 typedef struct s_mini
 {
@@ -55,6 +53,7 @@ typedef struct s_mini
 	char 			*heredoc_file;
 	int				syntax_error;
 	t_env			*env;
+	t_export_norm	*export;
 	t_parser		*cmds;
 	t_lexer			*head;
 }					t_mini;

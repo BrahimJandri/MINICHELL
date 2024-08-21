@@ -60,24 +60,24 @@ void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 //     //expand here.    
 // }
 
-void	execute_builtin(t_parser *args, t_env  **env)
+void	execute_builtin(t_parser *args, t_mini *shell)
 {
 	if (args->cmd[0] == NULL || args->cmd[0][0] == '\0')
 		return ;
 	if (ft_strncmp(args->cmd[0], "echo", 4) == 0)
-		echo_builtin(args->cmd);
+		g_exit_status = echo_builtin(args->cmd);
 	else if (ft_strncmp(args->cmd[0], "pwd", 3) == 0)
-		pwd_builtin();
+		g_exit_status = pwd_builtin();
 	else if (ft_strncmp(args->cmd[0], "cd", 2) == 0)
-		cd_builtin(args->cmd, env);
+		g_exit_status = cd_builtin(args->cmd, &shell->env);
 	else if (ft_strncmp(args->cmd[0], "export", 6) == 0)
-		export_builtin(args->cmd, env);
+		g_exit_status = export_builtin(args->cmd, shell);
 	else if (ft_strncmp(args->cmd[0], "unset", 5) == 0)
-		unset_builtin(args->cmd, env);
+		g_exit_status = unset_builtin(args->cmd, &shell->env);
 	else if (ft_strncmp(args->cmd[0], "env", 3) == 0)
-		env_builtin(env);
+		g_exit_status = env_builtin(&shell->env);
 	else if (ft_strncmp(args->cmd[0], "exit", 4) == 0)
-		exit_builtin(args->cmd);
+		g_exit_status = exit_builtin(args->cmd);
 	else
 		ft_putendl_fd("minishell: command not found", 2);
 }

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:39:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 19:12:43 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 10:31:43 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,29 +55,42 @@ static void	error_newline(void)
 	g_exit_status = 2;
 }
 
+static int	process_token(t_lexer *token)
+{
+	if (token->token == ARG)
+		ft_get_type(token);
+	else if (token->token >= OUTFILE && token->token <= APPEND)
+	{
+		if (token->next && token->next->token == ARG && token->token != PIPE)
+			token->next->token = FILE_TARGET;
+		else
+			return (error_newline(), -1);
+	}
+	else if (token->token == HEREDOC)
+	{
+		if (token->next && token->next->token == ARG)
+		{
+			remove_quotes(token->next->word);
+			token->next->token = DELIME;
+		}
+		else
+			return (error_newline(), -1);
+	}
+	return (0);
+}
+
 int	ft_assign_tokens(t_lexer *head)
 {
 	t_lexer	*tmp;
+	int		result;
 
 	tmp = head;
+	remove_quotes(tmp->word);
 	while (tmp)
 	{
-		if (tmp->token == ARG)
-			ft_get_type(tmp);
-		else if (tmp->token >= OUTFILE && tmp->token <= APPEND)
-		{
-			if (tmp->next && tmp->next->token == ARG && tmp->token != PIPE)
-				tmp->next->token = FILE_TARGET;
-			else
-				return (error_newline(), -1);
-		}
-		else if (tmp->token == HEREDOC)
-		{
-			if (tmp->next && tmp->next->token == ARG)
-				tmp->next->token = DELIME;
-			else
-				return (error_newline(), -1);
-		}
+		result = process_token(tmp);
+		if (result < 0)
+			return (-1);
 		tmp = tmp->next;
 	}
 	return (0);

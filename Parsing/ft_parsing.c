@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 16:17:01 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 10:29:12 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,10 @@ static void	ft_store_redirections(t_parser *parser, t_lexer *start)
 		if (tmp->token >= OUTFILE && tmp->token <= HEREDOC)
 		{
 			parser->n_redirections++;
-			redir_node = (t_lexer *)malloc(sizeof(t_lexer));
+			redir_node = ft_create_redir_node(tmp);
 			if (!redir_node)
 				return ;
-			redir_node->token = tmp->token;
-			if (tmp->next != NULL)
-				redir_node->word = ft_strdup(tmp->next->word);
-			redir_node->next = NULL;
-			ft_lstadd((t_env **)&parser->redirections, (t_env *)redir_node);
+			ft_add_redir_node(&parser->redirections, redir_node);
 		}
 		tmp = tmp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:15:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 10:42:56 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 10:44:39 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,6 @@ int	type(char *p)
 		return (ARG);
 }
 
-// char	*rm_quote(char *str)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*dst;
-
-// 	dst = str;
-// 	j = 0;
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i
-// 				+ 1] == '\''))
-// 			i += 2;
-// 		else
-// 			dst[j++] = str[i++];
-// 	}
-// 	if (j > 0 && (dst[j - 1] == '"' || dst[j - 1] == '\''))
-// 		j--;
-// 	dst[j] = '\0';
-// 	return (str);
-// }
-
 void	rm_quote(t_mini *shell)
 {
 	int		length;
@@ -58,7 +35,7 @@ void	rm_quote(t_mini *shell)
 	int		j;
 	int		i;
 
-	if(shell->head->word == NULL || shell->syntax_error)
+	if (shell->head->word == NULL || shell->syntax_error)
 		return ;
 	length = ft_strlen(shell->head->word);
 	dst = (char *)malloc(length + 1);
@@ -66,11 +43,13 @@ void	rm_quote(t_mini *shell)
 	i = 0;
 	while (i < length)
 	{
-		if ((i < length - 1 && (shell->head->word[i] == '"' && shell->head->word[i + 1] == '"'))
-			|| (shell->head->word[i] == '\'' && shell->head->word[i + 1] == '\''))
+		if ((i < length - 1 && (shell->head->word[i] == '"'
+					&& shell->head->word[i + 1] == '"'))
+			|| (shell->head->word[i] == '\'' && shell->head->word[i \
+				+ 1] == '\''))
 		{
-			if ((i == 0 || is_whitespace(shell->head->word[i - 1])) && (i + 2 == length
-					|| is_whitespace(shell->head->word[i + 2])))
+			if ((i == 0 || is_whitespace(shell->head->word[i - 1])) && (i
+					+ 2 == length || is_whitespace(shell->head->word[i + 2])))
 			{
 				dst[j++] = shell->head->word[i++];
 				dst[j++] = shell->head->word[i++];
@@ -85,7 +64,6 @@ void	rm_quote(t_mini *shell)
 	ft_strcpy(shell->head->word, dst);
 	free(dst);
 }
-
 
 int	parse_pipe(char *str)
 {
@@ -113,12 +91,14 @@ int	parse_pipe(char *str)
 	return (0);
 }
 
-int is_empty(char *str)
+int	is_empty(char *str)
 {
-	int i = -1;
-	while(str && str[++i] && is_whitespace(str[i]))
+	int	i;
+
+	i = -1;
+	while (str && str[++i] && is_whitespace(str[i]))
 		;
 	if (str[i])
-		return 0;
-	return 1;
+		return (0);
+	return (1);
 }

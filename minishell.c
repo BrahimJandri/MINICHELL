@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:26:47 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/20 16:17:47 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
-
-int		g_exit_status = 0;
 
 char	**arr_dup(char **envm)
 {
@@ -57,7 +55,6 @@ char	*ft_strnlen(const char *str, char delimiter)
 	return (result);
 }
 
-
 void	free_return(t_env *head, char *file, int c)
 {
 	if (c == 1)
@@ -78,17 +75,17 @@ void	free_return(t_env *head, char *file, int c)
 	}
 }
 
-
 void	init_mini(t_mini *shell, char **envm)
 {
-	int	i;
+	int				i;
+	t_export_norm	*export;
 
 	i = 0;
-	// printf("----------------------------------------");
-	// for(int y = 0; envm[y] != NULL; y++)
-	// 	printf("%s\n", envm[y]);
-	// printf("----------------------------------------");
-
+	export = malloc(sizeof(t_export_norm));
+	shell->path = NULL;
+	shell->env = NULL;
+	shell->envp = NULL;
+	shell->export = NULL;
 	while (envm[i])
 	{
 		if (ft_strncmp("PATH=", envm[i], 5) == 0)
@@ -106,29 +103,34 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->heredoc_file = NULL;
 	shell->syntax_error = 0;
 	shell->pipes = 0;
+	export->equal_sign_pos = NULL;
+	export->plus_equal_sign_pos = NULL;
+	export->key = NULL;
+	export->value = NULL;
+	shell->export = export;
 }
 
-void shell_loop(t_mini *shell)
+void	shell_loop(t_mini *shell)
 {
-    char *input;
+	char	*input;
 
-    while (1)
-    {
-        input = readline("MiniShell$ ");
-        if (!input)
+	while (1)
+	{
+		input = readline("MiniShell$ ");
+		if (!input)
 		{
 			printf("exit\n");
-            break;
+			break ;
 		}
-        else if (input && *input)
-        {
-            free(shell->rl); 
-            shell->rl = ft_strdup(input);
-            free(input);
-            if (!shell->rl)
-                break;
-            add_history(shell->rl);
-            ft_lexer(shell);
+		else if (input && *input)
+		{
+			free(shell->rl);
+			shell->rl = ft_strdup(input);
+			free(input);
+			if (!shell->rl)
+				break ;
+			add_history(shell->rl);
+			ft_lexer(shell);
 			ft_expander(shell);
             ft_parsing(shell);
             // print_parser(&shell->cmds);
@@ -142,7 +144,6 @@ void shell_loop(t_mini *shell)
         }
     }
 }
-
 
 void	handle_sigint(int sig)
 {
@@ -188,10 +189,10 @@ void	free_arr_dup(char **arr)
 
 void	free_path(char **path)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(path[i])
+	while (path[i])
 	{
 		free(path[i]);
 		i++;
@@ -199,6 +200,14 @@ void	free_path(char **path)
 	free(path);
 	return ;
 }
+
+void	free_export(t_export_norm *export)
+{
+	free(export);
+}
+
+int		g_exit_status = 0;
+
 int	main(int ac, char **av, char **envm)
 {
 	t_mini	shell;
@@ -213,7 +222,8 @@ int	main(int ac, char **av, char **envm)
 	free_env(shell.env);
 	free_path(shell.path);
 	free_arr_dup(shell.envp);
-	// free_path(shell.path);
+  
+	if (shell.export)
+		free_export(shell.export);
 	return (0);
-
 }

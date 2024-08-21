@@ -44,8 +44,7 @@ void	print_parser(t_parser **head)
 	}
 }
 
-
-void 	print_lexer(t_lexer **head)
+void	print_lexer(t_lexer **head)
 {
 	t_lexer	*tmp;
 
