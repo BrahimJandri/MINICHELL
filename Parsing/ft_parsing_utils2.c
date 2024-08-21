@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:42:28 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 14:44:44 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 10:25:12 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,20 @@ void	ft_add_parser_node(t_parser **head, t_parser *new_node)
 			tmp = tmp->next;
 		tmp->next = new_node;
 		new_node->prev = tmp;
+	}
+}
+
+void	ft_add_redir_node(t_lexer **redirections, t_lexer *redir_node)
+{
+	t_lexer	*last;
+
+	if (!*redirections)
+		*redirections = redir_node;
+	else
+	{
+		last = *redirections;
+		while (last->next)
+			last = last->next;
+		last->next = redir_node;
 	}
 }

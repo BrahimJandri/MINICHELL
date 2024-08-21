@@ -16,11 +16,11 @@ void	exit_msg(char *msg, int c)
 {
 	ft_putstr_fd("exit\n", 2);
 	ft_putstr_fd(msg, 2);
-	if(c)
+	if (c)
 		exit(2);
 }
 
-int 	exit_builtin(char **args)
+int	exit_builtin(char **args)
 {
 	int	i;
 

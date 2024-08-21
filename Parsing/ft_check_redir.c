@@ -58,7 +58,6 @@ static void	ft_syntax_err(char *str)
 	}
 }
 
-
 int	check_redir(t_lexer *head)
 {
 	t_lexer	*tmp;
@@ -71,11 +70,11 @@ int	check_redir(t_lexer *head)
 			ft_syntax_err(tmp->word);
 			return (1);
 		}
-		else if(tmp->token >= OUTFILE && tmp->token <= APPEND)
+		else if (tmp->token >= OUTFILE && tmp->token <= APPEND)
 		{
-			if(!tmp->next || tmp->next->token == PIPE)
-				return 1;
-			if(!tmp->next->word[0] || is_whitespace_in_string(tmp->next->word))
+			if (!tmp->next || tmp->next->token == PIPE)
+				return (1);
+			if (!tmp->next->word[0] || is_whitespace_in_string(tmp->next->word))
 			{
 				ft_putstr_fd("minishell: ambiguous redirect\n", 2);
 				g_exit_status = 1;

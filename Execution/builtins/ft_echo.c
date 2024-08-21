@@ -32,11 +32,11 @@ int	is_n_flag(char *arg)
 
 void	remove_quotes(char *str)
 {
-	t_remove_quote rm_quote;
+	t_remove_quote	rm_quote;
+
 	ft_memset(&rm_quote, 0, sizeof(t_remove_quote));
 	rm_quote.src = str;
 	rm_quote.dst = str;
-	
 	while (*rm_quote.src)
 	{
 		if (*rm_quote.src == '"' && !rm_quote.sngl_qt)
@@ -49,8 +49,8 @@ void	remove_quotes(char *str)
 			rm_quote.sngl_qt = !rm_quote.sngl_qt;
 			rm_quote.src++;
 		}
-		else if (!rm_quote.sngl_qt && !rm_quote.dbl_qt
-			&& (*rm_quote.src == '"' || *rm_quote.src == '\''))
+		else if (!rm_quote.sngl_qt && !rm_quote.dbl_qt && (*rm_quote.src == '"'
+				|| *rm_quote.src == '\''))
 			rm_quote.src++;
 		else
 			*rm_quote.dst++ = *rm_quote.src++;

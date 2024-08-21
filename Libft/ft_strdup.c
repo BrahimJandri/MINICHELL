@@ -15,7 +15,7 @@
 char	*ft_strdup(const char *s)
 {
 	size_t	i;
-	size_t		len;
+	size_t	len;
 	char	*dup;
 
 	i = 0;
@@ -31,4 +31,3 @@ char	*ft_strdup(const char *s)
 	dup[i] = '\0';
 	return (dup);
 }
-

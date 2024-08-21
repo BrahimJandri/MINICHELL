@@ -12,7 +12,6 @@
 
 #include "./include/minishell.h"
 
-
 char	**arr_dup(char **envm)
 {
 	int		len;
@@ -56,7 +55,6 @@ char	*ft_strnlen(const char *str, char delimiter)
 	return (result);
 }
 
-
 void	free_return(t_env *head, char *file, int c)
 {
 	if (c == 1)
@@ -77,20 +75,17 @@ void	free_return(t_env *head, char *file, int c)
 	}
 }
 
-
 void	init_mini(t_mini *shell, char **envm)
 {
-	int	i;
+	int				i;
+	t_export_norm	*export;
 
 	i = 0;
-	t_export_norm *export;
-	
 	export = malloc(sizeof(t_export_norm));
 	shell->path = NULL;
 	shell->env = NULL;
 	shell->envp = NULL;
 	shell->export = NULL;
-	
 	while (envm[i])
 	{
 		if (ft_strncmp("PATH=", envm[i], 5) == 0)
@@ -114,40 +109,39 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->export = export;
 }
 
-void shell_loop(t_mini *shell)
+void	shell_loop(t_mini *shell)
 {
-    char *input;
+	char	*input;
 
-    while (1)
-    {
-        input = readline("MiniShell$ ");
-        if (!input)
+	while (1)
+	{
+		input = readline("MiniShell$ ");
+		if (!input)
 		{
 			printf("exit\n");
-            break;
+			break ;
 		}
-        else if (input && *input)
-        {
-            free(shell->rl); 
-            shell->rl = ft_strdup(input);
-            free(input);
-            if (!shell->rl)
-                break;
-            add_history(shell->rl);
-            ft_lexer(shell);
+		else if (input && *input)
+		{
+			free(shell->rl);
+			shell->rl = ft_strdup(input);
+			free(input);
+			if (!shell->rl)
+				break ;
+			add_history(shell->rl);
+			ft_lexer(shell);
 			ft_expander(shell);
-            ft_parsing(shell);
+			ft_parsing(shell);
 			// print_lexer(&shell->head);
 			// print_parser(&shell->cmds);
-            ft_execution(shell->cmds, shell, shell->envp);
-            free_tokens(shell->head);
-            free_parser(shell->cmds);
-            shell->head = NULL;
-            shell->cmds = NULL;
-        }
-    }
+			ft_execution(shell->cmds, shell, shell->envp);
+			free_tokens(shell->head);
+			free_parser(shell->cmds);
+			shell->head = NULL;
+			shell->cmds = NULL;
+		}
+	}
 }
-
 
 void	handle_sigint(int sig)
 {
@@ -193,10 +187,10 @@ void	free_arr_dup(char **arr)
 
 void	free_path(char **path)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(path[i])
+	while (path[i])
 	{
 		free(path[i]);
 		i++;
@@ -205,8 +199,7 @@ void	free_path(char **path)
 	return ;
 }
 
-
-void free_export(t_export_norm *export)
+void	free_export(t_export_norm *export)
 {
 	free(export);
 }
@@ -227,7 +220,7 @@ int	main(int ac, char **av, char **envm)
 	free_env(shell.env);
 	free_path(shell.path);
 	free_arr_dup(shell.envp);
-	if(shell.export)
+	if (shell.export)
 		free_export(shell.export);
 	return (0);
 }

@@ -94,7 +94,7 @@ void	ft_lexer(t_mini *shell)
 {
 	char	*tmp;
 
-	if(is_empty(shell->rl))
+	if (is_empty(shell->rl))
 		return ;
 	tmp = ft_strtrim(shell->rl, " \t\n");
 	free(shell->rl);

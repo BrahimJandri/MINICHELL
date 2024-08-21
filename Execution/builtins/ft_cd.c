@@ -6,13 +6,26 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/20 13:24:27 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 10:51:15 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int		cd_builtin(char **args, t_env **env)
+int	is_valid_identifier(const char *str)
+{
+	if ((!ft_isalpha(*str) && *str != '_'))
+		return (0);
+	while (*str)
+	{
+		if (!ft_isalnum(*str) && *str != '_')
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+int	cd_builtin(char **args, t_env **env)
 {
 	char	*path;
 	char	*oldpwd;
