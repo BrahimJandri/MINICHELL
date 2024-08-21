@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/20 14:44:38 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/21 10:37:19 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 {
     char *joined_cmd;
     int i;
-    
+    if(!cmds->cmd[0])
+        exit(1);  
     i = 0;
     if(!access(cmds->cmd[0], F_OK))
     {
@@ -31,6 +32,7 @@ void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
     while(shell->path[i])
     {
         joined_cmd = join_path(shell->path[i], cmds->cmd[0]);// there is a probelm if he inputs ./cat
+
         if(!access(joined_cmd, F_OK))
         {
             if(execve(joined_cmd, cmds->cmd, envp) == -1)
@@ -161,8 +163,8 @@ void    check_heredoc(t_mini *shell, t_parser *cmds)
     {
         if(tmp->token == HEREDOC)
         {
-            if(shell->heredoc_file)
-                free(shell->heredoc_file);
+            // if(shell->heredoc_file)
+            //     free(shell->heredoc_file);
             shell->heredoc_file = ft_strdup("/tmp/heredoc_file");
             exit = here_doc(shell->heredoc_file, shell, cmds->redirections);
             if(exit)
@@ -202,7 +204,7 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
     // if(fd < 0)
         // ft_error();
     line = readline("> ");
-    while(line && ft_strncmp(delimiter, line, ft_strlen(delimiter)))
+    while(line && ft_strcmp(delimiter, line))
     {
         if(!quote)
             line = expand_var(line, shell);
@@ -214,8 +216,6 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
     if(!line) // there is still something global for the heredoc
         return 1;
     close(fd);
-    // if(shell->heredoc_file)
-    //     free(shell->heredoc_file);
     return 0;
     
 }

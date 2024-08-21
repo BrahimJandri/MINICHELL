@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/20 12:28:32 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/21 10:26:47 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ void shell_loop(t_mini *shell)
             ft_execution(shell->cmds, shell, shell->envp);
             free_tokens(shell->head);
             free_parser(shell->cmds);
+			if(shell->heredoc_file)
+        		free(shell->heredoc_file);
             shell->head = NULL;
             shell->cmds = NULL;
         }
