@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/21 10:37:19 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/21 18:06:28 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,12 @@ void    handle_cmd(t_mini *shell, t_parser *cmds)
         if(which_redirection(shell, cmds->redirections))
             exit(1);
     }
-    if(cmds->builtin)
-    {
-        execute_builtin(cmds, &shell->env);
-        exit(0);
-    }
-    else if(cmds->cmd)
+    // if(cmds->builtin)
+    // {
+    //     execute_builtin(cmds, shell);
+    //     exit(0);
+    // }
+    if(cmds->cmd)
         exec_cmd(shell, shell->envp, shell->cmds);
     
 }
@@ -112,9 +112,9 @@ void    single_command(t_mini *shell, t_parser *cmds)
 
     built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
-    if(built == CD || built == EXIT || built == EXPORT || built == UNSET)
+    if(built)
     {
-        execute_builtin(cmds, &shell->env);
+        execute_builtin(cmds, shell);
         return ;
     }
     check_heredoc(shell, cmds);

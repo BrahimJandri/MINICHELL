@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/20 16:17:47 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 18:19:19 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->head = NULL;
 	shell->rl = NULL;
 	shell->heredoc_file = NULL;
-	shell->syntax_error = 0;
 	shell->pipes = 0;
 	export->equal_sign_pos = NULL;
 	export->plus_equal_sign_pos = NULL;
@@ -116,6 +115,7 @@ void	shell_loop(t_mini *shell)
 
 	while (1)
 	{
+		shell->syntax_error = 0;
 		input = readline("MiniShell$ ");
 		if (!input)
 		{
@@ -133,8 +133,8 @@ void	shell_loop(t_mini *shell)
 			ft_lexer(shell);
 			ft_expander(shell);
             ft_parsing(shell);
-            // print_parser(&shell->cmds);
-            ft_execution(shell->cmds, shell, shell->envp);
+            if(!shell->syntax_error)
+            	ft_execution(shell->cmds, shell, shell->envp);
             free_tokens(shell->head);
             free_parser(shell->cmds);
 			if(shell->heredoc_file)

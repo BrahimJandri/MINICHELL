@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:15:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:44:39 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 18:12:45 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,30 +65,29 @@ void	rm_quote(t_mini *shell)
 	free(dst);
 }
 
-int	parse_pipe(char *str)
-{
-	int	i;
-	int	len;
 
-	i = 0;
-	len = ft_strlen(str);
-	if (len == 0)
-		return (0);
-	if (str[0] == '|' || str[len - 1] == '|')
-		return (1);
-	while (str[i])
+int	check_pipe(t_lexer *redirection)
+{
+	if (redirection->token == PIPE)
 	{
-		if (str[i] == '|')
-		{
-			i++;
-			while (is_whitespace(str[i]))
-				i++;
-			if (str[i] == '|')
-				return (1);
-		}
-		i++;
+		ft_putstr_fd("Syntax error near unexpected token `|'\n", 2);
+		g_exit_status = 2;
+		return 1;
 	}
-	return (0);
+	while (redirection)
+	{
+		if (redirection->token == PIPE)
+		{
+			if (redirection->next == NULL || redirection->next->token == PIPE)
+			{
+				ft_putstr_fd("Syntax error near unexpected token `|'\n", 2);
+				g_exit_status = 2;
+				return 1;
+			}
+		}
+		redirection = redirection->next;
+	}
+	return 0;
 }
 
 int	is_empty(char *str)
