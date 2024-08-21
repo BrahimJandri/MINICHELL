@@ -100,6 +100,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->cmds = NULL;
 	shell->head = NULL;
 	shell->rl = NULL;
+	shell->heredoc_file = NULL;
 	shell->syntax_error = 0;
 	shell->pipes = 0;
 	export->equal_sign_pos = NULL;
@@ -131,16 +132,17 @@ void	shell_loop(t_mini *shell)
 			add_history(shell->rl);
 			ft_lexer(shell);
 			ft_expander(shell);
-			ft_parsing(shell);
-			// print_lexer(&shell->head);
-			// print_parser(&shell->cmds);
-			ft_execution(shell->cmds, shell, shell->envp);
-			free_tokens(shell->head);
-			free_parser(shell->cmds);
-			shell->head = NULL;
-			shell->cmds = NULL;
-		}
-	}
+            ft_parsing(shell);
+            // print_parser(&shell->cmds);
+            ft_execution(shell->cmds, shell, shell->envp);
+            free_tokens(shell->head);
+            free_parser(shell->cmds);
+			if(shell->heredoc_file)
+        		free(shell->heredoc_file);
+            shell->head = NULL;
+            shell->cmds = NULL;
+        }
+    }
 }
 
 void	handle_sigint(int sig)
@@ -220,6 +222,7 @@ int	main(int ac, char **av, char **envm)
 	free_env(shell.env);
 	free_path(shell.path);
 	free_arr_dup(shell.envp);
+  
 	if (shell.export)
 		free_export(shell.export);
 	return (0);

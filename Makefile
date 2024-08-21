@@ -16,7 +16,7 @@ SRC = minishell.c ./Parsing/lexer.c ./Parsing/ft_nodes.c ./Parsing/ft_lexer_hepl
 
 OBJ = $(SRC:.c=.o)
 
-all: $(NAME) clean
+all: $(NAME) clean 
 
 $(NAME): $(OBJ)
 	@make -C Libft
