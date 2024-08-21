@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:50:57 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 11:02:32 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,26 @@ void					ft_lstadd_back(t_lexer **lst, t_lexer *new);
 t_lexer					*ft_new_token(char *content);
 t_lexer					*ft_new_token_expand(char *content, int token);
 void					ft_lstadd(t_env **lst, t_env *new);
+t_lexer	                *ft_create_redir_node(t_lexer *tmp);
+void					ft_add_redir_node(t_lexer **redirections, t_lexer *redir_node);
+char					*expand_var(char *val, t_mini *shell);
 
 /*************************** Expander ***************************/
 
 void					ft_expander(t_mini *shell);
 void					add_to_str(char *val, char **str, int i);
 int						is_val_char(int c);
+int	                    has_double_quotes(const char *str);
 char					*ft_append_char(char *str, char c);
 int						check_quotes(char *str, int indx);
 int						is_whitespace_in_string(char *str);
+char	                *skip_tabs(char *str);
+void	                split_and_add_nodes(t_lexer *tmp, t_mini *shell);
+void	                ft_split_args(t_lexer *tmp, char *expanded);
+char	                *get_value_env(char *str, t_mini *shell);
+void	                get_value(char *val, int *i, char **str, t_mini *shell);
+char	                *extract_name(char *val, int *index, t_mini *shell);
+
 
 /* minishell */
 

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:23:41 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 11:02:22 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	process_dollar_sign(char *val, int *i, char **str, t_mini *shell)
 		add_to_str(val, str, *i);
 }
 
-static char	*expand_var(char *val, t_mini *shell)
+char	*expand_var(char *val, t_mini *shell)
 {
 	char	*str;
 	int		i;

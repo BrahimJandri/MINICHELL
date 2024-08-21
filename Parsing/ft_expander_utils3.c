@@ -6,13 +6,13 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:21:52 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:35:38 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 10:58:36 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static char	*get_value_env(char *str, t_mini *shell)
+char	*get_value_env(char *str, t_mini *shell)
 {
 	t_env	*ptr;
 
@@ -28,7 +28,7 @@ static char	*get_value_env(char *str, t_mini *shell)
 	return (ft_strdup(""));
 }
 
-static void	get_value(char *val, int *i, char **str, t_mini *shell)
+void	get_value(char *val, int *i, char **str, t_mini *shell)
 {
 	char	*tmp;
 	char	*new_str;
@@ -46,7 +46,7 @@ static void	get_value(char *val, int *i, char **str, t_mini *shell)
 	*str = new_str;
 }
 
-static char	*extract_name(char *val, int *index, t_mini *shell)
+char	*extract_name(char *val, int *index, t_mini *shell)
 {
 	int		i;
 	char	*ptr;
