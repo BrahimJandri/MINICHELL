@@ -13,14 +13,14 @@
 
 #include "../include/minishell.h"
 
-static char	*initialize_expansion(char *val, t_mini *shell)
+char	*initialize_expansion(char *val, t_mini *shell)
 {
 	if (!val || !shell || !shell->env)
 		return (ft_strdup(val));
 	return (ft_strdup(""));
 }
 
-static void	process_dollar_sign(char *val, int *i, char **str, t_mini *shell)
+void	process_dollar_sign(char *val, int *i, char **str, t_mini *shell)
 {
 	if (val[*i + 1] && is_val_char(val[*i + 1]) && check_quotes(val, *i) <= 1)
 	{

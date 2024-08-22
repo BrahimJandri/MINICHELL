@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 14:31:39 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 16:46:35 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,9 @@ void	                ft_split_args(t_lexer *tmp, char *expanded);
 char	                *get_value_env(char *str, t_mini *shell);
 void	                get_value(char *val, int *i, char **str, t_mini *shell);
 char	                *extract_name(char *val, int *index, t_mini *shell);
+char 					*ft_expand_herdoc(char *val, t_mini *shell);
+void					process_dollar_sign(char *val, int *i, char **str, t_mini *shell);
+char					*initialize_expansion(char *val, t_mini *shell);
 
 
 /* minishell */

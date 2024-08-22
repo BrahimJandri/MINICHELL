@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/22 10:11:53 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:44:20 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
     while(line && ft_strcmp(delimiter, line))
     {
         if(!quote)
-            line = expand_var(line, shell);
+            line = ft_expand_herdoc(line, shell);
         write(fd, line, ft_strlen(line));
         write(fd, "\n", 1);
         free(line);
