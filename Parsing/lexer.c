@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 18:18:55 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 09:13:33 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,7 @@ void	ft_lexer(t_mini *shell)
 		return ;
 	}
 	if (ft_assign_tokens(shell->head, shell) == -1)
+		return ;
+	if (check_redir(shell->head) == 1)
 		return ;
 }
