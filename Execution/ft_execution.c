@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/22 18:07:11 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/22 18:59:32 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 	else if (ft_strncmp(args->cmd[0], "env", 3) == 0)
 		g_exit_status = env_builtin(&shell->env);
 	else if (ft_strncmp(args->cmd[0], "exit", 4) == 0)
-		g_exit_status = exit_builtin(args->cmd);
+		g_exit_status = exit_builtin(args->cmd, shell);
 	else
 		ft_putendl_fd("minishell: command not found", 2);
 }
@@ -209,7 +209,6 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
     int exit;
     
     delimiter = heredoc->word;
-    // printf("delem == %s\n", delimiter);
     if((delimiter[0] == '\'' && delimiter[ft_strlen(delimiter) - 1] == '\'') 
     || (delimiter[0] == '\"' && delimiter[ft_strlen(delimiter) - 1] == '\"'))
         quote = 1;

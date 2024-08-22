@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:26:53 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:21:29 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 17:50:33 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*ft_append_char(char *str, char c)
 	int		i;
 
 	i = 0;
-	str2 = (char *)malloc(ft_strlen(str) + 2);
+	str2 = malloc(ft_strlen(str) + 2);
 	if (!str2)
 		return (NULL);
 	while (str[i])

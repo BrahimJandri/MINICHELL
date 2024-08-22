@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 10:09:31 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:59:47 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote);
 
 int     cmd_not_found(t_mini *shell, t_parser *cmds);
 void	free_path(char **path);
+void    free_all(t_mini *shell);
 /************************** Builtins ************************************/
 
 int		cd_builtin(char **args, t_env **env);
@@ -46,7 +47,7 @@ void	update_env(t_env **env, const char *key, const char *value);
 t_env	*ft_new_env(const char *key, const char *value);
 char	*getenv_value(t_env *env, const char *key);
 t_env	*create_env(char **env);
-int		exit_builtin(char **args);
+int		exit_builtin(char **args, t_mini *shell);
 void	print_sorted(t_env **env_array, int count);
 void	sorted_env(t_env **env);
 void	sort_env(t_env **env_array, int count);
