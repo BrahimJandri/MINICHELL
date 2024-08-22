@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenizer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 14:20:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 14:31:30 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 18:12:24 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,7 @@ static int	process_token(t_lexer *token, t_mini *shell)
 	else if (token->token == HEREDOC)
 	{
 		if (token->next && token->next->token == ARG)
-		{
-			remove_quotes(token->next->word);
 			token->next->token = DELIME;
-		}
 		else
 			return (error_newline(shell), -1);
 	}

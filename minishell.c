@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 14:33:25 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 18:12:54 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void	shell_loop(t_mini *shell)
 			ft_lexer(shell);
 			ft_expander(shell);
             ft_parsing(shell);
-            // print_parser(&shell->cmds);
+            // print_lexer(&shell->head);
             if(!shell->syntax_error)
             {
             	signal(SIGINT, child_sigint);

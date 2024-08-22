@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/22 16:44:20 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 18:07:11 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,7 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
     int exit;
     
     delimiter = heredoc->word;
+    // printf("delem == %s\n", delimiter);
     if((delimiter[0] == '\'' && delimiter[ft_strlen(delimiter) - 1] == '\'') 
     || (delimiter[0] == '\"' && delimiter[ft_strlen(delimiter) - 1] == '\"'))
         quote = 1;
