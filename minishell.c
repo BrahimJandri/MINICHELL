@@ -101,7 +101,6 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->head = NULL;
 	shell->rl = NULL;
 	shell->heredoc_file = NULL;
-	shell->syntax_error = 0;
 	shell->pipes = 0;
 	export->equal_sign_pos = NULL;
 	export->plus_equal_sign_pos = NULL;
@@ -129,6 +128,7 @@ void	shell_loop(t_mini *shell)
 	{
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
+		shell->syntax_error = 0;
 		input = readline("MiniShell$ ");
 		if (!input)
 		{
@@ -147,9 +147,12 @@ void	shell_loop(t_mini *shell)
 			ft_expander(shell);
             ft_parsing(shell);
             // print_parser(&shell->cmds);
-			signal(SIGINT, child_sigint);
-			signal(SIGQUIT, child_sigquit);
-            ft_execution(shell->cmds, shell, shell->envp);
+            if(!shell->syntax_error)
+            {
+              			signal(SIGINT, child_sigint);
+		                signal(SIGQUIT, child_sigquit);
+              ft_execution(shell->cmds, shell, shell->envp);
+            }
             free_tokens(shell->head);
             free_parser(shell->cmds);
 			// if(shell->heredoc_file)

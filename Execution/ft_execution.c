@@ -135,7 +135,7 @@ void    single_command(t_mini *shell, t_parser *cmds)
 
     built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
-    if(built == CD || built == EXIT || built == EXPORT || built == UNSET)
+    if(built)
     {
         execute_builtin(cmds, shell);
         return ;

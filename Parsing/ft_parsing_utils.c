@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:39:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:31:43 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/21 18:17:57 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,14 @@ void	ft_get_builtin(t_lexer *tmp)
 		tmp->builtins = ENV;
 }
 
-static void	error_newline(void)
+static void	error_newline(t_mini *shell)
 {
 	ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 	g_exit_status = 2;
+	shell->syntax_error = 1;
 }
 
-static int	process_token(t_lexer *token)
+static int	process_token(t_lexer *token, t_mini *shell)
 {
 	if (token->token == ARG)
 		ft_get_type(token);
@@ -64,7 +65,7 @@ static int	process_token(t_lexer *token)
 		if (token->next && token->next->token == ARG && token->token != PIPE)
 			token->next->token = FILE_TARGET;
 		else
-			return (error_newline(), -1);
+			return (error_newline(shell), -1);
 	}
 	else if (token->token == HEREDOC)
 	{
@@ -74,12 +75,12 @@ static int	process_token(t_lexer *token)
 			token->next->token = DELIME;
 		}
 		else
-			return (error_newline(), -1);
+			return (error_newline(shell), -1);
 	}
 	return (0);
 }
 
-int	ft_assign_tokens(t_lexer *head)
+int	ft_assign_tokens(t_lexer *head, t_mini *shell)
 {
 	t_lexer	*tmp;
 	int		result;
@@ -88,7 +89,7 @@ int	ft_assign_tokens(t_lexer *head)
 	remove_quotes(tmp->word);
 	while (tmp)
 	{
-		result = process_token(tmp);
+		result = process_token(tmp, shell);
 		if (result < 0)
 			return (-1);
 		tmp = tmp->next;
