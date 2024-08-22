@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 09:13:33 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 14:31:02 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,20 @@ static void	split_args(t_mini *shell)
 		make_words(shell, params.start, i);
 }
 
+void check_errors(t_mini *shell)
+{
+	if(check_pipe(shell->head))
+	{
+		shell->syntax_error = 1;
+		return ;
+	}
+	if (check_redir(shell->head) == 1)
+	{
+		shell->syntax_error = 1;
+		return ;
+	}
+}
+
 void	ft_lexer(t_mini *shell)
 {
 	char	*tmp;
@@ -101,20 +115,13 @@ void	ft_lexer(t_mini *shell)
 	shell->rl = tmp;
 	if (parse_quote(shell->rl))
 	{
-		printf("Syntax Error: parsing quote error\n");
+		ft_putstr_fd("Syntax Error: parsing quote error\n", 2);
 		g_exit_status = 2;
 		shell->syntax_error = 1;
 		return ;
 	}
 	split_args(shell);
 	rm_quote(shell);
-	if(check_pipe(shell->head))
-	{
-		shell->syntax_error = 1;
-		return ;
-	}
-	if (ft_assign_tokens(shell->head, shell) == -1)
-		return ;
-	if (check_redir(shell->head) == 1)
-		return ;
+	check_errors(shell);
+	ft_tokinezer(shell);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/18 11:07:48 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 13:07:54 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_mini
 	char			*rl;
 	char 			*heredoc_file;
 	int				syntax_error;
+	int					quoted;
 	t_env			*env;
 	t_export_norm	*export;
 	t_parser		*cmds;

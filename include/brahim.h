@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 18:21:24 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 14:31:39 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_remove_quote
 
 typedef struct s_lexer
 {
-	int					quoted;
 	char				*word;
 	t_tokens			token;
 	t_builtins			builtins;
@@ -95,12 +94,12 @@ int						check_next(char *first, char next);
 int						type(char *p);
 int						check_pipe(t_lexer *redirection);
 int						handle_quotes(char *dst, const char *src, int i, int length);
+int						check_redir(t_lexer *head);
+int 					ft_tokinezer(t_mini *shell);
 
 /*************************** Parsing ***************************/
 
 void					ft_parsing(t_mini *shell);
-int						ft_assign_tokens(t_lexer *head, t_mini *shell);
-int						check_redir(t_lexer *head);
 int						ft_count_pipe(t_lexer *head);
 void					ft_get_builtin(t_lexer *tmp);
 void					ft_get_type(t_lexer *tmp);

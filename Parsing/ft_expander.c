@@ -82,6 +82,8 @@ void	ft_expander(t_mini *shell)
 	tmp = shell->head;
 	while (tmp)
 	{
+		if(is_empty(tmp->word))
+			break ;
 		next_node = tmp->next;
 		if (tmp->token == FILE_TARGET || tmp->token == ARG)
 		{

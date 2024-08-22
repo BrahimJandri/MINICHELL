@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:19:20 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:34:52 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 12:51:01 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	split_and_add_nodes(t_lexer *tmp, t_mini *shell)
 	t_lexer	*new_node;
 	int		i;
 
+	if(!tmp->word)
+		return ;
 	expanded = expand_var(tmp->word, shell);
 	split_words = ft_split(expanded, ' ');
 	free(expanded);
@@ -79,7 +81,7 @@ void	ft_split_args(t_lexer *tmp, char *expanded)
 	char	**split_words;
 	char	*word;
 	t_lexer	*new_node;
-
+	
 	word = skip_tabs(expanded);
 	split_words = ft_split(word, ' ');
 	free(word);
