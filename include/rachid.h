@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/19 18:55:03 by rachid           ###   ########.fr       */
-/*   Updated: 2024/08/21 09:19:42 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 10:09:31 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef RACHID_H
 # define RACHID_H
@@ -19,11 +19,11 @@
 
 void	ft_execution(t_parser *cmds, t_mini *shell, char **env);
 void	single_command(t_mini *shell, t_parser *cmds);
-void	handle_cmd(t_mini *shell, t_parser *cmds);
+int	handle_cmd(t_mini *shell, t_parser *cmds);
 void	execute_builtin(t_parser *args, t_mini *shell);
 
 // void    check_heredoc(t_parser *cmds);
-void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds);
+int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds);
 char    *join_path(char *path, char *command);
 
 int    which_redirection(t_mini *shell, t_lexer *redirection);
@@ -33,6 +33,9 @@ void    check_heredoc(t_mini *shell, t_parser *cmds);
 int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc);
 int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote);
 
+
+int     cmd_not_found(t_mini *shell, t_parser *cmds);
+void	free_path(char **path);
 /************************** Builtins ************************************/
 
 int		cd_builtin(char **args, t_env **env);
@@ -59,4 +62,5 @@ void	unsetenv_custom(t_env **env, const char *key);
 void	remove_quotes(char *str);
 
 char *expand_var(char *val, t_mini *shell); 
+
 #endif

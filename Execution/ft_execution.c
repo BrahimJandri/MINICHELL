@@ -3,23 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/21 10:37:19 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/22 10:11:53 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/rachid.h"
 
+void    free_all(t_mini *shell)
+{
+    free_tokens(shell->head);
+    free_parser(shell->cmds);
+	free_path(shell->path);
+    free_arr_dup(shell->envp);
+    free_env(shell->env);
+    free(shell->rl);
+    if(shell->heredoc_file)
+        free(shell->heredoc_file);
+    if (shell->export)
+		free(shell->export);    
+}
 
-
-void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
+int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 {
     char *joined_cmd;
     int i;
     if(!cmds->cmd[0])
+    {
+        free_all(shell);
         exit(1);  
+    }
     i = 0;
     if(!access(cmds->cmd[0], F_OK))
     {
@@ -44,21 +59,21 @@ void    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
         free(joined_cmd);
         i++;
     }
+    if(cmds->cmd[0])
+        return(cmd_not_found(shell, cmds));
+    return 0;   
+}
+
+int     cmd_not_found(t_mini *shell, t_parser *cmds)
+{
+    ft_putstr_fd(cmds->cmd[0],2);
+    ft_putstr_fd(": command not found\n", 2);
+    free_all(shell);
+    exit(127);
 }
 
 
-// void    check_heredoc(t_parser *cmds)
-// {
-//     if(cmds->redirections == HERDOC)
-//     {
-//         //DO THE THING
-//     }
-// }
 
-// char    **expander(char **str)
-// {
-//     //expand here.    
-// }
 
 void	execute_builtin(t_parser *args, t_mini *shell)
 {
@@ -82,22 +97,29 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 		ft_putendl_fd("minishell: command not found", 2);
 }
 
-void    handle_cmd(t_mini *shell, t_parser *cmds)
+int    handle_cmd(t_mini *shell, t_parser *cmds)
 {
     // int err;
     
     if(cmds->redirections)  
     {
         if(which_redirection(shell, cmds->redirections))
+        {
+            free_all(shell);
             exit(1);
+        }
     }
     if(cmds->builtin)
     {
-        execute_builtin(cmds, &shell->env);
+        execute_builtin(cmds, shell);
+        free_all(shell);
         exit(0);
     }
     else if(cmds->cmd)
-        exec_cmd(shell, shell->envp, shell->cmds);
+        return(exec_cmd(shell, shell->envp, shell->cmds));
+    free_all(shell);
+    exit(0);
+    return(0);
     
 }
 // void    check_heredoc(t_parser *cmd)
@@ -108,27 +130,29 @@ void    handle_cmd(t_mini *shell, t_parser *cmds)
 void    single_command(t_mini *shell, t_parser *cmds)
 {
     int pid; 
+    int status;
     t_builtins built;
 
     built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
     if(built == CD || built == EXIT || built == EXPORT || built == UNSET)
     {
-        execute_builtin(cmds, &shell->env);
+        execute_builtin(cmds, shell);
         return ;
     }
-    check_heredoc(shell, cmds);
+    check_heredoc(shell, cmds); 
     pid = fork();
     if(pid < 0)
     {
         perror("fork failed");
-        //fork failed.  
+        // fork failed.  
     }
     if(pid == 0)
     {
         handle_cmd(shell, cmds);
     }
-    wait(NULL);
+    waitpid(pid, &status, 0);
+    g_exit_status = WEXITSTATUS(status);
 }
 
 
@@ -163,8 +187,8 @@ void    check_heredoc(t_mini *shell, t_parser *cmds)
     {
         if(tmp->token == HEREDOC)
         {
-            // if(shell->heredoc_file)
-            //     free(shell->heredoc_file);
+            if(shell->heredoc_file)
+                free(shell->heredoc_file);
             shell->heredoc_file = ft_strdup("/tmp/heredoc_file");
             exit = here_doc(shell->heredoc_file, shell, cmds->redirections);
             if(exit)
@@ -219,3 +243,4 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
     return 0;
     
 }
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/20 16:17:47 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 10:12:49 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,17 +110,30 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->export = export;
 }
 
+void	child_sigint(int pid)
+{
+	(void)pid;
+	write(1, "\n", 1);
+}
+
+void	child_sigquit(int pid)
+{
+	(void)pid;
+	write(1, "Quit (core dumped)\n", 19);
+}
 void	shell_loop(t_mini *shell)
 {
 	char	*input;
 
 	while (1)
 	{
+		signal(SIGINT, handle_sigint);
+		signal(SIGQUIT, SIG_IGN);
 		input = readline("MiniShell$ ");
 		if (!input)
 		{
 			printf("exit\n");
-			break ;
+			return ;
 		}
 		else if (input && *input)
 		{
@@ -134,11 +147,13 @@ void	shell_loop(t_mini *shell)
 			ft_expander(shell);
             ft_parsing(shell);
             // print_parser(&shell->cmds);
+			signal(SIGINT, child_sigint);
+			signal(SIGQUIT, child_sigquit);
             ft_execution(shell->cmds, shell, shell->envp);
             free_tokens(shell->head);
             free_parser(shell->cmds);
-			if(shell->heredoc_file)
-        		free(shell->heredoc_file);
+			// if(shell->heredoc_file)
+        	// 	free(shell->heredoc_file);
             shell->head = NULL;
             shell->cmds = NULL;
         }
@@ -154,7 +169,7 @@ void	handle_sigint(int sig)
 
 void	free_env_node(t_env *node)
 {
-	if (node)
+	if(node)
 	{
 		free(node->key);
 		free(node->value);
@@ -215,15 +230,17 @@ int	main(int ac, char **av, char **envm)
 	(void)ac;
 	(void)av;
 	init_mini(&shell, envm);
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	// signal(SIGINT, handle_sigint);
+	// signal(SIGQUIT, SIG_IGN);
 	shell_loop(&shell);
 	free(shell.rl);
 	free_env(shell.env);
 	free_path(shell.path);
 	free_arr_dup(shell.envp);
-  
+	if(shell.heredoc_file)
+		free(shell.heredoc_file);
 	if (shell.export)
 		free_export(shell.export);
 	return (0);
 }
+
