@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:18:48 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/15 12:36:32 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/23 16:01:18 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_strdup(const char *s)
 	char	*dup;
 
 	i = 0;
+	if(!s)
+		return (NULL);
 	len = ft_strlen(s);
 	dup = (char *)malloc((len * sizeof(char)) + 1);
 	if (!dup)

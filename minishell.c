@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 20:55:21 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/23 16:03:24 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ char	*ft_strnlen(const char *str, char delimiter)
 
 	i = 0;
 	j = 0;
+	if(!str)
+		return (NULL);
 	while (str[i] && str[i] != delimiter)
 		i++;
 	result = malloc(i + 1);

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:10:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:49:02 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/23 16:11:15 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	sort_env(t_env **env_array, int count)
 		i = 0;
 		while (i < count - 1)
 		{
+			if(!env_array[i]->key || !env_array[i + 1]->key)
+				break ;
 			if (ft_strcmp(env_array[i]->key, env_array[i + 1]->key) > 0)
 			{
 				swap_env(&env_array[i], &env_array[i + 1]);
@@ -63,10 +65,10 @@ void	print_sorted(t_env **env_array, int count)
 	i = 0;
 	while (i < count)
 	{
-		if (env_array[i]->value)
+		if (env_array[i]->value && env_array[i]->key)
 			printf("declare -x %s=\"%s\"\n", env_array[i]->key,
 				env_array[i]->value);
-		else
+		else if (env_array[i]->key)
 			printf("declare -x %s\n", env_array[i]->key);
 		i++;
 	}
