@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/22 18:59:32 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/23 16:55:19 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ int     cmd_not_found(t_mini *shell, t_parser *cmds)
 }
 
 
-
-
 void	execute_builtin(t_parser *args, t_mini *shell)
 {
 	if (args->cmd[0] == NULL || args->cmd[0][0] == '\0')
@@ -126,6 +124,32 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
 // {
     
 // }
+void	ft_update_shlvl(t_env *env)
+{
+    t_env	*tmp;
+    char	*shlvl;
+    int		lvl;
+
+    tmp = env; 
+    while (tmp)
+    {
+        if (ft_strncmp(tmp->key, "SHLVL", 5) == 0)
+        {
+            shlvl = tmp->value;
+            if (shlvl)
+            {
+                lvl = ft_atoi(shlvl);
+                lvl++;
+                free(tmp->value);
+                tmp->value = ft_itoa(lvl);
+            }
+            return;
+        }
+        tmp = tmp->next;
+    }
+}
+
+
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
@@ -133,6 +157,10 @@ void    single_command(t_mini *shell, t_parser *cmds)
     int status;
     t_builtins built;
 
+    if(!ft_strcmp(cmds->cmd[0], "./minishell"))
+    {
+        ft_update_shlvl(shell->env);
+    }
     built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
     if(built)
