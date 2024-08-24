@@ -6,23 +6,20 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:47:25 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:49:36 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/24 10:04:10 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	pwd_builtin(void)
+int	pwd_builtin(t_env **env)
 {
 	char	*buf;
 
 	buf = getcwd(NULL, 0);
 	if (!buf)
 	{
-		ft_putendl_fd("minishell: pwd: error retrieving current directory: getcwd: \
-cannot access parent directories: No such file or directory", \
-						2);
-		return (1);
+		ft_putendl_fd((*env)->pwd, 1);
 	}
 	ft_putendl_fd(buf, 1);
 	free(buf);

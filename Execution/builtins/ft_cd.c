@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:51:15 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/24 10:18:51 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,14 @@ int	cd_builtin(char **args, t_env **env)
 		path = getenv_value(*env, "OLDPWD");
 	else
 		path = args[1];
-	if (chdir(path) == -1)
+	if (chdir(path) == -1 || !path)
 	{
 		ft_putendl_fd("cd: no such file or directory", 2);
 		return (1);
 	}
-	else
-		update_env(env, oldpwd, path);
+	 else
+    {
+    	update_env(env, oldpwd, path);
+    }
 	return (0);
 }

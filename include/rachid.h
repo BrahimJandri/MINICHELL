@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 18:59:47 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/24 10:04:42 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		export_builtin(char **args, t_mini *shell);
 int		process_arg(char *arg, t_mini *shell);
 void	handle_assignment(char *arg, t_mini *shell);
 int		is_valid_identifier(const char *str);
-int		pwd_builtin(void);
+int		pwd_builtin(t_env **env);
 int		unset_builtin(char **args, t_env **env);
 void	unsetenv_custom(t_env **env, const char *key);
 void	remove_quotes(char *str);

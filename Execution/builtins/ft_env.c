@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:01:13 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/23 16:10:50 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/24 10:01:50 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ t_env	*ft_new_env(const char *key, const char *value)
 	else
 		new_node->value = NULL;
 	new_node->next = NULL;
+	new_node->pwd = NULL;
 	return (new_node);
 }
 
