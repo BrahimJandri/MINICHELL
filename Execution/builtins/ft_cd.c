@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/24 10:18:51 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/24 11:46:25 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ int	cd_builtin(char **args, t_env **env)
 	char	*oldpwd;
 
 	if (args[1] != NULL && args[2] != NULL)
-	{
-		ft_putendl_fd("minishell: cd: too many arguments", 2);
-		return (1);
-	}
+		return (ft_putendl_fd("minishell: cd: too many arguments", 2), 1);
 	oldpwd = getenv_value(*env, "PWD");
 	if (!args[1])
 		path = getenv_value(*env, "HOME");
@@ -43,12 +40,10 @@ int	cd_builtin(char **args, t_env **env)
 	else
 		path = args[1];
 	if (chdir(path) == -1 || !path)
-	{
-		ft_putendl_fd("cd: no such file or directory", 2);
-		return (1);
-	}
-	 else
+		return (ft_putendl_fd("cd: no such file or directory", 2), 1);
+	else
     {
+		(*env)->pwd = getcwd(NULL, 0);
     	update_env(env, oldpwd, path);
     }
 	return (0);
