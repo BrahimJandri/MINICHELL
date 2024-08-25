@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 20:52:37 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/25 09:13:44 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,11 @@ int	exit_builtin(char **args, t_mini *shell)
 		exit(g_exit_status);
 	}
 	if (args[2] != NULL)
-	{
-		exit_msg("minishell: exit: too many arguments\n", 0, shell);
-		return (1);
-	}
+		return (exit_msg("minishell: exit: too many arguments\n", 0, shell), 1);
 	while (args[1][i])
 	{
 		if (!ft_isdigit(args[1][i]))
-		{
-			exit_msg("minishell: exit: numeric argument required\n", 1, shell);
-			return (1);
-		}
+			return (exit_msg("minishell: exit: numeric argument required\n", 1, shell), 1);
 		i++;
 	}
 	ft_putstr_fd("exit\n", 2);

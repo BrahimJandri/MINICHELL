@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/24 12:05:05 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/25 09:04:08 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,11 @@ void	free_env_node(t_env *node)
 	{
 		free(node->key);
 		free(node->value);
+		if(node->pwd)
+		{
+			free(node->pwd);
+			node->pwd = NULL;
+		}
 		free(node);
 	}
 }
