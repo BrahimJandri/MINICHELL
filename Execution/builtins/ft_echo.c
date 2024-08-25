@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/20 16:12:15 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/25 09:52:12 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@ int	echo_builtin(char **args)
 	while (args[i])
 	{
 		write(1, args[i], ft_strlen(args[i]));
-		if (args[i++ + 1])
+		if (args[i + 1])
 			write(1, " ", 1);
+		i++;
 	}
 	if (!n_flag)
 		write(1, "\n", 1);
