@@ -15,7 +15,7 @@
 
 char	*initialize_expansion(char *val, t_mini *shell)
 {
-	if (!val || !shell || !shell->env)
+	if (!val || !shell)
 		return (ft_strdup(val));
 	return (ft_strdup(""));
 }
@@ -63,13 +63,9 @@ void	expand_and_replace_word(t_lexer *tmp, t_mini *shell)
 	expanded = expand_var(tmp->word, shell);
 	free(tmp->word);
 	if (!has_quotes)
-	{
 		tmp->word = skip_tabs(expanded);
-	}
 	else
-	{
 		tmp->word = expanded;
-	}
 }
 
 void	ft_expander(t_mini *shell)

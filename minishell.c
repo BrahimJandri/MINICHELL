@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/26 15:17:08 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/26 22:33:40 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void	child_sigint(int pid)
 {
 	(void)pid;
 	write(1, "\n", 1);
+	exit(130);
 }
 
 void	child_sigquit(int pid)

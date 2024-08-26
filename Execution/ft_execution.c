@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/26 15:19:34 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/26 22:21:18 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void    free_all(t_mini *shell)
 {
     free_tokens(shell->head);
     // free_parser(shell->cmds);
-	free_path(shell->path);
+    if(shell->path)
+	    free_path(shell->path);
     free_arr_dup(shell->envp);
     free_env(shell->env);
     free(shell->rl);
@@ -96,7 +97,7 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 
 int    handle_cmd(t_mini *shell, t_parser *cmds)
 {
-    int err;
+    int err = 0;
     
     if(cmds->redirections)  
     {
@@ -119,17 +120,41 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
     exit(err);
 }
 
+void	ft_shlvl_update(char	***envp)
+{
+	char	**tmp;
+	char	*tmp_free;
+	char	*shlvl;
+	int		i;
 
+	tmp = *envp;
+	i = 0;
+	while (tmp[i])
+	{
+		if (!ft_strncmp(tmp[i], "SHLVL=", 6))
+		{
+			tmp_free = tmp[i];
+			shlvl = ft_itoa(ft_atoi(tmp[i] + 6) + 1);
+			if (!shlvl)
+				return ;
+			tmp[i] = ft_strjoin("SHLVL=", shlvl);
+			free(shlvl);
+			free(tmp_free);
+			break ;
+		}
+		i++;
+	}
+}
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
     int pid; 
     int status;
     t_builtins built;
-
-    if(!ft_strcmp(cmds->cmd[0], "./minishell"))
+    
+    if(!ft_strcmp(cmds->cmd[0], "./minishell") && shell->envp)
     {
-        ft_update_shlvl(shell->env);
+        ft_shlvl_update(&shell->envp);
     }
     built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
