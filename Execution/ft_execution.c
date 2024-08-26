@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/22 18:07:11 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/26 15:19:34 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void    free_all(t_mini *shell)
 {
     free_tokens(shell->head);
-    free_parser(shell->cmds);
+    // free_parser(shell->cmds);
 	free_path(shell->path);
     free_arr_dup(shell->envp);
     free_env(shell->env);
@@ -72,9 +72,6 @@ int     cmd_not_found(t_mini *shell, t_parser *cmds)
     exit(127);
 }
 
-
-
-
 void	execute_builtin(t_parser *args, t_mini *shell)
 {
 	if (args->cmd[0] == NULL || args->cmd[0][0] == '\0')
@@ -92,14 +89,12 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 	else if (ft_strncmp(args->cmd[0], "env", 3) == 0)
 		g_exit_status = env_builtin(&shell->env);
 	else if (ft_strncmp(args->cmd[0], "exit", 4) == 0)
-		g_exit_status = exit_builtin(args->cmd);
-	else
-		ft_putendl_fd("minishell: command not found", 2);
+		g_exit_status = exit_builtin(args->cmd, shell);
 }
 
 int    handle_cmd(t_mini *shell, t_parser *cmds)
 {
-    // int err;
+    int err;
     
     if(cmds->redirections)  
     {
@@ -116,16 +111,11 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
         exit(0);
     }
     else if(cmds->cmd)
-        return(exec_cmd(shell, shell->envp, shell->cmds));
-    free_all(shell);
-    exit(0);
-    return(0);
-    
+    {
+        err = exec_cmd(shell, shell->envp, cmds);
+    }
+    exit(err);
 }
-// void    check_heredoc(t_parser *cmd)
-// {
-    
-// }
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
@@ -150,16 +140,124 @@ void    single_command(t_mini *shell, t_parser *cmds)
     if(pid == 0)
     {
         handle_cmd(shell, cmds);
+        sleep(50);       
+        
     }
     waitpid(pid, &status, 0);
     g_exit_status = WEXITSTATUS(status);
 }
 
 
-// void    multiple_command(t_mini *shell, t_parser *cmds)
-// {
-//     int *fd
-// }
+void    fd_dup(t_mini *shell, t_parser *cmds, int fd[2], int fd_read)
+{
+
+    if(cmds->prev && dup2(fd_read, STDIN_FILENO) < 0)
+    {
+        perror("dup2");
+        return ;
+    }
+    if(cmds->next && dup2(fd[1], STDOUT_FILENO) < 0)
+    {
+        perror("dup22");
+        exit (1);
+    }
+        close(fd[0]);
+        close(fd[1]);
+
+    if(cmds->prev)
+        close(fd_read);
+    handle_cmd(shell, cmds);
+    
+}
+
+int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2])
+{
+    static int i;
+    if(shell->new == 0)
+    {
+        i = 0;      
+        shell->new = 1;
+    }
+    shell->pid[i] = fork();
+    if(shell->pid[i] < 0)
+    {
+        ft_putstr_fd("forking error",2);
+        exit(1);
+    }
+    if(shell->pid[i] == 0)
+        fd_dup(shell, cmds,fd, fd_read);
+    i++;
+    return 0;
+        
+}   
+
+int    ft_wait(int *pid, int pipes)
+{
+    int status;
+    int i;
+
+    i = 0;
+    while(i < pipes)
+    {
+        waitpid(pid[i], &status, 0);
+        i++;
+    }
+    if(WEXITSTATUS(status))
+        g_exit_status = WEXITSTATUS(status);
+    return 0;
+}
+
+int    hd_presence(t_mini *shell, int fd[2], int fd_read)
+{
+    if(shell->hd)
+    {
+        close(fd[0]);
+        fd_read = open(shell->heredoc_file, O_RDONLY);
+    }
+    else
+        fd_read = fd[0];
+    return fd_read;
+}
+
+void    multiple_command(t_mini *shell, t_parser *cmds)
+{
+    int fd[2];
+    int fd_read;
+    
+    fd_read = 0;
+    
+    shell->pid = malloc(sizeof(int) * (shell->pipes + 1));
+    if(!shell->pid)
+    {
+        printf("failed to allocate pid");
+        exit(1);
+    }
+    while(cmds)
+    {   //expand
+        if(cmds->next)
+        {
+            if(pipe(fd) < 0)
+            {
+                perror("WAK WAK");
+                exit(1);
+            }
+        }
+        check_heredoc(shell, cmds);
+        forking(shell, cmds, fd_read, fd);
+        close(fd[1]);
+        if(cmds->prev)
+            close(fd_read);
+        fd_read = hd_presence(shell, fd, fd_read);
+        if(cmds->next)
+            cmds = cmds->next;
+        else
+            break ;
+    }
+    ft_wait(shell->pid, shell->pipes + 1);
+    free(shell->pid);
+}
+
+
 
 void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
 {
@@ -171,8 +269,8 @@ void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
     {
         single_command(shell, cmds);
     }
-    // else
-    //     multipl_command(shell, cmds);            
+    else
+        multiple_command(shell, cmds);            
 }
     
 
@@ -185,7 +283,7 @@ void    check_heredoc(t_mini *shell, t_parser *cmds)
     exit = 0;
     while(cmds->redirections)
     {
-        if(tmp->token == HEREDOC)
+        if(cmds->redirections->token == HEREDOC)
         {
             if(shell->heredoc_file)
                 free(shell->heredoc_file);
@@ -193,13 +291,14 @@ void    check_heredoc(t_mini *shell, t_parser *cmds)
             exit = here_doc(shell->heredoc_file, shell, cmds->redirections);
             if(exit)
             {
+                shell->hd = 0;
                 return ;
             }
+            shell->hd = 1;
         }
         cmds->redirections = cmds->redirections->next;
     }
     cmds->redirections = tmp;
-    
 }
 
 int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
