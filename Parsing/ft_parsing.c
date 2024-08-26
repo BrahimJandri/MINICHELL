@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 09:13:30 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/26 10:55:43 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ static void	ft_parse_commands(t_mini *shell)
 
 void	ft_parsing(t_mini *shell)
 {
+	if (shell->head->token == ARG)
+		ft_get_type(shell->head);
 	shell->pipes = ft_count_pipe(shell->head);
 	ft_parse_commands(shell);
 }

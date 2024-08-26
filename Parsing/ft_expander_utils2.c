@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:19:20 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 12:51:01 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/26 10:47:07 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	has_double_quotes(const char *str)
 		return (0);
 	while (*str)
 	{
-		if (*str == '\"')
+		if (*str == '\"' || *str == '\'')
 			return (1);
 		str++;
 	}
