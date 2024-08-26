@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/26 22:33:40 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/26 23:09:30 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,24 @@ void	child_sigquit(int pid)
 	(void)pid;
 	write(1, "Quit (core dumped)\n", 19);
 }
+
+void print_env(char **env)
+{
+    int i;
+
+    i = 0;
+    while(env[i])
+    {
+        ft_putstr_fd(env[i], 2);
+        ft_putstr_fd("\n", 2);
+        i++;
+    }
+}
+
 void	shell_loop(t_mini *shell)
 {
 	char	*input;
-
+	
 	while (1)
 	{
 		signal(SIGINT, handle_sigint);
