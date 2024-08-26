@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/26 10:55:58 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/26 15:17:08 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ void	init_mini(t_mini *shell, char **envm)
 	export->key = NULL;
 	export->value = NULL;
 	shell->export = export;
+	shell->hd = 0;
+	shell->new = 0;
 }
 
 void	child_sigint(int pid)
@@ -162,6 +164,7 @@ void	shell_loop(t_mini *shell)
         	// 	free(shell->heredoc_file);
             shell->head = NULL;
             shell->cmds = NULL;
+			shell->new = 0;
         }
     }
 }

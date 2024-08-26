@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/25 09:13:44 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/22 18:40:36 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ int	exit_builtin(char **args, t_mini *shell)
 	g_exit_status = ft_atoi(args[1]);
 	free_all(shell);
 	exit(g_exit_status);
+
 	return (0);
 }
