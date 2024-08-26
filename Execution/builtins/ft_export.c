@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:21 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:50:21 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/24 11:50:07 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	handle_assignment(char *arg, t_mini *shell)
 
 int	process_arg(char *arg, t_mini *shell)
 {
-	remove_quotes(arg);
 	shell->export->equal_sign_pos = ft_strchr(arg, '=');
 	shell->export->plus_equal_sign_pos = strstr(arg, "+=");
 	handle_assignment(arg, shell);

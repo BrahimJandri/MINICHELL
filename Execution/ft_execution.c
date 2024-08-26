@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
 /*   Updated: 2024/08/26 15:19:34 by rachid           ###   ########.fr       */
@@ -72,6 +72,8 @@ int     cmd_not_found(t_mini *shell, t_parser *cmds)
     exit(127);
 }
 
+
+
 void	execute_builtin(t_parser *args, t_mini *shell)
 {
 	if (args->cmd[0] == NULL || args->cmd[0][0] == '\0')
@@ -79,7 +81,7 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 	if (ft_strncmp(args->cmd[0], "echo", 4) == 0)
 		g_exit_status = echo_builtin(args->cmd);
 	else if (ft_strncmp(args->cmd[0], "pwd", 3) == 0)
-		g_exit_status = pwd_builtin();
+		g_exit_status = pwd_builtin(&shell->env);
 	else if (ft_strncmp(args->cmd[0], "cd", 2) == 0)
 		g_exit_status = cd_builtin(args->cmd, &shell->env);
 	else if (ft_strncmp(args->cmd[0], "export", 6) == 0)
@@ -117,12 +119,18 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
     exit(err);
 }
 
+
+
 void    single_command(t_mini *shell, t_parser *cmds)
 {
     int pid; 
     int status;
     t_builtins built;
 
+    if(!ft_strcmp(cmds->cmd[0], "./minishell"))
+    {
+        ft_update_shlvl(shell->env);
+    }
     built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
     if(built)
@@ -308,7 +316,6 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
     int exit;
     
     delimiter = heredoc->word;
-    // printf("delem == %s\n", delimiter);
     if((delimiter[0] == '\'' && delimiter[ft_strlen(delimiter) - 1] == '\'') 
     || (delimiter[0] == '\"' && delimiter[ft_strlen(delimiter) - 1] == '\"'))
         quote = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:51:15 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/25 09:12:22 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,27 @@ int	is_valid_identifier(const char *str)
 	return (1);
 }
 
-int	cd_builtin(char **args, t_env **env)
+int cd_builtin(char **args, t_env **env)
 {
-	char	*path;
-	char	*oldpwd;
+    char *path;
+    char *oldpwd;
 
-	if (args[1] != NULL && args[2] != NULL)
-	{
-		ft_putendl_fd("minishell: cd: too many arguments", 2);
-		return (1);
-	}
-	oldpwd = getenv_value(*env, "PWD");
-	if (!args[1])
-		path = getenv_value(*env, "HOME");
-	else if (!ft_strncmp(args[1], "-", 1))
-		path = getenv_value(*env, "OLDPWD");
-	else
-		path = args[1];
-	if (chdir(path) == -1)
-	{
-		ft_putendl_fd("cd: no such file or directory", 2);
-		return (1);
-	}
-	else
-		update_env(env, oldpwd, path);
-	return (0);
+    if (args[1] != NULL && args[2] != NULL)
+        return (ft_putendl_fd("minishell: cd: too many arguments", 2), 1);
+    oldpwd = getenv_value(*env, "PWD");
+    if (!args[1])
+    {
+        path = getenv_value(*env, "HOME");
+        if(!path)
+            return (ft_putendl_fd("cd: HOME not set", 2), 1);
+    }
+    else
+        path = args[1];
+    if (chdir(path) == -1 || !path)
+        return (perror("Minishell"), 1);
+    free((*env)->pwd);
+    (*env)->pwd = getcwd(NULL, 0);
+    update_env(env, oldpwd, path);
+    return (0);
 }
+

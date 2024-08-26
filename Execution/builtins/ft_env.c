@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:01:13 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:48:09 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/24 10:01:50 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,16 @@ t_env	*ft_new_env(const char *key, const char *value)
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
 		return (NULL);
-	new_node->key = ft_strdup(key);
+	if(key)
+		new_node->key = ft_strdup(key);
+	else
+		new_node->key = NULL;
 	if (value)
 		new_node->value = ft_strdup(value);
 	else
 		new_node->value = NULL;
 	new_node->next = NULL;
+	new_node->pwd = NULL;
 	return (new_node);
 }
 
@@ -91,8 +95,10 @@ int	env_builtin(t_env **env)
 	tmp = *env;
 	while (tmp)
 	{
-		if (tmp->value)
+		if (tmp->value && tmp->key)
 			printf("%s=%s\n", tmp->key, tmp->value);
+		else if (tmp->key)
+			printf("%s=\n", tmp->key);
 		tmp = tmp->next;
 	}
 	return (0);

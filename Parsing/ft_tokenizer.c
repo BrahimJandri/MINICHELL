@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenizer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 14:20:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 18:12:24 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/26 10:52:40 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,7 @@ static void	error_newline(t_mini *shell)
 
 static int	process_token(t_lexer *token, t_mini *shell)
 {
-	if (token->token == ARG)
-		ft_get_type(token);
-	else if (token->token >= OUTFILE && token->token <= APPEND)
+	if (token->token >= OUTFILE && token->token <= APPEND)
 	{
 		if (token->next && token->next->token == ARG && token->token != PIPE)
 			token->next->token = FILE_TARGET;
@@ -82,8 +80,9 @@ int ft_tokinezer(t_mini *shell)
 	t_lexer	*tmp;
 	int		result;
 
+	if(shell->syntax_error)
+		return -1;
 	tmp = shell->head;
-	remove_quotes(tmp->word);
 	while (tmp)
 	{
 		result = process_token(tmp, shell);

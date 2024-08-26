@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
 /*   Updated: 2024/08/26 15:17:08 by rachid           ###   ########.fr       */
@@ -41,6 +41,8 @@ char	*ft_strnlen(const char *str, char delimiter)
 
 	i = 0;
 	j = 0;
+	if(!str)
+		return (NULL);
 	while (str[i] && str[i] != delimiter)
 		i++;
 	result = malloc(i + 1);
@@ -147,11 +149,11 @@ void	shell_loop(t_mini *shell)
 				break ;
 			add_history(shell->rl);
 			ft_lexer(shell);
-			ft_expander(shell);
-            ft_parsing(shell);
             // print_lexer(&shell->head);
             if(!shell->syntax_error)
             {
+				ft_expander(shell);
+				ft_parsing(shell);
             	signal(SIGINT, child_sigint);
 		        signal(SIGQUIT, child_sigquit);
 				ft_execution(shell->cmds, shell, shell->envp);
@@ -180,6 +182,11 @@ void	free_env_node(t_env *node)
 	{
 		free(node->key);
 		free(node->value);
+		if(node->pwd)
+		{
+			free(node->pwd);
+			node->pwd = NULL;
+		}
 		free(node);
 	}
 }
