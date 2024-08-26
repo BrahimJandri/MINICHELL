@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/24 10:03:30 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/26 18:34:31 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ void    check_heredoc(t_mini *shell, t_parser *cmds)
     exit = 0;
     while(cmds->redirections)
     {
-        if(tmp->token == HEREDOC)
+        if(cmds->redirections->token == HEREDOC)
         {
             if(shell->heredoc_file)
                 free(shell->heredoc_file);
