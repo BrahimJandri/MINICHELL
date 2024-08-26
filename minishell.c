@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/25 09:54:00 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/26 10:55:58 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,11 +147,11 @@ void	shell_loop(t_mini *shell)
 				break ;
 			add_history(shell->rl);
 			ft_lexer(shell);
-			ft_expander(shell);
-            ft_parsing(shell);
-            // print_parser(&shell->cmds);
+            // print_lexer(&shell->head);
             if(!shell->syntax_error)
             {
+				ft_expander(shell);
+				ft_parsing(shell);
             	signal(SIGINT, child_sigint);
 		        signal(SIGQUIT, child_sigquit);
 				ft_execution(shell->cmds, shell, shell->envp);
