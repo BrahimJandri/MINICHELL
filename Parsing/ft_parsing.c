@@ -6,39 +6,43 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/26 10:55:43 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/27 16:45:06 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static char	**ft_store_args(t_lexer *start)
+static char **ft_store_args(t_lexer *start)
 {
-	t_lexer	*tmp;
-	int		count;
-	char	**args;
-	int		i;
+    t_lexer *tmp;
+    int count;
+    char **args;
+    int i;
 
-	tmp = start;
-	count = ft_count_args(tmp);
-	args = (char **)malloc((count + 1) * sizeof(char *));
-	if (!args)
-		return (NULL);
-	i = 0;
-	while (tmp && tmp->token != PIPE)
-	{
-		if (tmp->token == ARG || tmp->token == BUILTIN)
-		{
-			args[i] = ft_strdup(tmp->word);
-			if (!args[i])
-				return (NULL);
-			i++;
-		}
-		tmp = tmp->next;
-	}
-	args[i] = NULL;
-	return (args);
+    tmp = start;
+    count = ft_count_args(tmp);
+    args = (char **)malloc((count + 1) * sizeof(char *));
+    if (!args)
+        return (NULL);
+    i = 0;
+    while (tmp && tmp->token != PIPE)
+    {
+        if (tmp->token == ARG || tmp->token == BUILTIN)
+        {
+            if (tmp->word == NULL)
+                args[i] = ft_strdup("");
+            else
+                args[i] = ft_strdup(tmp->word);
+            if (!args[i])
+                return (NULL);
+            i++;
+        }
+        tmp = tmp->next;
+    }
+    args[i] = NULL;
+    return (args);
 }
+
 
 static void	ft_store_redirections(t_parser *parser, t_lexer *start)
 {

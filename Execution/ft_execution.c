@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/26 22:21:18 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/27 15:51:13 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,19 +79,19 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 {
 	if (args->cmd[0] == NULL || args->cmd[0][0] == '\0')
 		return ;
-	if (ft_strncmp(args->cmd[0], "echo", 4) == 0)
+	if (ft_strcmp(args->cmd[0], "echo") == 0)
 		g_exit_status = echo_builtin(args->cmd);
-	else if (ft_strncmp(args->cmd[0], "pwd", 3) == 0)
+	else if (ft_strcmp(args->cmd[0], "pwd") == 0)
 		g_exit_status = pwd_builtin(&shell->env);
-	else if (ft_strncmp(args->cmd[0], "cd", 2) == 0)
+	else if (ft_strcmp(args->cmd[0], "cd") == 0)
 		g_exit_status = cd_builtin(args->cmd, &shell->env);
-	else if (ft_strncmp(args->cmd[0], "export", 6) == 0)
+	else if (ft_strcmp(args->cmd[0], "export") == 0)
 		g_exit_status = export_builtin(args->cmd, shell);
-	else if (ft_strncmp(args->cmd[0], "unset", 5) == 0)
+	else if (ft_strcmp(args->cmd[0], "unset") == 0)
 		g_exit_status = unset_builtin(args->cmd, &shell->env);
-	else if (ft_strncmp(args->cmd[0], "env", 3) == 0)
+	else if (ft_strcmp(args->cmd[0], "env") == 0)
 		g_exit_status = env_builtin(&shell->env);
-	else if (ft_strncmp(args->cmd[0], "exit", 4) == 0)
+	else if (ft_strcmp(args->cmd[0], "exit") == 0)
 		g_exit_status = exit_builtin(args->cmd, shell);
 }
 
@@ -152,7 +152,7 @@ void    single_command(t_mini *shell, t_parser *cmds)
     int status;
     t_builtins built;
     
-    if(!ft_strcmp(cmds->cmd[0], "./minishell") && shell->envp)
+    if(cmds->cmd && !ft_strcmp(cmds->cmd[0], "./minishell") && shell->envp)
     {
         ft_shlvl_update(&shell->envp);
     }

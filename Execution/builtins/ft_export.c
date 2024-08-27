@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:21 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/24 11:50:07 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/27 18:10:55 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ void	handle_plus_equal_assignment(char *arg, t_mini *shell)
 	char	*existing_value;
 	char	*new_value_part;
 
-	shell->export->key = ft_substr(arg, 0, shell->export->plus_equal_sign_pos
-			- arg);
+	shell->export->key = ft_substr(arg, 0, shell->export->plus_equal_sign_pos - arg);
 	existing_value = getenv_value((shell->env), shell->export->key);
 	new_value_part = ft_strdup(shell->export->plus_equal_sign_pos + 2);
 	if (existing_value)
@@ -39,7 +38,7 @@ void	handle_equal_assignment(char *arg, t_mini *shell)
 		if (existing_value)
 			shell->export->value = ft_strdup(existing_value);
 		else
-			shell->export->value = NULL;
+			shell->export->value = ft_strdup("");
 	}
 	else
 		shell->export->value = ft_strdup(shell->export->equal_sign_pos + 1);
@@ -47,8 +46,6 @@ void	handle_equal_assignment(char *arg, t_mini *shell)
 
 void	handle_assignment(char *arg, t_mini *shell)
 {
-	char	*existing_value;
-
 	if (shell->export->plus_equal_sign_pos)
 		handle_plus_equal_assignment(arg, shell);
 	else if (shell->export->equal_sign_pos)
@@ -56,10 +53,8 @@ void	handle_assignment(char *arg, t_mini *shell)
 	else
 	{
 		shell->export->key = ft_strdup(arg);
-		existing_value = getenv_value((shell->env), shell->export->key);
-		if (existing_value)
-			shell->export->value = ft_strdup(existing_value);
-		else
+		shell->export->value = getenv_value(shell->env, shell->export->key);
+		if (!shell->export->value)
 			shell->export->value = NULL;
 	}
 }
@@ -90,7 +85,7 @@ int	export_builtin(char **args, t_mini *shell)
 {
 	int	i;
 
-	if (!args[1] || !*args[1])
+	if (!args[1])
 	{
 		sorted_env(&shell->env);
 		return (0);

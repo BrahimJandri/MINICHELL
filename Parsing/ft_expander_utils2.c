@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:19:20 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/26 10:47:07 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/27 14:23:29 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_whitespace_in_string(char *str)
 {
+	if(!str)
+		return (0);
 	while (*str)
 	{
 		if (*str == ' ' || *str == '\t' || *str == '\n' || *str == '\v'

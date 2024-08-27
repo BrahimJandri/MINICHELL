@@ -78,9 +78,9 @@ void	ft_expander(t_mini *shell)
 	tmp = shell->head;
 	while (tmp)
 	{
+		next_node = tmp->next;
 		if(is_empty(tmp->word))
 			break ;
-		next_node = tmp->next;
 		if (tmp->token == FILE_TARGET || tmp->token == ARG)
 		{
 			has_quotes = has_double_quotes(tmp->word);
@@ -89,9 +89,7 @@ void	ft_expander(t_mini *shell)
 			tmp->word = expanded;
 			if (tmp->token == ARG && has_quotes == 0
 				&& is_whitespace_in_string(expanded))
-			{
 				ft_split_args(tmp, expanded);
-			}
 		}
 		tmp = next_node;
 	}

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:21:52 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 10:58:36 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/27 18:07:00 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_value_env(char *str, t_mini *shell)
 	ptr = shell->env;
 	while (ptr)
 	{
-		if (ft_strcmp(ptr->key, str) == 0)
+		if (ft_strcmp(ptr->key, str) == 0 && ptr->value)
 		{
 			return (ft_strdup(ptr->value));
 		}
