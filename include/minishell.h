@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/26 15:16:14 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/27 20:44:39 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	char			*pwd;
+	char 			*oldpwd;
 	struct s_env	*next;
 }					t_env;
 

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/27 17:01:16 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/27 20:47:53 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ void	free_env_node(t_env *node)
 			free(node->pwd);
 			node->pwd = NULL;
 		}
+		
 		free(node);
 	}
 }
@@ -251,7 +252,8 @@ int	main(int ac, char **av, char **envm)
 	shell_loop(&shell);
 	free(shell.rl);
 	free_env(shell.env);
-	free_path(shell.path);
+	if(shell.path)
+		free_path(shell.path);
 	free_arr_dup(shell.envp);
 	if(shell.heredoc_file)
 		free(shell.heredoc_file);
