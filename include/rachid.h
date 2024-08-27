@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/26 22:49:31 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/27 08:37:32 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_path(char **path);
 void    free_all(t_mini *shell);
 /************************** Builtins ************************************/
 
-int		cd_builtin(char **args, t_env **env);
+int		cd_builtin(char **args, t_env *env);
 int		echo_builtin(char **args);
 int		is_n_flag(char *arg);
 int		env_builtin(t_env **env);

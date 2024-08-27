@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/26 23:23:29 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/27 09:30:09 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
             //return statusls
         }
     }
-    while(shell->path[i])
+    while(shell->path && shell->path[i])
     {
         joined_cmd = join_path(shell->path[i], cmds->cmd[0]);// there is a probelm if he inputs ./cat
 
@@ -142,7 +142,7 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 	else if (ft_strncmp(args->cmd[0], "pwd", 3) == 0)
 		g_exit_status = pwd_builtin(&shell->env);
 	else if (ft_strncmp(args->cmd[0], "cd", 2) == 0)
-		g_exit_status = cd_builtin(args->cmd, &shell->env);
+		g_exit_status = cd_builtin(args->cmd, shell->env);
 	else if (ft_strncmp(args->cmd[0], "export", 6) == 0)
 		g_exit_status = export_builtin(args->cmd, shell);
 	else if (ft_strncmp(args->cmd[0], "unset", 5) == 0)
