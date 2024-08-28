@@ -6,16 +6,42 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/28 10:59:54 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 16:34:31 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/rachid.h"
 
+void	ft_shlvl_update(char    ***envp)
+{
+	char	**tmp;
+	char	*tmp_free;
+	char	*shlvl;
+	int		i;
+
+	tmp = *envp;
+	i = 0;
+	while (tmp[i])
+	{
+		if (!ft_strncmp(tmp[i], "SHLVL=", 6))
+		{
+			tmp_free = tmp[i];
+			shlvl = ft_itoa(ft_atoi(tmp[i] + 6) + 1);
+			if (!shlvl)
+				return ;
+			tmp[i] = ft_strjoin("SHLVL=", shlvl);
+			free(shlvl);
+			free(tmp_free);
+			break ;
+		}
+		i++;
+	}
+}
+
 void    free_all(t_mini *shell)
 {
     free_tokens(shell->head);
-    free_parser(shell->cmds);
+    // free_parser(shell->cmds);
     if(shell->path)
 	    free_path(shell->path);
     free_arr_dup(shell->envp);
@@ -27,10 +53,15 @@ void    free_all(t_mini *shell)
 		free(shell->export);    
 }
 
+
+
 int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 {
     char *joined_cmd;
     int i;
+    char **new_envp;
+    (void)envp;
+    new_envp = ft_new_envp(shell->env);
     if(!cmds->cmd[0])
     {
         free_all(shell);
@@ -39,19 +70,23 @@ int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
     i = 0;
     if(!access(cmds->cmd[0], F_OK))
     {
-        if(execve(cmds->cmd[0], cmds->cmd, envp) == -1)
+        if(!ft_strcmp(cmds->cmd[0], "./minishell"))
+            ft_shlvl_update(&new_envp);
+        if(execve(cmds->cmd[0], cmds->cmd, new_envp) == -1)
         {
             perror("execve");
             //return statusls
         }
     }
-    while(shell->path[i])
+    while(shell->path && shell->path[i])
     {
         joined_cmd = join_path(shell->path[i], cmds->cmd[0]);// there is a probelm if he inputs ./cat
 
         if(!access(joined_cmd, F_OK))
         {
-            if(execve(joined_cmd, cmds->cmd, envp) == -1)
+            if(!ft_strcmp(cmds->cmd[0], "bash"))
+                ft_shlvl_update(&new_envp);
+            if(execve(joined_cmd, cmds->cmd, new_envp) == -1)
             {
                 perror("execve failed");
                 // return status
@@ -74,24 +109,47 @@ int     cmd_not_found(t_mini *shell, t_parser *cmds)
 }
 
 
+char    **ft_new_envp(t_env *env)
+{
+    char **new_envp;
+
+    new_envp = malloc(sizeof(char *) * (count_env(env) + 1));
+    if(!new_envp)
+    {
+        perror("malloc failed");
+        exit(1);
+    }
+    int i = 0;
+    while(env)
+    {
+        new_envp[i] = ft_strjoin(env->key, "=");
+        new_envp[i] = ft_strjoin(new_envp[i], env->value);
+        i++;
+        env = env->next;
+    }
+    new_envp[i] = NULL;
+    
+    return new_envp;
+}
+
 
 void	execute_builtin(t_parser *args, t_mini *shell)
 {
 	if (args->cmd[0] == NULL || args->cmd[0][0] == '\0')
 		return ;
-	if (ft_strcmp(args->cmd[0], "echo") == 0)
+	if (ft_strncmp(args->cmd[0], "echo", 4) == 0)
 		g_exit_status = echo_builtin(args->cmd);
-	else if (ft_strcmp(args->cmd[0], "pwd") == 0)
+	else if (ft_strncmp(args->cmd[0], "pwd", 3) == 0)
 		g_exit_status = pwd_builtin(&shell->env);
-	else if (ft_strcmp(args->cmd[0], "cd") == 0)
+	else if (ft_strncmp(args->cmd[0], "cd", 2) == 0)
 		g_exit_status = cd_builtin(args->cmd, &shell->env);
-	else if (ft_strcmp(args->cmd[0], "export") == 0)
+	else if (ft_strncmp(args->cmd[0], "export", 6) == 0)
 		g_exit_status = export_builtin(args->cmd, shell);
-	else if (ft_strcmp(args->cmd[0], "unset") == 0)
+	else if (ft_strncmp(args->cmd[0], "unset", 5) == 0)
 		g_exit_status = unset_builtin(args->cmd, &shell->env);
-	else if (ft_strcmp(args->cmd[0], "env") == 0)
+	else if (ft_strncmp(args->cmd[0], "env", 3) == 0)
 		g_exit_status = env_builtin(&shell->env);
-	else if (ft_strcmp(args->cmd[0], "exit") == 0)
+	else if (ft_strncmp(args->cmd[0], "exit", 4) == 0)
 		g_exit_status = exit_builtin(args->cmd, shell);
 }
 
@@ -120,31 +178,6 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
     exit(err);
 }
 
-void	ft_shlvl_update(char	***envp)
-{
-	char	**tmp;
-	char	*tmp_free;
-	char	*shlvl;
-	int		i;
-
-	tmp = *envp;
-	i = 0;
-	while (tmp[i])
-	{
-		if (!ft_strncmp(tmp[i], "SHLVL=", 6))
-		{
-			tmp_free = tmp[i];
-			shlvl = ft_itoa(ft_atoi(tmp[i] + 6) + 1);
-			if (!shlvl)
-				return ;
-			tmp[i] = ft_strjoin("SHLVL=", shlvl);
-			free(shlvl);
-			free(tmp_free);
-			break ;
-		}
-		i++;
-	}
-}
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
@@ -152,10 +185,6 @@ void    single_command(t_mini *shell, t_parser *cmds)
     int status;
     t_builtins built;
     
-    if(cmds->cmd && !ft_strcmp(cmds->cmd[0], "./minishell") && shell->envp)
-    {
-        ft_shlvl_update(&shell->envp);
-    }
     built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
     if(built)

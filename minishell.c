@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 15:23:57 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 16:35:49 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_strnlen(const char *str, char delimiter)
 
 	i = 0;
 	j = 0;
-	if (!str)
+	if(!str)
 		return (NULL);
 	while (str[i] && str[i] != delimiter)
 		i++;
@@ -125,19 +125,26 @@ void	child_sigquit(int pid)
 	(void)pid;
 	write(1, "Quit (core dumped)\n", 19);
 }
+
+void print_env(char **env)
+{
+    int i;
+
+    i = 0;
+    while(env[i])
+    {
+        ft_putstr_fd(env[i], 2);
+        ft_putstr_fd("\n", 2);
+        i++;
+    }
+}
+
 void	shell_loop(t_mini *shell)
 {
 	char	*input;
-
+	
 	while (1)
 	{
-		if(!shell->env)
-		{
-			char *oldpwd = getcwd(NULL, 0);
-			update_env(&shell->env, "PWD", oldpwd);
-			update_env(&shell->env, "SHLVL", "1");
-			free(oldpwd);
-		}
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
 		shell->syntax_error = 0;
@@ -145,7 +152,7 @@ void	shell_loop(t_mini *shell)
 		input = readline("MiniShell$ ");
 		if (!input)
 		{
-			ft_putstr_fd("exit\n", 1);
+			printf("exit\n");
 			return ;
 		}
 		else if (input && *input)
@@ -157,23 +164,24 @@ void	shell_loop(t_mini *shell)
 				break ;
 			add_history(shell->rl);
 			ft_lexer(shell);
-			ft_expander(shell);
-			if (!shell->syntax_error)
-			{
+            // print_lexer(&shell->head);
+            if(!shell->syntax_error)
+            {
+				ft_expander(shell);
 				ft_parsing(shell);
-				signal(SIGINT, child_sigint);
-				signal(SIGQUIT, child_sigquit);
+            	signal(SIGINT, child_sigint);
+		        signal(SIGQUIT, child_sigquit);
 				ft_execution(shell->cmds, shell, shell->envp);
-			}
-			free_tokens(shell->head);
-			free_parser(shell->cmds);
+            }
+            free_tokens(shell->head);
+            free_parser(shell->cmds);
 			// if(shell->heredoc_file)
-			// 	free(shell->heredoc_file);
-			shell->head = NULL;
-			shell->cmds = NULL;
+        	// 	free(shell->heredoc_file);
+            shell->head = NULL;
+            shell->cmds = NULL;
 			shell->new = 0;
-		}
-	}
+        }
+    }
 }
 
 void	handle_sigint(int sig)
@@ -185,11 +193,11 @@ void	handle_sigint(int sig)
 
 void	free_env_node(t_env *node)
 {
-	if (node)
+	if(node)
 	{
 		free(node->key);
 		free(node->value);
-		if (node->pwd)
+		if(node->pwd)
 		{
 			free(node->pwd);
 			node->pwd = NULL;
@@ -251,16 +259,18 @@ int	main(int ac, char **av, char **envm)
 	(void)ac;
 	(void)av;
 	init_mini(&shell, envm);
+	// signal(SIGINT, handle_sigint);
+	// signal(SIGQUIT, SIG_IGN);
 	shell_loop(&shell);
 	free(shell.rl);
-	if(shell.env)
-		free_env(shell.env);
-	if (shell.path)
+	free_env(shell.env);
+	if(shell.path)
 		free_path(shell.path);
 	free_arr_dup(shell.envp);
-	if (shell.heredoc_file)
+	if(shell.heredoc_file)
 		free(shell.heredoc_file);
 	if (shell.export)
 		free_export(shell.export);
 	return (0);
 }
+

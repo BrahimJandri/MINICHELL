@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 18:39:25 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/28 16:34:09 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int		pwd_builtin(t_env **env);
 int		unset_builtin(char **args, t_env **env);
 void	unsetenv_custom(t_env **env, const char *key);
 void	remove_quotes(char *str);
+char    **ft_new_envp(t_env *env);
 
 char *expand_var(char *val, t_mini *shell); 
 
