@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:21 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/27 18:10:55 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 15:49:20 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	export_builtin(char **args, t_mini *shell)
 {
 	int	i;
 
-	if (!args[1])
+	if (!args[1] || !*args[1])
 	{
 		sorted_env(&shell->env);
 		return (0);
