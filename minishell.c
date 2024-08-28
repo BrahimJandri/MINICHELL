@@ -41,7 +41,7 @@ char	*ft_strnlen(const char *str, char delimiter)
 
 	i = 0;
 	j = 0;
-	if(!str)
+	if (!str)
 		return (NULL);
 	while (str[i] && str[i] != delimiter)
 		i++;
@@ -151,24 +151,24 @@ void	shell_loop(t_mini *shell)
 			add_history(shell->rl);
 			ft_lexer(shell);
 			ft_expander(shell);
-            // print_lexer(&shell->head);
-            if(!shell->syntax_error)
-            {
+			// print_lexer(&shell->head);
+			if (!shell->syntax_error)
+			{
 				ft_parsing(shell);
 				// print_parser(&shell->cmds);
-            	signal(SIGINT, child_sigint);
-		        signal(SIGQUIT, child_sigquit);
+				signal(SIGINT, child_sigint);
+				signal(SIGQUIT, child_sigquit);
 				ft_execution(shell->cmds, shell, shell->envp);
-            }
-            free_tokens(shell->head);
-            free_parser(shell->cmds);
+			}
+			free_tokens(shell->head);
+			free_parser(shell->cmds);
 			// if(shell->heredoc_file)
-        	// 	free(shell->heredoc_file);
-            shell->head = NULL;
-            shell->cmds = NULL;
+			// 	free(shell->heredoc_file);
+			shell->head = NULL;
+			shell->cmds = NULL;
 			shell->new = 0;
-        }
-    }
+		}
+	}
 }
 
 void	handle_sigint(int sig)
@@ -180,16 +180,15 @@ void	handle_sigint(int sig)
 
 void	free_env_node(t_env *node)
 {
-	if(node)
+	if (node)
 	{
 		free(node->key);
 		free(node->value);
-		if(node->pwd)
+		if (node->pwd)
 		{
 			free(node->pwd);
 			node->pwd = NULL;
 		}
-		
 		free(node);
 	}
 }
@@ -252,13 +251,12 @@ int	main(int ac, char **av, char **envm)
 	shell_loop(&shell);
 	free(shell.rl);
 	free_env(shell.env);
-	if(shell.path)
+	if (shell.path)
 		free_path(shell.path);
 	free_arr_dup(shell.envp);
-	if(shell.heredoc_file)
+	if (shell.heredoc_file)
 		free(shell.heredoc_file);
 	if (shell.export)
 		free_export(shell.export);
 	return (0);
 }
-

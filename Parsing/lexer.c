@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/26 10:52:03 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 09:31:20 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,6 @@ static void	split_args(t_mini *shell)
 		make_words(shell, params.start, i);
 }
 
-void check_errors(t_mini *shell)
-{
-	if(check_pipe(shell->head))
-	{
-		shell->syntax_error = 1;
-		return ;
-	}
-	if (check_redir(shell->head) == 1)
-	{
-		shell->syntax_error = 1;
-		return ;
-	}
-}
-
 void	ft_lexer(t_mini *shell)
 {
 	char	*tmp;
@@ -115,7 +101,7 @@ void	ft_lexer(t_mini *shell)
 	shell->rl = tmp;
 	if (parse_quote(shell->rl))
 	{
-		ft_putstr_fd("Syntax Error: parsing quote error\n", 2);
+		ft_putendl_fd("Syntax Error: parsing quote error", 2);
 		g_exit_status = 2;
 		shell->syntax_error = 1;
 		return ;

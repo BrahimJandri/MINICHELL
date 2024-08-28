@@ -75,13 +75,13 @@ static int	process_token(t_lexer *token, t_mini *shell)
 	return (0);
 }
 
-int ft_tokinezer(t_mini *shell)
+int	ft_tokinezer(t_mini *shell)
 {
 	t_lexer	*tmp;
 	int		result;
 
-	if(shell->syntax_error)
-		return -1;
+	if (shell->syntax_error)
+		return (-1);
 	tmp = shell->head;
 	while (tmp)
 	{

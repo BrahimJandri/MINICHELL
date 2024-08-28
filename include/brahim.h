@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/24 11:45:11 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 09:31:41 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int						check_pipe(t_lexer *redirection);
 int						handle_quotes(char *dst, const char *src, int i, int length);
 int						check_redir(t_lexer *head);
 int 					ft_tokinezer(t_mini *shell);
+void					check_errors(t_mini *shell);
 
 /*************************** Parsing ***************************/
 

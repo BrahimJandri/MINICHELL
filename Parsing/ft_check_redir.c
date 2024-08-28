@@ -58,12 +58,12 @@ static void	ft_syntax_err(char *str)
 	}
 }
 
-int is_quoted(char *str)
+int	is_quoted(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == '"' || str[i] == '\'')
 			return (1);
@@ -71,7 +71,6 @@ int is_quoted(char *str)
 	}
 	return (0);
 }
-
 
 int	check_redir(t_lexer *head)
 {

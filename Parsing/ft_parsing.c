@@ -40,7 +40,6 @@ static char	**ft_store_args(t_lexer *start)
 	return (args);
 }
 
-
 static void	ft_store_redirections(t_parser *parser, t_lexer *start)
 {
 	t_lexer	*tmp;

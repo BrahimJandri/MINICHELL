@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/05 16:10:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 11:02:22 by bjandri          ###   ########.fr       */
+/*   Created: 2024/08/28 09:24:26 by bjandri           #+#    #+#             */
+/*   Updated: 2024/08/28 09:24:30 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +78,7 @@ void	ft_expander(t_mini *shell)
 	while (tmp)
 	{
 		next_node = tmp->next;
-		if(is_empty(tmp->word))
+		if (is_empty(tmp->word))
 			break ;
 		if (tmp->token == FILE_TARGET || tmp->token == ARG)
 		{
