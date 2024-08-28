@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 13:37:30 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 15:23:57 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,10 @@ void	shell_loop(t_mini *shell)
 	{
 		if(!shell->env)
 		{
-			update_env(&shell->env, "PWD", getcwd(NULL, 0));
+			char *oldpwd = getcwd(NULL, 0);
+			update_env(&shell->env, "PWD", oldpwd);
 			update_env(&shell->env, "SHLVL", "1");
+			free(oldpwd);
 		}
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
