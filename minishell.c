@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 11:01:52 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 13:37:30 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,11 @@ void	shell_loop(t_mini *shell)
 
 	while (1)
 	{
+		if(!shell->env)
+		{
+			update_env(&shell->env, "PWD", getcwd(NULL, 0));
+			update_env(&shell->env, "SHLVL", "1");
+		}
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
 		shell->syntax_error = 0;
@@ -138,7 +143,7 @@ void	shell_loop(t_mini *shell)
 		input = readline("MiniShell$ ");
 		if (!input)
 		{
-			printf("exit\n");
+			ft_putstr_fd("exit\n", 1);
 			return ;
 		}
 		else if (input && *input)
@@ -151,11 +156,9 @@ void	shell_loop(t_mini *shell)
 			add_history(shell->rl);
 			ft_lexer(shell);
 			ft_expander(shell);
-			// print_lexer(&shell->head);
 			if (!shell->syntax_error)
 			{
 				ft_parsing(shell);
-				// print_parser(&shell->cmds);
 				signal(SIGINT, child_sigint);
 				signal(SIGQUIT, child_sigquit);
 				ft_execution(shell->cmds, shell, shell->envp);
@@ -248,7 +251,8 @@ int	main(int ac, char **av, char **envm)
 	init_mini(&shell, envm);
 	shell_loop(&shell);
 	free(shell.rl);
-	free_env(shell.env);
+	if(shell.env)
+		free_env(shell.env);
 	if (shell.path)
 		free_path(shell.path);
 	free_arr_dup(shell.envp);
