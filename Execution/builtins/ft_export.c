@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:21 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 15:49:20 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 18:34:56 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	handle_equal_assignment(char *arg, t_mini *shell)
 
 void	handle_assignment(char *arg, t_mini *shell)
 {
+	char	*existing_value;
+
 	if (shell->export->plus_equal_sign_pos)
 		handle_plus_equal_assignment(arg, shell);
 	else if (shell->export->equal_sign_pos)
@@ -53,8 +55,10 @@ void	handle_assignment(char *arg, t_mini *shell)
 	else
 	{
 		shell->export->key = ft_strdup(arg);
-		shell->export->value = getenv_value(shell->env, shell->export->key);
-		if (!shell->export->value)
+		existing_value = getenv_value((shell->env), shell->export->key);
+		if (existing_value)
+			shell->export->value = ft_strdup(existing_value);
+		else
 			shell->export->value = NULL;
 	}
 }
