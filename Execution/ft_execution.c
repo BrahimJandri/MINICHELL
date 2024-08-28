@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/28 16:34:31 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 17:46:03 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ char    **ft_new_envp(t_env *env)
         env = env->next;
     }
     new_envp[i] = NULL;
-    
     return new_envp;
 }
 
@@ -142,7 +141,7 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 	else if (ft_strncmp(args->cmd[0], "pwd", 3) == 0)
 		g_exit_status = pwd_builtin(&shell->env);
 	else if (ft_strncmp(args->cmd[0], "cd", 2) == 0)
-		g_exit_status = cd_builtin(args->cmd, &shell->env);
+		g_exit_status = cd_builtin(args->cmd, shell->env);
 	else if (ft_strncmp(args->cmd[0], "export", 6) == 0)
 		g_exit_status = export_builtin(args->cmd, shell);
 	else if (ft_strncmp(args->cmd[0], "unset", 5) == 0)
