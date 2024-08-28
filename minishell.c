@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/27 20:47:53 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 11:01:52 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,8 +246,6 @@ int	main(int ac, char **av, char **envm)
 	(void)ac;
 	(void)av;
 	init_mini(&shell, envm);
-	// signal(SIGINT, handle_sigint);
-	// signal(SIGQUIT, SIG_IGN);
 	shell_loop(&shell);
 	free(shell.rl);
 	free_env(shell.env);

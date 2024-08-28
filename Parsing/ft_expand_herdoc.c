@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 16:39:18 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 09:31:13 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 11:07:12 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,4 @@ char	*ft_expand_herdoc(char *val, t_mini *shell)
 			str = ft_append_char(str, val[i]);
 	}
 	return (str);
-}
-
-void	check_errors(t_mini *shell)
-{
-	if (check_pipe(shell->head))
-	{
-		shell->syntax_error = 1;
-		return ;
-	}
-	if (check_redir(shell->head) == 1)
-	{
-		shell->syntax_error = 1;
-		return ;
-	}
 }
