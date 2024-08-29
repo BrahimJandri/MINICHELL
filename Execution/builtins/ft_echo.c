@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/25 09:52:12 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/29 16:22:27 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,9 @@ int	echo_builtin(char **args)
 
 	i = 1;
 	n_flag = 0;
+	remove_quotes(args[1]);
 	if (!args[i])
-	{
-		write(1, "\n", 1);
-		return (0);
-	}
+		return (write(1, "\n", 1), 0);
 	while (args[i] && is_n_flag(args[i]))
 	{
 		n_flag = 1;

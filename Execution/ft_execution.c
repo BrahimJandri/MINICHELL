@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/28 18:23:28 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/29 16:25:39 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 
 int     cmd_not_found(t_mini *shell, t_parser *cmds)
 {
+    remove_quotes(cmds->cmd[0]);
     ft_putstr_fd(cmds->cmd[0],2);
     ft_putstr_fd(": command not found\n", 2);
     free_all(shell);
