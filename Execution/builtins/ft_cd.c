@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 17:44:46 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/28 18:22:26 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int cd_builtin(char **args, t_env **env)
 {
     char *path;
     char *oldpwd;
-    char *new_pwd;
+    // char *new_pwd;
 
     if (prepare_cd(args, env, &path, &oldpwd) != 0)
         return 1;

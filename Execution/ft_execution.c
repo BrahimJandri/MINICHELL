@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/28 17:46:03 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/29 09:29:05 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,52 +53,81 @@ void    free_all(t_mini *shell)
 		free(shell->export);    
 }
 
-
-
-int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
+void    ft_permission(t_parser *cmds)
 {
-    char *joined_cmd;
-    int i;
-    char **new_envp;
-    (void)envp;
-    new_envp = ft_new_envp(shell->env);
-    if(!cmds->cmd[0])
-    {
-        free_all(shell);
-        exit(1);  
-    }
-    i = 0;
-    if(!access(cmds->cmd[0], F_OK))
-    {
-        if(!ft_strcmp(cmds->cmd[0], "./minishell"))
-            ft_shlvl_update(&new_envp);
-        if(execve(cmds->cmd[0], cmds->cmd, new_envp) == -1)
-        {
-            perror("execve");
-            //return statusls
-        }
-    }
-    while(shell->path && shell->path[i])
-    {
-        joined_cmd = join_path(shell->path[i], cmds->cmd[0]);// there is a probelm if he inputs ./cat
-
-        if(!access(joined_cmd, F_OK))
-        {
-            if(!ft_strcmp(cmds->cmd[0], "bash"))
-                ft_shlvl_update(&new_envp);
-            if(execve(joined_cmd, cmds->cmd, new_envp) == -1)
-            {
-                perror("execve failed");
-                // return status
-            }
-        }
-        free(joined_cmd);
-        i++;
-    }
-    if(cmds->cmd[0])
-        return(cmd_not_found(shell, cmds));
-    return 0;   
+    printf("%s: ", cmds->cmd[0]);
+    ft_putstr_fd("Permission denied", 2);
+    g_exit_status = 126;
 }
+
+int exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
+{
+    //it will check ./ls
+    //access on success return 0, on fail returns -1;
+    (void)shell;
+    
+    if((cmds->cmd[0][0] == '.' || cmds->cmd[0][0] == '/') && !access(cmds->cmd[0], F_OK))
+    {
+        if(!access(cmds->cmd[0], X_OK))
+        {
+            if(execve(cmds->cmd[0], cmds->cmd, envp) == -1)
+            {
+                perror("Execve");
+                exit(1);
+            }
+            ft_permission(cmds);
+            return(0);
+        }
+        
+        
+    }
+    return(0);
+}
+
+// int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
+// {
+//     char *joined_cmd;
+//     int i;
+//     char **new_envp;
+//     (void)envp;
+//     new_envp = ft_new_envp(shell->env);
+//     if(!cmds->cmd[0])
+//     {
+//         free_all(shell);
+//         exit(1);  
+//     }
+//     i = 0;
+//     if(!access(cmds->cmd[0], F_OK))
+//     {
+//         if(!ft_strcmp(cmds->cmd[0], "./minishell"))
+//             ft_shlvl_update(&new_envp);
+//         if(execve(cmds->cmd[0], cmds->cmd, new_envp) == -1)
+//         {
+//             perror("execve");
+//             //return statusls
+//         }
+//     }
+//     while(shell->path && shell->path[i])
+//     {
+//         joined_cmd = join_path(shell->path[i], cmds->cmd[0]);// there is a probelm if he inputs ./cat
+
+//         if(!access(joined_cmd, F_OK))
+//         {
+//             if(!ft_strcmp(cmds->cmd[0], "bash"))
+//                 ft_shlvl_update(&new_envp);
+//             if(execve(joined_cmd, cmds->cmd, new_envp) == -1)
+//             {
+//                 perror("execve failed");
+//                 // return status
+//             }
+//         }
+//         free(joined_cmd);
+//         i++;
+//     }
+//     if(cmds->cmd[0])
+//         return(cmd_not_found(shell, cmds));
+//     return 0;   
+// }
 
 int     cmd_not_found(t_mini *shell, t_parser *cmds)
 {
@@ -141,7 +170,7 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 	else if (ft_strncmp(args->cmd[0], "pwd", 3) == 0)
 		g_exit_status = pwd_builtin(&shell->env);
 	else if (ft_strncmp(args->cmd[0], "cd", 2) == 0)
-		g_exit_status = cd_builtin(args->cmd, shell->env);
+		g_exit_status = cd_builtin(args->cmd, &shell->env);
 	else if (ft_strncmp(args->cmd[0], "export", 6) == 0)
 		g_exit_status = export_builtin(args->cmd, shell);
 	else if (ft_strncmp(args->cmd[0], "unset", 5) == 0)
@@ -398,7 +427,11 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
         line = readline("> ");
     }
     if(!line) // there is still something global for the heredoc
-        return 1;
+    {
+        close(fd);
+        printf(" warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
+        return 0;
+    }
     close(fd);
     return 0;
     
