@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:01:13 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 13:36:00 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/29 13:27:29 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,6 @@ int	env_builtin(t_env **env)
 	{
 		if (tmp->value && tmp->key)
 			printf("%s=%s\n", tmp->key, tmp->value);
-		else if (tmp->key)
-			printf("%s=\n", tmp->key);
 		tmp = tmp->next;
 	}
 	return (0);
