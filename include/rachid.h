@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 18:21:22 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/29 10:32:38 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	handle_cmd(t_mini *shell, t_parser *cmds);
 void	execute_builtin(t_parser *args, t_mini *shell);
 
 // void    check_heredoc(t_parser *cmds);
-int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds);
+int		exec_cmd(t_mini *shell, t_parser *cmds, char **envp);
+int 	ft_execute(t_mini *shell, char **envp, t_parser *cmds);
 char    *join_path(char *path, char *command);
 
 int    which_redirection(t_mini *shell, t_lexer *redirection);
@@ -63,6 +64,6 @@ void	unsetenv_custom(t_env **env, const char *key);
 void	remove_quotes(char *str);
 char    **ft_new_envp(t_env *env);
 
-char    *expand_var(char *val, t_mini *shell); 
+char    *expand_var(char *val, t_mini *shell);
 
 #endif

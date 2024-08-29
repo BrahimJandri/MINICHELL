@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/29 09:29:05 by rachid           ###   ########.fr       */
+/*   Updated: 2024/08/29 15:10:28 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,38 +50,87 @@ void    free_all(t_mini *shell)
     if(shell->heredoc_file)
         free(shell->heredoc_file);
     if (shell->export)
-		free(shell->export);    
+		free(shell->export);
+}
+void	is_directory(t_parser *cmds)
+{
+    ft_putstr_fd("minishell: ", 2);
+	write(2, cmds->cmd[0], ft_strlen(cmds->cmd[0]));
+    ft_putstr_fd(": Is a directory\n", 2);
+	exit(126);
 }
 
-void    ft_permission(t_parser *cmds)
+void    no_permission(t_parser *cmds)
 {
-    printf("%s: ", cmds->cmd[0]);
-    ft_putstr_fd("Permission denied", 2);
-    g_exit_status = 126;
+    ft_putstr_fd("minishell: ", 2);
+	write(2, cmds->cmd[0], ft_strlen(cmds->cmd[0]));
+    ft_putstr_fd(": Permission denied\n", 2);
+	exit(126);
 }
 
-int exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
+int		exec_cmd(t_mini *shell, t_parser *cmds, char **envp)
 {
-    //it will check ./ls
-    //access on success return 0, on fail returns -1;
-    (void)shell;
-    
-    if((cmds->cmd[0][0] == '.' || cmds->cmd[0][0] == '/') && !access(cmds->cmd[0], F_OK))
+	char *joined_cmd;
+	int 	i;
+
+	i = 0;
+	while(shell->path[i])
+	{
+		joined_cmd = join_path(shell->path[i], cmds->cmd[0]);
+
+		if(!access(joined_cmd, F_OK))
+		{
+			if(execve(joined_cmd, cmds->cmd, envp) == -1)
+			{
+				perror("execve");
+				exit(1);
+			}
+		}
+		free(joined_cmd);
+		i++;
+	}
+	if(cmds->cmd[0])
+        return(cmd_not_found(shell, cmds));
+	return (0);
+}
+
+void	ft_execve(t_parser *cmds, char **envp)
+{
+    if(execve(cmds->cmd[0], cmds->cmd, envp) == -1)//envp will be changed to our envp
     {
-        if(!access(cmds->cmd[0], X_OK))
-        {
-            if(execve(cmds->cmd[0], cmds->cmd, envp) == -1)
-            {
-                perror("Execve");
-                exit(1);
-            }
-            ft_permission(cmds);
-            return(0);
-        }
-        
-        
-    }
-    return(0);
+		if(errno == ENOEXEC)
+			exit(0);
+        perror("minishell");
+	    exit(127);
+	}
+}
+
+int ft_execute(t_mini *shell, char **envp, t_parser *cmds)
+{
+	struct stat info;
+    (void)shell;
+
+    if((cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/') || (cmds->cmd[0][0] == '/'))
+	{
+		if(!access(cmds->cmd[0], F_OK))//there is a file starts whith ./ (execute something)
+		{
+			if(stat(cmds->cmd[0], &info) == 0 && S_ISDIR(info.st_mode))
+				is_directory(cmds);
+			else
+			{
+				if(!access(cmds->cmd[0], X_OK))//is it an executable if yes exec it, if no return permission denied
+					ft_execve(cmds, envp);
+				else
+					no_permission(cmds);
+			}
+		}
+		ft_execve(cmds, envp);
+	}
+	else if(cmds->cmd[0]) //a direct command whether exists or not
+	{
+		exec_cmd(shell, cmds, envp);
+	}
+	exit(0);
 }
 
 // int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
@@ -94,7 +143,7 @@ int exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 //     if(!cmds->cmd[0])
 //     {
 //         free_all(shell);
-//         exit(1);  
+//         exit(1);
 //     }
 //     i = 0;
 //     if(!access(cmds->cmd[0], F_OK))
@@ -113,8 +162,6 @@ int exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 
 //         if(!access(joined_cmd, F_OK))
 //         {
-//             if(!ft_strcmp(cmds->cmd[0], "bash"))
-//                 ft_shlvl_update(&new_envp);
 //             if(execve(joined_cmd, cmds->cmd, new_envp) == -1)
 //             {
 //                 perror("execve failed");
@@ -126,7 +173,7 @@ int exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
 //     }
 //     if(cmds->cmd[0])
 //         return(cmd_not_found(shell, cmds));
-//     return 0;   
+//     return 0;
 // }
 
 int     cmd_not_found(t_mini *shell, t_parser *cmds)
@@ -184,8 +231,8 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 int    handle_cmd(t_mini *shell, t_parser *cmds)
 {
     int err = 0;
-    
-    if(cmds->redirections)  
+
+    if(cmds->redirections)
     {
         if(which_redirection(shell, cmds->redirections))
         {
@@ -201,7 +248,7 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
     }
     else if(cmds->cmd)
     {
-        err = exec_cmd(shell, shell->envp, cmds);
+        err = ft_execute(shell, shell->envp, cmds);
     }
     exit(err);
 }
@@ -209,10 +256,10 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
-    int pid; 
+    int pid;
     int status;
     t_builtins built;
-    
+
     built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
     if(built)
@@ -220,18 +267,18 @@ void    single_command(t_mini *shell, t_parser *cmds)
         execute_builtin(cmds, shell);
         return ;
     }
-    check_heredoc(shell, cmds); 
+    check_heredoc(shell, cmds);
     pid = fork();
     if(pid < 0)
     {
         perror("fork failed");
-        // fork failed.  
+        // fork failed.
     }
     if(pid == 0)
     {
         handle_cmd(shell, cmds);
-        sleep(50);       
-        
+        sleep(50);
+
     }
     waitpid(pid, &status, 0);
     g_exit_status = WEXITSTATUS(status);
@@ -257,7 +304,7 @@ void    fd_dup(t_mini *shell, t_parser *cmds, int fd[2], int fd_read)
     if(cmds->prev)
         close(fd_read);
     handle_cmd(shell, cmds);
-    
+
 }
 
 int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2])
@@ -265,7 +312,7 @@ int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2])
     static int i;
     if(shell->new == 0)
     {
-        i = 0;      
+        i = 0;
         shell->new = 1;
     }
     shell->pid[i] = fork();
@@ -278,8 +325,8 @@ int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2])
         fd_dup(shell, cmds,fd, fd_read);
     i++;
     return 0;
-        
-}   
+
+}
 
 int    ft_wait(int *pid, int pipes)
 {
@@ -313,9 +360,9 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
 {
     int fd[2];
     int fd_read;
-    
+
     fd_read = 0;
-    
+
     shell->pid = malloc(sizeof(int) * (shell->pipes + 1));
     if(!shell->pid)
     {
@@ -360,9 +407,9 @@ void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
         single_command(shell, cmds);
     }
     else
-        multiple_command(shell, cmds);            
+        multiple_command(shell, cmds);
 }
-    
+
 
 void    check_heredoc(t_mini *shell, t_parser *cmds)
 {
@@ -396,9 +443,9 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
     char *delimiter;
     int quote;
     int exit;
-    
+
     delimiter = heredoc->word;
-    if((delimiter[0] == '\'' && delimiter[ft_strlen(delimiter) - 1] == '\'') 
+    if((delimiter[0] == '\'' && delimiter[ft_strlen(delimiter) - 1] == '\'')
     || (delimiter[0] == '\"' && delimiter[ft_strlen(delimiter) - 1] == '\"'))
         quote = 1;
     else
@@ -411,7 +458,7 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
 int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
 {
     int     fd;
-    char    *line; 
+    char    *line;
 
     fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
     // if(fd < 0)
@@ -429,11 +476,11 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
     if(!line) // there is still something global for the heredoc
     {
         close(fd);
-        printf(" warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
+        printf("warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
         return 0;
     }
     close(fd);
     return 0;
-    
+
 }
 
