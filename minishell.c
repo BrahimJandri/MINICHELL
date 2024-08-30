@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 17:46:55 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/29 16:26:32 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,18 +113,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->new = 0;
 }
 
-void	child_sigint(int pid)
-{
-	(void)pid;
-	write(1, "\n", 1);
-	exit(130);
-}
 
-void	child_sigquit(int pid)
-{
-	(void)pid;
-	write(1, "Quit (core dumped)\n", 19);
-}
 
 void print_env(char **env)
 {
@@ -142,7 +131,7 @@ void print_env(char **env)
 void	shell_loop(t_mini *shell)
 {
 	char	*input;
-	
+
 	while (1)
 	{
 		signal(SIGINT, handle_sigint);
@@ -169,7 +158,7 @@ void	shell_loop(t_mini *shell)
 				ft_expander(shell);
 				ft_parsing(shell);
             	signal(SIGINT, child_sigint);
-		        signal(SIGQUIT, child_sigquit);
+		        // signal(SIGQUIT, child_sigquit);
 				ft_execution(shell->cmds, shell, shell->envp);
             }
             free_tokens(shell->head);
@@ -183,12 +172,7 @@ void	shell_loop(t_mini *shell)
     }
 }
 
-void	handle_sigint(int sig)
-{
-	(void)sig;
-	rl_replace_line("", 0);
-	write(STDOUT_FILENO, "\nMiniShell$ ", 13);
-}
+
 
 void	free_env_node(t_env *node)
 {
@@ -250,16 +234,19 @@ void	free_export(t_export_norm *export)
 }
 
 int		g_exit_status = 0;
+int		g_stop_heredoc = 0;
 
 int	main(int ac, char **av, char **envm)
 {
 	t_mini	shell;
 
-	(void)ac;
 	(void)av;
+	if(ac > 1)
+	{
+		printf("This program takes no arguments !");
+		exit(0);
+	}
 	init_mini(&shell, envm);
-	// signal(SIGINT, handle_sigint);
-	// signal(SIGQUIT, SIG_IGN);
 	shell_loop(&shell);
 	free(shell.rl);
 	free_env(shell.env);

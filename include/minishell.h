@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/29 13:27:59 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:31:07 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/stat.h>
 
 extern int			g_exit_status;
+extern int			g_stop_heredoc;
 
 typedef struct s_export_norm
 {

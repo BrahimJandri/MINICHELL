@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/29 15:10:28 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/29 18:32:45 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ int ft_execute(t_mini *shell, char **envp, t_parser *cmds)
 //     return 0;
 // }
 
-int     cmd_not_found(t_mini *shell, t_parser *cmds)
+int     	cmd_not_found(t_mini *shell, t_parser *cmds)
 {
     ft_putstr_fd(cmds->cmd[0],2);
     ft_putstr_fd(": command not found\n", 2);
@@ -277,8 +277,6 @@ void    single_command(t_mini *shell, t_parser *cmds)
     if(pid == 0)
     {
         handle_cmd(shell, cmds);
-        sleep(50);
-
     }
     waitpid(pid, &status, 0);
     g_exit_status = WEXITSTATUS(status);
@@ -410,6 +408,17 @@ void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
         multiple_command(shell, cmds);
 }
 
+char 	*creat_hd_name(void)
+{
+	static int 	i;
+	char 		*file_name;
+	char 		*index;
+
+	index = ft_itoa(i++);
+	file_name = ft_strjoin("/tmp/.hd_file", index);
+	free(index);
+	return file_name;
+}
 
 void    check_heredoc(t_mini *shell, t_parser *cmds)
 {
@@ -424,7 +433,7 @@ void    check_heredoc(t_mini *shell, t_parser *cmds)
         {
             if(shell->heredoc_file)
                 free(shell->heredoc_file);
-            shell->heredoc_file = ft_strdup("/tmp/heredoc_file");
+            shell->heredoc_file = creat_hd_name();
             exit = here_doc(shell->heredoc_file, shell, cmds->redirections);
             if(exit)
             {
@@ -451,36 +460,82 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
     else
         quote = 0;
     remove_quotes(delimiter);
+	g_stop_heredoc = 0;
     exit = exec_heredoc(shell, file_name, delimiter, quote);
     return(exit);
 }
+
+
+
+
 
 int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
 {
     int     fd;
     char    *line;
 
+	signal(SIGINT, child_sigint);
     fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
     // if(fd < 0)
         // ft_error();
-    line = readline("> ");
-    while(line && ft_strcmp(delimiter, line))
-    {
-        if(!quote)
-            line = ft_expand_herdoc(line, shell);
-        write(fd, line, ft_strlen(line));
-        write(fd, "\n", 1);
-        free(line);
-        line = readline("> ");
-    }
-    if(!line) // there is still something global for the heredoc
-    {
-        close(fd);
-        printf("warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
-        return 0;
-    }
-    close(fd);
-    return 0;
+    while(!g_stop_heredoc)
+	{
+    	line = readline("> ");
+		if(!line)
+		{
+        	close(fd);
+    	    printf("warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
+	        return 0;
+		}
+		if(ft_strcmp(line, delimiter) == 0)
+			break ;
+			
 
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+// int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
+// {
+//     int     fd;
+//     char    *line;
+
+// 	signal(SIGINT, child_sigint);
+//     fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
+//     // if(fd < 0)
+//         // ft_error();
+//     line = readline("> ");
+//     while(line && ft_strcmp(delimiter, line) && !g_stop_heredoc)
+//     {
+//         if(!quote)
+//             line = ft_expand_herdoc(line, shell);
+//         write(fd, line, ft_strlen(line));
+//         write(fd, "\n", 1);
+//         free(line);
+//         line = readline("> ");
+// 		if(g_stop_heredoc == 1)
+// 		{
+// 			close(fd);
+// 			return 1;
+// 		}
+//     }
+//     if(!line )
+//     {
+//         close(fd);
+//         printf("warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
+//         return 0;
+//     }
+//     close(fd);
+//     return 0;
+
+// }
 

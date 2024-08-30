@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/29 10:32:38 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:27:45 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,5 @@ char    **ft_new_envp(t_env *env);
 
 char    *expand_var(char *val, t_mini *shell);
 
+void	child_sigint(int pid);
 #endif
