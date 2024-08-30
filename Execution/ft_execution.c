@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/29 18:32:45 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:55:41 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ void	ft_execve(t_parser *cmds, char **envp)
 {
     if(execve(cmds->cmd[0], cmds->cmd, envp) == -1)//envp will be changed to our envp
     {
-		if(errno == ENOEXEC)
-			exit(0);
+		// if(errno == ENOEXEC)
+		// 	exit(0);
         perror("minishell");
 	    exit(127);
 	}
@@ -256,6 +256,7 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
+	// int hd_id;
     int pid;
     int status;
     t_builtins built;
@@ -267,19 +268,24 @@ void    single_command(t_mini *shell, t_parser *cmds)
         execute_builtin(cmds, shell);
         return ;
     }
-    check_heredoc(shell, cmds);
-    pid = fork();
-    if(pid < 0)
-    {
-        perror("fork failed");
-        // fork failed.
-    }
-    if(pid == 0)
-    {
-        handle_cmd(shell, cmds);
-    }
-    waitpid(pid, &status, 0);
-    g_exit_status = WEXITSTATUS(status);
+	// hd_id = fork();
+	// if(hd_id == 0)
+    	check_heredoc(shell, cmds);
+	// else
+	// {
+    	pid = fork();
+    	if(pid < 0)
+    	{
+    	    perror("fork failed");
+    	    // fork failed.
+    	}
+    	if(pid == 0)
+    	{
+    	    handle_cmd(shell, cmds);
+    	}
+    	waitpid(pid, &status, 0);
+    	g_exit_status = WEXITSTATUS(status);
+	// }
 }
 
 
@@ -420,7 +426,7 @@ char 	*creat_hd_name(void)
 	return file_name;
 }
 
-void    check_heredoc(t_mini *shell, t_parser *cmds)
+int    check_heredoc(t_mini *shell, t_parser *cmds)
 {
     t_lexer *tmp;
     int exit;
@@ -438,13 +444,14 @@ void    check_heredoc(t_mini *shell, t_parser *cmds)
             if(exit)
             {
                 shell->hd = 0;
-                return ;
+                return 1;
             }
             shell->hd = 1;
         }
         cmds->redirections = cmds->redirections->next;
     }
     cmds->redirections = tmp;
+	return 0;
 }
 
 int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
@@ -474,6 +481,9 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
     int     fd;
     char    *line;
 
+	(void)shell;
+	(void)quote;
+
 	signal(SIGINT, child_sigint);
     fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
     // if(fd < 0)
@@ -489,9 +499,14 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
 		}
 		if(ft_strcmp(line, delimiter) == 0)
 			break ;
-			
-
 	}
+	if(g_stop_heredoc)
+	{
+		close(fd);
+		return 1;
+	}
+	close(fd);
+	return 0;
 }
 
 

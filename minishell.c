@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/29 16:26:32 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:58:58 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,7 @@ int	main(int ac, char **av, char **envm)
 	t_mini	shell;
 
 	(void)av;
+	(void)ac;
 	if(ac > 1)
 	{
 		printf("This program takes no arguments !");
@@ -259,4 +260,3 @@ int	main(int ac, char **av, char **envm)
 		free_export(shell.export);
 	return (0);
 }
-

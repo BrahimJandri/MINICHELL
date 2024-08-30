@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/29 16:27:45 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:21:55 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char    *join_path(char *path, char *command);
 int    which_redirection(t_mini *shell, t_lexer *redirection);
 int    handle_outfile(t_lexer *redirection, char *file);
 
-void    check_heredoc(t_mini *shell, t_parser *cmds);
+int    check_heredoc(t_mini *shell, t_parser *cmds);
 int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc);
 int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote);
 
