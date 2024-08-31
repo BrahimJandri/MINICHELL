@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/29 16:25:39 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/31 17:45:18 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,57 +50,133 @@ void    free_all(t_mini *shell)
     if(shell->heredoc_file)
         free(shell->heredoc_file);
     if (shell->export)
-		free(shell->export);    
+		free(shell->export);
 }
-
-
-
-int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
+void	is_directory(t_parser *cmds)
 {
-    char *joined_cmd;
-    int i;
-    char **new_envp;
-    (void)envp;
-    new_envp = ft_new_envp(shell->env);
-    if(!cmds->cmd[0])
-    {
-        free_all(shell);
-        exit(1);  
-    }
-    i = 0;
-    if(!access(cmds->cmd[0], F_OK))
-    {
-        if(!ft_strcmp(cmds->cmd[0], "./minishell"))
-            ft_shlvl_update(&new_envp);
-        if(execve(cmds->cmd[0], cmds->cmd, new_envp) == -1)
-        {
-            perror("execve");
-            //return statusls
-        }
-    }
-    while(shell->path && shell->path[i])
-    {
-        joined_cmd = join_path(shell->path[i], cmds->cmd[0]);// there is a probelm if he inputs ./cat
-
-        if(!access(joined_cmd, F_OK))
-        {
-            if(!ft_strcmp(cmds->cmd[0], "bash"))
-                ft_shlvl_update(&new_envp);
-            if(execve(joined_cmd, cmds->cmd, new_envp) == -1)
-            {
-                perror("execve failed");
-                // return status
-            }
-        }
-        free(joined_cmd);
-        i++;
-    }
-    if(cmds->cmd[0])
-        return(cmd_not_found(shell, cmds));
-    return 0;   
+    ft_putstr_fd("minishell: ", 2);
+	write(2, cmds->cmd[0], ft_strlen(cmds->cmd[0]));
+    ft_putstr_fd(": Is a directory\n", 2);
+	exit(126);
 }
 
-int     cmd_not_found(t_mini *shell, t_parser *cmds)
+void    no_permission(t_parser *cmds)
+{
+    ft_putstr_fd("minishell: ", 2);
+	write(2, cmds->cmd[0], ft_strlen(cmds->cmd[0]));
+    ft_putstr_fd(": Permission denied\n", 2);
+	exit(126);
+}
+
+int		exec_cmd(t_mini *shell, t_parser *cmds, char **envp)
+{
+	char *joined_cmd;
+	int 	i;
+
+	i = 0;
+	while(shell->path[i])
+	{
+		joined_cmd = join_path(shell->path[i], cmds->cmd[0]);
+
+		if(!access(joined_cmd, F_OK))
+		{
+			if(execve(joined_cmd, cmds->cmd, envp) == -1)
+			{
+				perror("execve");
+				exit(1);
+			}
+		}
+		free(joined_cmd);
+		i++;
+	}
+	if(cmds->cmd[0])
+        return(cmd_not_found(shell, cmds));
+	return (0);
+}
+
+void	ft_execve(t_parser *cmds, char **envp)
+{
+    if(execve(cmds->cmd[0], cmds->cmd, envp) == -1)//envp will be changed to our envp
+    {
+		// if(errno == ENOEXEC)
+		// 	exit(0);
+        perror("minishell");
+	    exit(127);
+	}
+}
+
+int ft_execute(t_mini *shell, char **envp, t_parser *cmds)
+{
+	struct stat info;
+    (void)shell;
+
+    if((cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/') || (cmds->cmd[0][0] == '/'))
+	{
+		if(!access(cmds->cmd[0], F_OK))//there is a file starts whith ./ (execute something)
+		{
+			if(stat(cmds->cmd[0], &info) == 0 && S_ISDIR(info.st_mode))
+				is_directory(cmds);
+			else
+			{
+				if(!access(cmds->cmd[0], X_OK))//is it an executable if yes exec it, if no return permission denied
+					ft_execve(cmds, envp);
+				else
+					no_permission(cmds);
+			}
+		}
+		ft_execve(cmds, envp);
+	}
+	else if(cmds->cmd[0]) //a direct command whether exists or not
+	{
+		exec_cmd(shell, cmds, envp);
+	}
+	exit(0);
+}
+
+// int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
+// {
+//     char *joined_cmd;
+//     int i;
+//     char **new_envp;
+//     (void)envp;
+//     new_envp = ft_new_envp(shell->env);
+//     if(!cmds->cmd[0])
+//     {
+//         free_all(shell);
+//         exit(1);
+//     }
+//     i = 0;
+//     if(!access(cmds->cmd[0], F_OK))
+//     {
+//         if(!ft_strcmp(cmds->cmd[0], "./minishell"))
+//             ft_shlvl_update(&new_envp);
+//         if(execve(cmds->cmd[0], cmds->cmd, new_envp) == -1)
+//         {
+//             perror("execve");
+//             //return statusls
+//         }
+//     }
+//     while(shell->path && shell->path[i])
+//     {
+//         joined_cmd = join_path(shell->path[i], cmds->cmd[0]);// there is a probelm if he inputs ./cat
+
+//         if(!access(joined_cmd, F_OK))
+//         {
+//             if(execve(joined_cmd, cmds->cmd, new_envp) == -1)
+//             {
+//                 perror("execve failed");
+//                 // return status
+//             }
+//         }
+//         free(joined_cmd);
+//         i++;
+//     }
+//     if(cmds->cmd[0])
+//         return(cmd_not_found(shell, cmds));
+//     return 0;
+// }
+
+int     	cmd_not_found(t_mini *shell, t_parser *cmds)
 {
     remove_quotes(cmds->cmd[0]);
     ft_putstr_fd(cmds->cmd[0],2);
@@ -156,8 +232,8 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 int    handle_cmd(t_mini *shell, t_parser *cmds)
 {
     int err = 0;
-    
-    if(cmds->redirections)  
+
+    if(cmds->redirections)
     {
         if(which_redirection(shell, cmds->redirections))
         {
@@ -173,7 +249,7 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
     }
     else if(cmds->cmd)
     {
-        err = exec_cmd(shell, shell->envp, cmds);
+        err = ft_execute(shell, shell->envp, cmds);
     }
     exit(err);
 }
@@ -181,10 +257,11 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
-    int pid; 
+	// int hd_id;
+    int pid;
     int status;
     t_builtins built;
-    
+
     built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
     if(built)
@@ -192,21 +269,29 @@ void    single_command(t_mini *shell, t_parser *cmds)
         execute_builtin(cmds, shell);
         return ;
     }
-    check_heredoc(shell, cmds); 
+    check_heredoc(shell, cmds);
+	// hd_id = fork();
+	// if(hd_id == 0)
+	// else
+	// {
     pid = fork();
     if(pid < 0)
     {
         perror("fork failed");
-        // fork failed.  
+        // fork failed.
     }
-    if(pid == 0)
+    else if(pid == 0)
     {
+        handle_signals(DFL_ALL);
         handle_cmd(shell, cmds);
-        sleep(50);       
-        
     }
     waitpid(pid, &status, 0);
     g_exit_status = WEXITSTATUS(status);
+    if (WIFSIGNALED(status) && WTERMSIG(status))
+    {
+        write(1, "\n", 1);
+        g_exit_status = 128 + WIFSIGNALED(status);
+    }
 }
 
 
@@ -229,7 +314,7 @@ void    fd_dup(t_mini *shell, t_parser *cmds, int fd[2], int fd_read)
     if(cmds->prev)
         close(fd_read);
     handle_cmd(shell, cmds);
-    
+
 }
 
 int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2])
@@ -237,7 +322,7 @@ int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2])
     static int i;
     if(shell->new == 0)
     {
-        i = 0;      
+        i = 0;
         shell->new = 1;
     }
     shell->pid[i] = fork();
@@ -247,11 +332,14 @@ int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2])
         exit(1);
     }
     if(shell->pid[i] == 0)
+    {
+        handle_signals(DFL_ALL);
         fd_dup(shell, cmds,fd, fd_read);
+    }
     i++;
     return 0;
-        
-}   
+
+}
 
 int    ft_wait(int *pid, int pipes)
 {
@@ -266,6 +354,11 @@ int    ft_wait(int *pid, int pipes)
     }
     if(WEXITSTATUS(status))
         g_exit_status = WEXITSTATUS(status);
+    if (WIFSIGNALED(status) && WTERMSIG(status))
+    {
+        // write(1, "\n", 1);
+        g_exit_status = 128 + WIFSIGNALED(status);
+    }
     return 0;
 }
 
@@ -285,9 +378,9 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
 {
     int fd[2];
     int fd_read;
-    
+
     fd_read = 0;
-    
+
     shell->pid = malloc(sizeof(int) * (shell->pipes + 1));
     if(!shell->pid)
     {
@@ -304,7 +397,8 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
                 exit(1);
             }
         }
-        check_heredoc(shell, cmds);
+		if(launch_doc(shell, cmds) == 1)
+			break ;
         forking(shell, cmds, fd_read, fd);
         close(fd[1]);
         if(cmds->prev)
@@ -332,35 +426,95 @@ void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
         single_command(shell, cmds);
     }
     else
-        multiple_command(shell, cmds);            
+        multiple_command(shell, cmds);
 }
-    
 
-void    check_heredoc(t_mini *shell, t_parser *cmds)
+char 	*creat_hd_name(void)
+{
+	static int 	i;
+	char 		*file_name;
+	char 		*index;
+
+	index = ft_itoa(i++);
+	file_name = ft_strjoin("/tmp/.hd_file", index);
+	free(index);
+	return file_name;
+}
+
+	int		launch_doc(t_mini *shell, t_parser *cmds)
+{
+	t_parser *tmp;
+
+	tmp = cmds;
+	while(cmds)
+	{
+        if (check_heredoc(shell, cmds) > 128)
+            return 1;
+		cmds = cmds->next;
+	}
+	cmds = tmp;
+	return 0;
+
+}
+
+int    check_heredoc(t_mini *shell, t_parser *cmds)
 {
     t_lexer *tmp;
-    int exit;
+    int exit_;
+	int fd[2];
+
 
     tmp = cmds->redirections;
-    exit = 0;
-    while(cmds->redirections)
+	if(!tmp)
+		return 0;
+    exit_ = 0;
+	if(pipe(fd) < 0)
+		ft_putstr_fd("pipe error !",2);
+    int pid = fork();
+    if (pid < 0)
+        ft_putstr_fd("fork error !", 2);
+    else if (pid == 0)
     {
-        if(cmds->redirections->token == HEREDOC)
+        handle_signals(IGN_QUIT);
+        while(cmds->redirections)
         {
-            if(shell->heredoc_file)
-                free(shell->heredoc_file);
-            shell->heredoc_file = ft_strdup("/tmp/heredoc_file");
-            exit = here_doc(shell->heredoc_file, shell, cmds->redirections);
-            if(exit)
+            if(cmds->redirections->token == HEREDOC)
             {
-                shell->hd = 0;
-                return ;
+                if(shell->heredoc_file)
+                    free(shell->heredoc_file);
+                shell->heredoc_file = creat_hd_name();
+                exit_ = here_doc(shell->heredoc_file, shell, cmds->redirections);
+                if(exit_)
+                {
+                    shell->hd = 0;
+                    return 1;
+                }
+                shell->hd = 1;
             }
-            shell->hd = 1;
+            cmds->redirections = cmds->redirections->next;
         }
-        cmds->redirections = cmds->redirections->next;
+		write(fd[1], shell->heredoc_file, ft_strlen(shell->heredoc_file));
+        cmds->redirections = tmp;
+		close(fd[1]);
+		close(fd[0]);
+        exit(0);
     }
-    cmds->redirections = tmp;
+    int status;
+    waitpid(pid, &status, 0);
+    if (WIFSIGNALED(status) && WTERMSIG(status))
+    {
+        write(1, "\n", 1);
+        g_exit_status = 128 + WIFSIGNALED(status);
+        return (128 + WIFSIGNALED(status));
+    }
+	char *name = ft_calloc(16,sizeof(char));
+	if(!name)
+		return 2;
+	read(fd[0], name, 16);
+	close(fd[0]);
+	shell->heredoc_file = name;
+	// fprintf(stderr,"%s", name);
+    return 0;
 }
 
 int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
@@ -368,14 +522,15 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
     char *delimiter;
     int quote;
     int exit;
-    
+
     delimiter = heredoc->word;
-    if((delimiter[0] == '\'' && delimiter[ft_strlen(delimiter) - 1] == '\'') 
+    if((delimiter[0] == '\'' && delimiter[ft_strlen(delimiter) - 1] == '\'')
     || (delimiter[0] == '\"' && delimiter[ft_strlen(delimiter) - 1] == '\"'))
         quote = 1;
     else
         quote = 0;
     remove_quotes(delimiter);
+	g_stop_heredoc = 0;
     exit = exec_heredoc(shell, file_name, delimiter, quote);
     return(exit);
 }
@@ -383,13 +538,13 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
 int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
 {
     int     fd;
-    char    *line; 
+    char    *line;
 
     fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
     // if(fd < 0)
         // ft_error();
     line = readline("> ");
-    while(line && ft_strcmp(delimiter, line))
+    while(line && ft_strcmp(delimiter, line) && !g_stop_heredoc)
     {
         if(!quote)
             line = ft_expand_herdoc(line, shell);
@@ -398,10 +553,55 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
         free(line);
         line = readline("> ");
     }
-    if(!line) // there is still something global for the heredoc
-        return 1;
+    if (g_stop_heredoc)
+    {
+        close(fd);
+        free(line);
+        return 0;  // Indicate interruption
+    }
+    if(!line)
+    {
+        printf("warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
+        close(fd);
+        return 0;
+    } // there is still something global for the heredoc
     close(fd);
     return 0;
-    
 }
+
+
+// int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
+// {
+//     int     fd;
+//     char    *line;
+
+// 	signal(SIGINT, child_sigint);
+//     fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
+//     // if(fd < 0)
+//         // ft_error();
+//     line = readline("> ");
+//     while(line && ft_strcmp(delimiter, line) && !g_stop_heredoc)
+//     {
+//         if(!quote)
+//             line = ft_expand_herdoc(line, shell);
+//         write(fd, line, ft_strlen(line));
+//         write(fd, "\n", 1);
+//         free(line);
+//         line = readline("> ");
+// 		if(g_stop_heredoc == 1)
+// 		{
+// 			close(fd);
+// 			return 1;
+// 		}
+//     }
+//     if(!line )
+//     {
+//         close(fd);
+//         printf("warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
+//         return 0;
+//     }
+//     close(fd);
+//     return 0;
+
+// }
 

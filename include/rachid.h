@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 17:46:34 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/31 16:24:38 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,14 @@ int	handle_cmd(t_mini *shell, t_parser *cmds);
 void	execute_builtin(t_parser *args, t_mini *shell);
 
 // void    check_heredoc(t_parser *cmds);
-int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds);
+int		exec_cmd(t_mini *shell, t_parser *cmds, char **envp);
+int 	ft_execute(t_mini *shell, char **envp, t_parser *cmds);
 char    *join_path(char *path, char *command);
 
 int    which_redirection(t_mini *shell, t_lexer *redirection);
 int    handle_outfile(t_lexer *redirection, char *file);
 
-void    check_heredoc(t_mini *shell, t_parser *cmds);
+int    check_heredoc(t_mini *shell, t_parser *cmds);
 int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc);
 int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote);
 
@@ -63,6 +64,11 @@ void	unsetenv_custom(t_env **env, const char *key);
 void	remove_quotes(char *str);
 char    **ft_new_envp(t_env *env);
 
-char    *expand_var(char *val, t_mini *shell); 
+char    *expand_var(char *val, t_mini *shell);
+void    handle_signals(int flag);
+
+int		launch_doc(t_mini *shell, t_parser *cmds);
+
+// void	child_sigint(int pid);
 
 #endif
