@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   brahim.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 09:31:41 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/31 10:34:39 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 
 typedef struct s_mini	t_mini;
 typedef struct s_env	t_env;
+
+#define INT_HNDL 	0
+#define IGN_ALL 	1
+#define DFL_ALL		2
+#define IGN_QUIT 	3
 
 typedef enum e_tokens
 {

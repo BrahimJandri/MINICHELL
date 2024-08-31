@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/30 16:58:58 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/31 12:05:23 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,17 +128,19 @@ void print_env(char **env)
     }
 }
 
+
+
 void	shell_loop(t_mini *shell)
 {
 	char	*input;
 
 	while (1)
 	{
-		signal(SIGINT, handle_sigint);
-		signal(SIGQUIT, SIG_IGN);
 		shell->syntax_error = 0;
 		shell->quoted = 0;
+		handle_signals(INT_HNDL);
 		input = readline("MiniShell$ ");
+		handle_signals(IGN_ALL);
 		if (!input)
 		{
 			printf("exit\n");
@@ -157,7 +159,7 @@ void	shell_loop(t_mini *shell)
             {
 				ft_expander(shell);
 				ft_parsing(shell);
-            	signal(SIGINT, child_sigint);
+            	// signal(SIGINT, child_sigint);
 		        // signal(SIGQUIT, child_sigquit);
 				ft_execution(shell->cmds, shell, shell->envp);
             }

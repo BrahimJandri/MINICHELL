@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/30 16:55:41 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/31 11:26:47 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,24 +268,29 @@ void    single_command(t_mini *shell, t_parser *cmds)
         execute_builtin(cmds, shell);
         return ;
     }
+    check_heredoc(shell, cmds);
 	// hd_id = fork();
 	// if(hd_id == 0)
-    	check_heredoc(shell, cmds);
 	// else
 	// {
-    	pid = fork();
-    	if(pid < 0)
-    	{
-    	    perror("fork failed");
-    	    // fork failed.
-    	}
-    	if(pid == 0)
-    	{
-    	    handle_cmd(shell, cmds);
-    	}
-    	waitpid(pid, &status, 0);
-    	g_exit_status = WEXITSTATUS(status);
-	// }
+    pid = fork();
+    if(pid < 0)
+    {
+        perror("fork failed");
+        // fork failed.
+    }
+    else if(pid == 0)
+    {
+        handle_signals(DFL_ALL);
+        handle_cmd(shell, cmds);
+    }
+    waitpid(pid, &status, 0);
+    g_exit_status = WEXITSTATUS(status);
+    if (WIFSIGNALED(status) && WTERMSIG(status))
+    {
+        write(1, "\n", 1);
+        g_exit_status = 128 + WIFSIGNALED(status);
+    }
 }
 
 
@@ -326,7 +331,10 @@ int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2])
         exit(1);
     }
     if(shell->pid[i] == 0)
+    {
+        handle_signals(DFL_ALL);
         fd_dup(shell, cmds,fd, fd_read);
+    }
     i++;
     return 0;
 
@@ -345,6 +353,11 @@ int    ft_wait(int *pid, int pipes)
     }
     if(WEXITSTATUS(status))
         g_exit_status = WEXITSTATUS(status);
+    if (WIFSIGNALED(status) && WTERMSIG(status))
+    {
+        // write(1, "\n", 1);
+        g_exit_status = 128 + WIFSIGNALED(status);
+    }
     return 0;
 }
 
@@ -383,7 +396,8 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
                 exit(1);
             }
         }
-        check_heredoc(shell, cmds);
+        if (check_heredoc(shell, cmds) > 128)
+            break;
         forking(shell, cmds, fd_read, fd);
         close(fd[1]);
         if(cmds->prev)
@@ -429,29 +443,45 @@ char 	*creat_hd_name(void)
 int    check_heredoc(t_mini *shell, t_parser *cmds)
 {
     t_lexer *tmp;
-    int exit;
+    int exit_;
 
     tmp = cmds->redirections;
-    exit = 0;
-    while(cmds->redirections)
+    exit_ = 0;
+    int pid = fork();
+    if (pid < 0)
+        perror("fork");
+    else if (pid == 0)
     {
-        if(cmds->redirections->token == HEREDOC)
+        handle_signals(IGN_QUIT);
+        while(cmds->redirections)
         {
-            if(shell->heredoc_file)
-                free(shell->heredoc_file);
-            shell->heredoc_file = creat_hd_name();
-            exit = here_doc(shell->heredoc_file, shell, cmds->redirections);
-            if(exit)
+            if(cmds->redirections->token == HEREDOC)
             {
-                shell->hd = 0;
-                return 1;
+                if(shell->heredoc_file)
+                    free(shell->heredoc_file);
+                shell->heredoc_file = creat_hd_name();
+                exit_ = here_doc(shell->heredoc_file, shell, cmds->redirections);
+                if(exit_)
+                {
+                    shell->hd = 0;
+                    return 1;
+                }
+                shell->hd = 1;
             }
-            shell->hd = 1;
+            cmds->redirections = cmds->redirections->next;
         }
-        cmds->redirections = cmds->redirections->next;
+        cmds->redirections = tmp;
+        exit(0);
     }
-    cmds->redirections = tmp;
-	return 0;
+    int status;
+    waitpid(pid, &status, 0);
+    if (WIFSIGNALED(status) && WTERMSIG(status))
+    {
+        write(1, "\n", 1);
+        g_exit_status = 128 + WIFSIGNALED(status);
+        return (128 + WIFSIGNALED(status));
+    }
+    return 0;
 }
 
 int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
@@ -472,51 +502,39 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
     return(exit);
 }
 
-
-
-
-
 int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
 {
     int     fd;
-    char    *line;
-
-	(void)shell;
-	(void)quote;
-
-	signal(SIGINT, child_sigint);
+    char    *line; 
+    
     fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
     // if(fd < 0)
         // ft_error();
-    while(!g_stop_heredoc)
-	{
-    	line = readline("> ");
-		if(!line)
-		{
-        	close(fd);
-    	    printf("warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
-	        return 0;
-		}
-		if(ft_strcmp(line, delimiter) == 0)
-			break ;
-	}
-	if(g_stop_heredoc)
-	{
-		close(fd);
-		return 1;
-	}
-	close(fd);
-	return 0;
+    line = readline("> ");
+    while(line && ft_strcmp(delimiter, line) && !g_stop_heredoc)
+    {
+        if(!quote)
+            line = ft_expand_herdoc(line, shell);
+        write(fd, line, ft_strlen(line));
+        write(fd, "\n", 1);
+        free(line);
+        line = readline("> ");
+    }
+    if (g_stop_heredoc)
+    {
+        close(fd);
+        free(line);
+        return 0;  // Indicate interruption
+    }
+    if(!line)
+    {
+        printf("warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
+        close(fd);
+        return 0;
+    } // there is still something global for the heredoc
+    close(fd);
+    return 0;
 }
-
-
-
-
-
-
-
-
-
 
 
 // int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)

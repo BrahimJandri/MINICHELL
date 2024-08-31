@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/30 16:21:55 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/08/31 10:47:01 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	remove_quotes(char *str);
 char    **ft_new_envp(t_env *env);
 
 char    *expand_var(char *val, t_mini *shell);
+void    handle_signals(int flag);
 
-void	child_sigint(int pid);
+// void	child_sigint(int pid);
+
 #endif

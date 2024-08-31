@@ -1,6 +1,7 @@
+MAKEFLAGS += --no-print-directory
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g #-fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 LDFLAGS = -lreadline
 RM = rm -f
 LIBFT = Libft/libft.a
