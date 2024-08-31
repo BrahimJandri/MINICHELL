@@ -178,6 +178,7 @@ int ft_execute(t_mini *shell, char **envp, t_parser *cmds)
 
 int     	cmd_not_found(t_mini *shell, t_parser *cmds)
 {
+    remove_quotes(cmds->cmd[0]);
     ft_putstr_fd(cmds->cmd[0],2);
     ft_putstr_fd(": command not found\n", 2);
     free_all(shell);

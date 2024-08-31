@@ -129,7 +129,6 @@ void print_env(char **env)
 }
 
 
-
 void	shell_loop(t_mini *shell)
 {
 	char	*input;
@@ -173,6 +172,8 @@ void	shell_loop(t_mini *shell)
         }
     }
 }
+
+
 
 
 

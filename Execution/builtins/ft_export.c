@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:21 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 15:49:20 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/29 15:22:35 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,17 @@ void	handle_plus_equal_assignment(char *arg, t_mini *shell)
 
 void	handle_equal_assignment(char *arg, t_mini *shell)
 {
-	char	*existing_value;
-
 	shell->export->key = ft_substr(arg, 0, shell->export->equal_sign_pos - arg);
 	if (*(shell->export->equal_sign_pos + 1) == '\0')
-	{
-		existing_value = getenv_value((shell->env), shell->export->key);
-		if (existing_value)
-			shell->export->value = ft_strdup(existing_value);
-		else
-			shell->export->value = ft_strdup("");
-	}
+		shell->export->value = ft_strdup("");
 	else
 		shell->export->value = ft_strdup(shell->export->equal_sign_pos + 1);
 }
 
 void	handle_assignment(char *arg, t_mini *shell)
 {
+	char	*existing_value;
+
 	if (shell->export->plus_equal_sign_pos)
 		handle_plus_equal_assignment(arg, shell);
 	else if (shell->export->equal_sign_pos)
@@ -53,8 +47,10 @@ void	handle_assignment(char *arg, t_mini *shell)
 	else
 	{
 		shell->export->key = ft_strdup(arg);
-		shell->export->value = getenv_value(shell->env, shell->export->key);
-		if (!shell->export->value)
+		existing_value = getenv_value((shell->env), shell->export->key);
+		if (existing_value)
+			shell->export->value = ft_strdup(existing_value);
+		else
 			shell->export->value = NULL;
 	}
 }
@@ -62,7 +58,7 @@ void	handle_assignment(char *arg, t_mini *shell)
 int	process_arg(char *arg, t_mini *shell)
 {
 	shell->export->equal_sign_pos = ft_strchr(arg, '=');
-	shell->export->plus_equal_sign_pos = strstr(arg, "+=");
+	shell->export->plus_equal_sign_pos = ft_strnstr(arg, "+=", ft_strlen(arg));
 	handle_assignment(arg, shell);
 	if (!is_valid_identifier(shell->export->key))
 	{
