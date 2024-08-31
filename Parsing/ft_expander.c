@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 09:24:26 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/29 16:21:08 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/31 17:53:29 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,11 @@ void	expand_and_replace_word(t_lexer *tmp, t_mini *shell)
 
 int only_quotes(char *str)
 {
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != '"' && str[i] != '\'')
-			return (0);
-		i++;
-	}
-	return (1);
+	if(str[0] == '"' && str[1] == '"' && str[2] == '\0')
+		return (1);
+	else if(str[0] == '\'' && str[1] == '\'' && str[2] == '\0')
+		return (1);
+	return (0);
 }
 
 void	ft_expander(t_mini *shell)
