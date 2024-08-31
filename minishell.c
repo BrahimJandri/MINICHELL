@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 17:46:55 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/08/30 16:44:33 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,15 @@ void print_env(char **env)
     }
 }
 
+void	handle_sigint(int sig)
+{
+	(void)sig;
+	rl_replace_line("", 0);        // Clear the current input line
+	write(STDOUT_FILENO, "\n", 1); // Move to a new line
+	rl_on_new_line();              // Tell Readline to start a new line
+	rl_redisplay();                // Redisplay the prompt
+}
+
 void	shell_loop(t_mini *shell)
 {
 	char	*input;
@@ -183,12 +192,6 @@ void	shell_loop(t_mini *shell)
     }
 }
 
-void	handle_sigint(int sig)
-{
-	(void)sig;
-	rl_replace_line("", 0);
-	write(STDOUT_FILENO, "\nMiniShell$ ", 13);
-}
 
 void	free_env_node(t_env *node)
 {
