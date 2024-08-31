@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/31 11:26:47 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/08/31 17:45:18 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,8 +396,8 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
                 exit(1);
             }
         }
-        if (check_heredoc(shell, cmds) > 128)
-            break;
+		if(launch_doc(shell, cmds) == 1)
+			break ;
         forking(shell, cmds, fd_read, fd);
         close(fd[1]);
         if(cmds->prev)
@@ -440,16 +440,38 @@ char 	*creat_hd_name(void)
 	return file_name;
 }
 
+	int		launch_doc(t_mini *shell, t_parser *cmds)
+{
+	t_parser *tmp;
+
+	tmp = cmds;
+	while(cmds)
+	{
+        if (check_heredoc(shell, cmds) > 128)
+            return 1;
+		cmds = cmds->next;
+	}
+	cmds = tmp;
+	return 0;
+
+}
+
 int    check_heredoc(t_mini *shell, t_parser *cmds)
 {
     t_lexer *tmp;
     int exit_;
+	int fd[2];
+
 
     tmp = cmds->redirections;
+	if(!tmp)
+		return 0;
     exit_ = 0;
+	if(pipe(fd) < 0)
+		ft_putstr_fd("pipe error !",2);
     int pid = fork();
     if (pid < 0)
-        perror("fork");
+        ft_putstr_fd("fork error !", 2);
     else if (pid == 0)
     {
         handle_signals(IGN_QUIT);
@@ -470,7 +492,10 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
             }
             cmds->redirections = cmds->redirections->next;
         }
+		write(fd[1], shell->heredoc_file, ft_strlen(shell->heredoc_file));
         cmds->redirections = tmp;
+		close(fd[1]);
+		close(fd[0]);
         exit(0);
     }
     int status;
@@ -481,6 +506,13 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
         g_exit_status = 128 + WIFSIGNALED(status);
         return (128 + WIFSIGNALED(status));
     }
+	char *name = ft_calloc(16,sizeof(char));
+	if(!name)
+		return 2;
+	read(fd[0], name, 16);
+	close(fd[0]);
+	shell->heredoc_file = name;
+	// fprintf(stderr,"%s", name);
     return 0;
 }
 
@@ -505,8 +537,8 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
 int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
 {
     int     fd;
-    char    *line; 
-    
+    char    *line;
+
     fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
     // if(fd < 0)
         // ft_error();

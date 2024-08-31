@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/31 10:47:01 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/08/31 16:24:38 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ char    **ft_new_envp(t_env *env);
 
 char    *expand_var(char *val, t_mini *shell);
 void    handle_signals(int flag);
+
+int		launch_doc(t_mini *shell, t_parser *cmds);
 
 // void	child_sigint(int pid);
 
