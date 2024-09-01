@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/01 08:34:48 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/01 12:09:56 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -478,6 +478,8 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
         ft_putstr_fd("fork error !", 2);
     else if (pid == 0)
     {
+	// fprintf(stderr,"child %d\n", bid = getpid());
+
         handle_signals(IGN_QUIT);
         while(cmds->redirections)
         {
@@ -496,12 +498,14 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
             }
             cmds->redirections = cmds->redirections->next;
         }
-		write(fd[1], shell->heredoc_file, ft_strlen(shell->heredoc_file));
+		if(shell->heredoc_file)
+			write(fd[1], shell->heredoc_file, ft_strlen(shell->heredoc_file));
         cmds->redirections = tmp;
 		close(fd[1]);
 		close(fd[0]);
         exit(0);
     }
+
     int status;
     waitpid(pid, &status, 0);
     if (WIFSIGNALED(status) && WTERMSIG(status))
@@ -513,10 +517,12 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
 	char *name = ft_calloc(16,sizeof(char));
 	if(!name)
 		return 2;
-	read(fd[0], name, 16);
+	close(fd[1]);
+	// fprintf(stderr,"parent underne%d\n", bid = getpid());
+	if(read(fd[0], name, 16) == -1)
+		return 1;
 	close(fd[0]);
 	shell->heredoc_file = name;
-	// fprintf(stderr,"%s", name);
     return 0;
 }
 
