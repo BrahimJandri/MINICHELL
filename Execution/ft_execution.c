@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/31 17:45:18 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/01 08:34:48 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,8 +397,7 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
                 exit(1);
             }
         }
-		if(launch_doc(shell, cmds) == 1)
-			break ;
+
         forking(shell, cmds, fd_read, fd);
         close(fd[1]);
         if(cmds->prev)
@@ -426,7 +425,11 @@ void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
         single_command(shell, cmds);
     }
     else
+    {
+        if(launch_doc(shell, cmds) == 1)
+			return ;
         multiple_command(shell, cmds);
+    }
 }
 
 char 	*creat_hd_name(void)
