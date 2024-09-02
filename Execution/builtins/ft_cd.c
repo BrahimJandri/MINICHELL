@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 18:23:34 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 16:39:14 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ int	prepare_cd(char **args, t_env **env, char **path, char **oldpwd)
 		*oldpwd = getcwd(NULL, 0);
 		if (!(*oldpwd))
 			return (perror("Minishell"), 1);
-		update_env(env, "PWD", *oldpwd);
-		free(*oldpwd);
 	}
 	if (!args[1])
 	{
@@ -56,11 +54,13 @@ int	cd_builtin(char **args, t_env **env)
 
 	if (prepare_cd(args, env, &path, &oldpwd) != 0)
 		return (1);
-	if (chdir(path) == -1 || !path)
+	if (chdir(path) == -1)
 		return (perror("Minishell"), 1);
+	update_env(env, "OLDPWD", oldpwd);
 	free((*env)->pwd);
 	(*env)->pwd = getcwd(NULL, 0);
-	update_env(env, "OLDPWD", oldpwd);
+	if (!(*env)->pwd)
+		return (perror("Minishell"), 1);
 	update_env(env, "PWD", (*env)->pwd);
 	return (0);
 }
