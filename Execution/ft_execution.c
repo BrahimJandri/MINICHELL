@@ -6,38 +6,38 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/02 16:28:39 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 18:29:24 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/rachid.h"
 
-void	ft_shlvl_update(t_env  **envp)
+void    ft_shlvl_update(t_env  **envp)
 {
-	t_env	*tmp;
-	char	*shlvl;
+    t_env    *tmp;
+    char    *shlvl;
 
-	tmp = *envp;
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->key, "SHLVL", 5))
-		{
-            if(ft_atoi(tmp->value) == 999)
+    tmp = *envp;
+    while (tmp)
+    {
+        if (!ft_strncmp(tmp->key, "SHLVL", 5))
+        {
+            if(ft_atoi(tmp->value) > 999)
             {
                 ft_putstr_fd("warning: shell level (1001) too high, resetting to 1\n",2);
                 free(tmp->value);
                 tmp->value = ft_strdup("0");
             }
-			shlvl = ft_itoa(ft_atoi(tmp->value) + 1);
-			if (!shlvl)
-				return ;
+            shlvl = ft_itoa(ft_atoi(tmp->value) + 1);
+            if (!shlvl)
+                return ;
             free(tmp->value);
-			tmp->value = ft_strdup(shlvl);
-			free(shlvl);
-			break ;
-		}   
-		tmp = tmp->next;
-	}
+            tmp->value = ft_strdup(shlvl);
+            free(shlvl);
+            break ;
+        }
+        tmp = tmp->next;
+    }
 }
 
 void    free_all(t_mini *shell)
