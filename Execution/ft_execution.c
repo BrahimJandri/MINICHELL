@@ -6,35 +6,38 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/02 10:43:58 by bjandri          ###   ########.fr       */
+
+/*   Updated: 2024/09/02 13:06:51 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/rachid.h"
 
-void	ft_shlvl_update(char    ***envp)
+void	ft_shlvl_update(t_env  **envp)
 {
-	char	**tmp;
-	char	*tmp_free;
+	t_env	*tmp;
 	char	*shlvl;
-	int		i;
 
 	tmp = *envp;
-	i = 0;
-	while (tmp[i])
+	while (tmp)
 	{
-		if (!ft_strncmp(tmp[i], "SHLVL=", 6))
+		if (!ft_strncmp(tmp->key, "SHLVL", 5))
 		{
-			tmp_free = tmp[i];
-			shlvl = ft_itoa(ft_atoi(tmp[i] + 6) + 1);
+            if(ft_atoi(tmp->value) == 999)
+            {
+                ft_putstr_fd("warning: shell level (1001) too high, resetting to 1\n",2);
+                free(tmp->value);
+                tmp->value = ft_strdup("0");
+            }
+			shlvl = ft_itoa(ft_atoi(tmp->value) + 1);
 			if (!shlvl)
 				return ;
-			tmp[i] = ft_strjoin("SHLVL=", shlvl);
+            free(tmp->value);
+			tmp->value = ft_strdup(shlvl);
 			free(shlvl);
-			free(tmp_free);
 			break ;
-		}
-		i++;
+		}   
+		tmp = tmp->next;
 	}
 }
 
@@ -68,19 +71,42 @@ void    no_permission(t_parser *cmds)
 	exit(126);
 }
 
-int		exec_cmd(t_mini *shell, t_parser *cmds, char **envp)
+int    get_path(t_mini *shell, char **my_env)
+{
+    int i;
+
+    i = 0;
+    while (my_env[i])
+	{
+		if (ft_strncmp("PATH=", my_env[i], 5) == 0)
+		{
+			shell->path = ft_split(my_env[i] + 5, ':');
+			break ;
+		}
+		i++;
+	}
+    if(!shell->path)
+        return 1;
+    return 0;
+}
+
+int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
 {
 	char *joined_cmd;
 	int 	i;
 
 	i = 0;
+    if(get_path(shell, my_envp))
+    {
+        ft_execve(cmds, my_envp);
+    }   
 	while(shell->path[i])
 	{
 		joined_cmd = join_path(shell->path[i], cmds->cmd[0]);
 
 		if(!access(joined_cmd, F_OK))
 		{
-			if(execve(joined_cmd, cmds->cmd, envp) == -1)
+			if(execve(joined_cmd, cmds->cmd, my_envp) == -1)
 			{
 				perror("execve");
 				exit(1);
@@ -94,9 +120,9 @@ int		exec_cmd(t_mini *shell, t_parser *cmds, char **envp)
 	return (0);
 }
 
-void	ft_execve(t_parser *cmds, char **envp)
+void	ft_execve(t_parser *cmds, char **my_envp)
 {
-    if(execve(cmds->cmd[0], cmds->cmd, envp) == -1)//envp will be changed to our envp
+    if(execve(cmds->cmd[0], cmds->cmd, my_envp) == -1)//envp will be changed to our envp
     {
 		// if(errno == ENOEXEC)
 		// 	exit(0);
@@ -105,10 +131,11 @@ void	ft_execve(t_parser *cmds, char **envp)
 	}
 }
 
-int ft_execute(t_mini *shell, char **envp, t_parser *cmds)
+int ft_execute(t_mini *shell, char **my_envp, t_parser *cmds)
 {
 	struct stat info;
     (void)shell;
+    
 
     if((cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/') || (cmds->cmd[0][0] == '/'))
 	{
@@ -119,62 +146,17 @@ int ft_execute(t_mini *shell, char **envp, t_parser *cmds)
 			else
 			{
 				if(!access(cmds->cmd[0], X_OK))//is it an executable if yes exec it, if no return permission denied
-					ft_execve(cmds, envp);
+					ft_execve(cmds, my_envp);
 				else
 					no_permission(cmds);
 			}
 		}
-		ft_execve(cmds, envp);
+		ft_execve(cmds, my_envp);
 	}
 	else if(cmds->cmd[0]) //a direct command whether exists or not
-	{
-		exec_cmd(shell, cmds, envp);
-	}
+		exec_cmd(shell, cmds, my_envp);
 	exit(0);
 }
-
-// int    exec_cmd(t_mini *shell, char **envp, t_parser *cmds)
-// {
-//     char *joined_cmd;
-//     int i;
-//     char **new_envp;
-//     (void)envp;
-//     new_envp = ft_new_envp(shell->env);
-//     if(!cmds->cmd[0])
-//     {
-//         free_all(shell);
-//         exit(1);
-//     }
-//     i = 0;
-//     if(!access(cmds->cmd[0], F_OK))
-//     {
-//         if(!ft_strcmp(cmds->cmd[0], "./minishell"))
-//             ft_shlvl_update(&new_envp);
-//         if(execve(cmds->cmd[0], cmds->cmd, new_envp) == -1)
-//         {
-//             perror("execve");
-//             //return statusls
-//         }
-//     }
-//     while(shell->path && shell->path[i])
-//     {
-//         joined_cmd = join_path(shell->path[i], cmds->cmd[0]);// there is a probelm if he inputs ./cat
-
-//         if(!access(joined_cmd, F_OK))
-//         {
-//             if(execve(joined_cmd, cmds->cmd, new_envp) == -1)
-//             {
-//                 perror("execve failed");
-//                 // return status
-//             }
-//         }
-//         free(joined_cmd);
-//         i++;
-//     }
-//     if(cmds->cmd[0])
-//         return(cmd_not_found(shell, cmds));
-//     return 0;
-// }
 
 int     	cmd_not_found(t_mini *shell, t_parser *cmds)
 {
@@ -249,7 +231,10 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
     }
     else if(cmds->cmd[0])
     {
-        err = ft_execute(shell, shell->envp, cmds);
+        // print_env(shell->new_envp);
+        // exit(1);
+	    shell->new_envp = ft_new_envp(shell->env); /* we make this list 2D array to be executed */
+        err = ft_execute(shell, shell->new_envp, cmds);
     }
     exit(err);
 }
@@ -263,17 +248,13 @@ void    single_command(t_mini *shell, t_parser *cmds)
     t_builtins built;
 
     built = cmds->builtin;
-    // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
     if(built == EXIT || built == ENV || built == EXPORT || built == UNSET || built == CD)
     {
         execute_builtin(cmds, shell);
         return ;
     }
-    check_heredoc(shell, cmds);
-	// hd_id = fork();
-	// if(hd_id == 0)
-	// else
-	// {
+    check_heredoc(shell, cmds); 
+	
     pid = fork();
     if(pid < 0)
     {
@@ -466,9 +447,8 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
     int exit_;
 	int fd[2];
 
-
-    tmp = cmds->redirections;
-	if(!tmp)
+    // fprintf(stderr,"%d\n", getpid());
+    tmp = cmds->redirections;   
 		return 0;
     exit_ = 0;
 	if(pipe(fd) < 0)
@@ -578,39 +558,4 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
     return 0;
 }
 
-
-// int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
-// {
-//     int     fd;
-//     char    *line;
-
-// 	signal(SIGINT, child_sigint);
-//     fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
-//     // if(fd < 0)
-//         // ft_error();
-//     line = readline("> ");
-//     while(line && ft_strcmp(delimiter, line) && !g_stop_heredoc)
-//     {
-//         if(!quote)
-//             line = ft_expand_herdoc(line, shell);
-//         write(fd, line, ft_strlen(line));
-//         write(fd, "\n", 1);
-//         free(line);
-//         line = readline("> ");
-// 		if(g_stop_heredoc == 1)
-// 		{
-// 			close(fd);
-// 			return 1;
-// 		}
-//     }
-//     if(!line )
-//     {
-//         close(fd);
-//         printf("warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
-//         return 0;
-//     }
-//     close(fd);
-//     return 0;
-
-// }
 
