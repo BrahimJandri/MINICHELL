@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/02 16:09:42 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/02 16:15:00 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,3 +80,4 @@ void	ft_execve(t_parser *cmds, char **my_envp);
 void	free_env_node(t_env *node);
 void    ft_close(int *fd);
 #endif
+    
