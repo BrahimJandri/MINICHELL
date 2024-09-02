@@ -51,7 +51,7 @@ t_env	*ft_new_env(const char *key, const char *value)
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
 		return (NULL);
-	if(key)
+	if (key)
 		new_node->key = ft_strdup(key);
 	else
 		new_node->key = NULL;

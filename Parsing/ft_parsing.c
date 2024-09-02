@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-static char	**	ft_store_args(t_lexer *start)
+static char	**ft_store_args(t_lexer *start)
 {
 	t_lexer	*tmp;
 	int		count;
@@ -99,9 +99,9 @@ static void	ft_parse_commands(t_mini *shell)
 
 void	ft_parsing(t_mini *shell)
 {
-	if(check_redir(shell->head))
+	if (check_redir(shell->head))
 		return ;
-	if (shell-> head && shell->head->token == ARG)
+	if (shell->head && shell->head->token == ARG)
 		ft_get_type(shell->head);
 	shell->pipes = ft_count_pipe(shell->head);
 	ft_parse_commands(shell);

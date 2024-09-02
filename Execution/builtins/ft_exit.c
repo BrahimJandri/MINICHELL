@@ -39,7 +39,8 @@ int	exit_builtin(char **args, t_mini *shell)
 	while (args[1][i])
 	{
 		if (!ft_isdigit(args[1][i]) || atol(args[1]) > 9223372036854775807)
-			return (exit_msg("minishell: exit: numeric argument required\n", 1, shell), 1);
+			return (exit_msg("minishell: exit: numeric argument required\n", 1,
+					shell), 1);
 		i++;
 	}
 	ft_putstr_fd("exit\n", 2);

@@ -46,7 +46,7 @@ void	sort_env(t_env **env_array, int count)
 		i = 0;
 		while (i < count - 1)
 		{
-			if(!env_array[i]->key || !env_array[i + 1]->key)
+			if (!env_array[i]->key || !env_array[i + 1]->key)
 				break ;
 			if (ft_strcmp(env_array[i]->key, env_array[i + 1]->key) > 0)
 			{
@@ -65,8 +65,9 @@ void	print_sorted(t_env **env_array, int count)
 	i = 0;
 	while (i < count)
 	{
-		if(env_array[i]->value)
-			printf("declare -x %s=\"%s\"\n", env_array[i]->key, env_array[i]->value);
+		if (env_array[i]->value)
+			printf("declare -x %s=\"%s\"\n", env_array[i]->key,
+				env_array[i]->value);
 		else if (env_array[i]->value == NULL)
 			printf("declare -x %s\n", env_array[i]->key);
 		i++;

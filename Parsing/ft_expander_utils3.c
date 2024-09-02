@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:21:52 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 09:24:05 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 10:00:07 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,13 @@ char	*extract_name(char *val, int *index, t_mini *shell)
 	ptr = get_value_env(str, shell);
 	free(str);
 	return (ptr);
+}
+
+int	only_quotes(char *str)
+{
+	if (str[0] == '"' && str[1] == '"' && str[2] == '\0')
+		return (1);
+	else if (str[0] == '\'' && str[1] == '\'' && str[2] == '\0')
+		return (1);
+	return (0);
 }

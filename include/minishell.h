@@ -23,9 +23,9 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <sys/stat.h>
 
 extern int			g_exit_status;
 extern int			g_stop_heredoc;
@@ -45,21 +45,20 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	char			*pwd;
-	char 			*oldpwd;
+	char			*oldpwd;
 	struct s_env	*next;
 }					t_env;
-
 
 typedef struct s_mini
 {
 	int				new;
 	int				pipes;
-	int 			*pid;
+	int				*pid;
 	char			**envp;
 	char			**path;
 	char			*rl;
 	int				hd;
-	char 			*heredoc_file;
+	char			*heredoc_file;
 	int				syntax_error;
 	int				quoted;
 	t_env			*env;
