@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/01 09:47:05 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/02 16:08:54 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,6 @@ typedef struct s_mini
 	t_parser		*cmds;
 	t_lexer			*head;
 }					t_mini;
+
+void	free_export(t_export_norm *export);
 #endif

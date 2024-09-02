@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-
-/*   Updated: 2024/09/02 13:06:51 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/02 16:04:03 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +43,7 @@ void	ft_shlvl_update(t_env  **envp)
 void    free_all(t_mini *shell)
 {
     free_tokens(shell->head);
-    free_parser(shell->cmds);
+    // free_parser(shell->cmds);
     if(shell->path)
 	    free_path(shell->path);
     free_arr_dup(shell->envp);
@@ -229,7 +228,7 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
         free_all(shell);
         exit(0);
     }
-    else if(cmds->cmd[0])
+    else if(cmds->cmd)
     {
         // print_env(shell->new_envp);
         // exit(1);
@@ -239,22 +238,47 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
     exit(err);
 }
 
+int    my_wait(int pid, int status, int flag)
+{
+    if(flag == 0)//for cmd
+    {
+        waitpid(pid, &status, 0);
+        g_exit_status = WEXITSTATUS(status);
+        if (WIFSIGNALED(status) && WTERMSIG(status))
+        {
+            write(1, "\n", 1);
+            g_exit_status = 128 + WIFSIGNALED(status);
+        }   
+    }
+
+    if(flag == 1)//in heredoc
+    {   
+        waitpid(pid, &status, 0);
+        if (WIFSIGNALED(status) && WTERMSIG(status))
+        {
+            write(1, "\n", 1);
+            g_exit_status = 128 + WIFSIGNALED(status);
+            return (128 + WIFSIGNALED(status));
+        }
+    }
+    return 0;
+}
+
 
 void    single_command(t_mini *shell, t_parser *cmds)
 {
-	// int hd_id;
-    int pid;
     int status;
+    int pid;
     t_builtins built;
 
+    status = 0;
     built = cmds->builtin;
-    if(built == EXIT || built == ENV || built == EXPORT || built == UNSET || built == CD)
+    if(built == EXIT || built == UNSET || built == ENV || built == EXPORT || built == CD)
     {
         execute_builtin(cmds, shell);
         return ;
     }
     check_heredoc(shell, cmds); 
-	
     pid = fork();
     if(pid < 0)
     {
@@ -266,14 +290,9 @@ void    single_command(t_mini *shell, t_parser *cmds)
         handle_signals(DFL_ALL);
         handle_cmd(shell, cmds);
     }
-    waitpid(pid, &status, 0);
-    g_exit_status = WEXITSTATUS(status);
-    if (WIFSIGNALED(status) && WTERMSIG(status))
-    {
-        write(1, "\n", 1);
-        g_exit_status = 128 + WIFSIGNALED(status);
-    }
+    my_wait(pid, status, 0);
 }
+
 
 
 void    fd_dup(t_mini *shell, t_parser *cmds, int fd[2], int fd_read)
@@ -374,7 +393,7 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
         {
             if(pipe(fd) < 0)
             {
-                perror("WAK WAK");
+                perror("pipe");
                 exit(1);
             }
         }
@@ -395,12 +414,11 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
 
 
 
-void    ft_execution(t_parser *cmds, t_mini *shell, char **env)
+void    ft_execution(t_parser *cmds, t_mini *shell)
 {
-    (void)env;
+   
     if(!cmds)
         return ;
-        // we will see how many pipes are there to see whether it was one command or multiple commands
     if(shell->pipes == 0)
     {
         single_command(shell, cmds);
@@ -441,66 +459,64 @@ char 	*creat_hd_name(void)
 
 }
 
+//all this happens in the child
+void    child_heredoc(t_mini *shell, t_parser *cmds, int *fd)
+{
+    int exit_;
+    
+    exit_ = 0;
+    handle_signals(IGN_QUIT);
+    while(cmds->redirections)
+    {
+        if(cmds->redirections->token == HEREDOC)
+        {
+            if(shell->heredoc_file)
+                free(shell->heredoc_file);
+            shell->heredoc_file = creat_hd_name();
+            exit_ = here_doc(shell->heredoc_file, shell, cmds->redirections);
+            if(exit_)
+            {
+                shell->hd = 0;
+                return ;
+            }
+            shell->hd = 1;
+        }
+        cmds->redirections = cmds->redirections->next;
+    }
+	    write(fd[1], shell->heredoc_file, ft_strlen(shell->heredoc_file));
+    ft_close(fd);
+    exit(0);
+}
+
+
+void    ft_close(int *fd)
+{
+    close(fd[0]);
+    close(fd[1]);
+}
+
 int    check_heredoc(t_mini *shell, t_parser *cmds)
 {
-    t_lexer *tmp;
-    int exit_;
-	int fd[2];
-
-    // fprintf(stderr,"%d\n", getpid());
-    tmp = cmds->redirections;   
-		return 0;
-    exit_ = 0;
-	if(pipe(fd) < 0)
-		ft_putstr_fd("pipe error !",2);
-    int pid = fork();
-    if (pid < 0)
-        ft_putstr_fd("fork error !", 2);
-    else if (pid == 0)
-    {
-	// fprintf(stderr,"child %d\n", bid = getpid());
-
-        handle_signals(IGN_QUIT);
-        while(cmds->redirections)
-        {
-            if(cmds->redirections->token == HEREDOC)
-            {
-                if(shell->heredoc_file)
-                    free(shell->heredoc_file);
-                shell->heredoc_file = creat_hd_name();
-                exit_ = here_doc(shell->heredoc_file, shell, cmds->redirections);
-                if(exit_)
-                {
-                    shell->hd = 0;
-                    return 1;
-                }
-                shell->hd = 1;
-            }
-            cmds->redirections = cmds->redirections->next;
-        }
-		if(shell->heredoc_file)
-			write(fd[1], shell->heredoc_file, ft_strlen(shell->heredoc_file));
-        cmds->redirections = tmp;
-		close(fd[1]);
-		close(fd[0]);
-        exit(0);
-    }
-
+    int pid;
     int status;
-    waitpid(pid, &status, 0);
-    if (WIFSIGNALED(status) && WTERMSIG(status))
-    {
-        write(1, "\n", 1);
-        g_exit_status = 128 + WIFSIGNALED(status);
-        return (128 + WIFSIGNALED(status));
-    }
-	char *name = ft_calloc(16,sizeof(char));
+	int fd[2];
+    char *name;
+
+    status = 0;
+	if(pipe(fd) < 0)
+        return (ft_putstr_fd("pipe error !",2) ,1);
+    pid = fork();
+    if (pid < 0)
+        return(ft_putstr_fd("fork error !", 2), ft_close(fd), 1);
+    else if (pid == 0)
+        child_heredoc(shell, cmds, fd);
+
+    my_wait(pid, status, 1);
+	name = ft_calloc(16, sizeof(char));
 	if(!name)
-		return 2;
-	close(fd[1]);
-	// fprintf(stderr,"parent underne%d\n", bid = getpid());
-	if(read(fd[0], name, 16) == -1)
-		return 1;
+		return(ft_putstr_fd("Calloc Failed",2), 1);
+    close(fd[1]);
+	read(fd[0], name, 16);
 	close(fd[0]);
 	shell->heredoc_file = name;
     return 0;
