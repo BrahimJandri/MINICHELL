@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/01 17:00:04 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 10:43:58 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_shlvl_update(char    ***envp)
 void    free_all(t_mini *shell)
 {
     free_tokens(shell->head);
-    // free_parser(shell->cmds);
+    free_parser(shell->cmds);
     if(shell->path)
 	    free_path(shell->path);
     free_arr_dup(shell->envp);

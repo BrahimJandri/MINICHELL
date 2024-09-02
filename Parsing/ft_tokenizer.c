@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 14:20:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/27 16:14:01 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 10:42:26 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,13 @@ static int	process_token(t_lexer *token, t_mini *shell)
 int	ft_tokinezer(t_mini *shell)
 {
 	t_lexer	*tmp;
-	int		result;
 
 	if (shell->syntax_error)
 		return (-1);
 	tmp = shell->head;
 	while (tmp)
 	{
-		result = process_token(tmp, shell);
-		if (result < 0)
+		if (process_token(tmp, shell))
 		{
 			shell->syntax_error = 1;
 			return (-1);
