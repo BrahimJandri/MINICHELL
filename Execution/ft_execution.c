@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/02 17:04:36 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/02 18:28:02 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_shlvl_update(t_env  **envp)
 	{
 		if (!ft_strncmp(tmp->key, "SHLVL", 5))
 		{
-            if(ft_atoi(tmp->value) == 999)
+            if(ft_atoi(tmp->value) > 999)
             {
                 ft_putstr_fd("warning: shell level (1001) too high, resetting to 1\n",2);
                 free(tmp->value);
@@ -35,7 +35,7 @@ void	ft_shlvl_update(t_env  **envp)
 			tmp->value = ft_strdup(shlvl);
 			free(shlvl);
 			break ;
-		}   
+		}
 		tmp = tmp->next;
 	}
 }
@@ -96,9 +96,7 @@ int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
 
 	i = 0;
     if(get_path(shell, my_envp))
-    {
-        ft_execve(cmds, my_envp);
-    }   
+        	ft_execve(cmds, my_envp);
 	while(shell->path[i])
 	{
 		joined_cmd = join_path(shell->path[i], cmds->cmd[0]);
@@ -134,7 +132,7 @@ int ft_execute(t_mini *shell, char **my_envp, t_parser *cmds)
 {
 	struct stat info;
     (void)shell;
-    
+
 
     if((cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/') || (cmds->cmd[0][0] == '/'))
 	{
@@ -230,8 +228,6 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
     }
     else if(cmds->cmd)
     {
-        // print_env(shell->new_envp);
-        // exit(1);
 	    shell->new_envp = ft_new_envp(shell->env); /* we make this list 2D array to be executed */
         err = ft_execute(shell, shell->new_envp, cmds);
     }
@@ -248,11 +244,11 @@ int    my_wait(int pid, int status, int flag)
         {
             write(1, "\n", 1);
             g_exit_status = 128 + WIFSIGNALED(status);
-        }   
+        }
     }
 
     if(flag == 1)//in heredoc
-    {   
+    {
         waitpid(pid, &status, 0);
         if (WIFSIGNALED(status) && WTERMSIG(status))
         {
@@ -278,12 +274,12 @@ void    single_command(t_mini *shell, t_parser *cmds)
         execute_builtin(cmds, shell);
         return ;
     }
-    check_heredoc(shell, cmds); 
+    check_heredoc(shell, cmds);
     pid = fork();
     if(pid < 0)
     {
-        perror("fork failed");
-        // fork failed.
+        perror("Fork");
+		return ;
     }
     else if(pid == 0)
     {
@@ -308,9 +304,7 @@ void    fd_dup(t_mini *shell, t_parser *cmds, int fd[2], int fd_read)
         perror("dup22");
         exit (1);
     }
-        close(fd[0]);
-        close(fd[1]);
-
+	ft_close(fd);
     if(cmds->prev)
         close(fd_read);
     handle_cmd(shell, cmds);
@@ -374,30 +368,36 @@ int    hd_presence(t_mini *shell, int fd[2], int fd_read)
     return fd_read;
 }
 
+void	pid_alloc(t_mini *shell)
+{
+	shell->pid = malloc(sizeof(int) * (shell->pipes + 1));
+    if(!shell->pid)
+    {
+        printf("failed to allocate pid");
+        return ;
+    }
+
+}
+void	set_pipe(int *fd)
+{
+    if(pipe(fd) < 0)
+    {
+        perror("pipe");
+        exit(1);
+    }
+}
+
 void    multiple_command(t_mini *shell, t_parser *cmds)
 {
     int fd[2];
     int fd_read;
 
+	pid_alloc(shell);
     fd_read = 0;
-
-    shell->pid = malloc(sizeof(int) * (shell->pipes + 1));
-    if(!shell->pid)
-    {
-        printf("failed to allocate pid");
-        exit(1);
-    }
     while(cmds)
-    {   //expand
+    {
         if(cmds->next)
-        {
-            if(pipe(fd) < 0)
-            {
-                perror("pipe");
-                exit(1);
-            }
-        }
-
+			set_pipe(fd);
         forking(shell, cmds, fd_read, fd);
         close(fd[1]);
         if(cmds->prev)
@@ -416,7 +416,7 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
 
 void    ft_execution(t_parser *cmds, t_mini *shell)
 {
-   
+
     if(!cmds)
         return ;
     if(shell->pipes == 0)
@@ -463,7 +463,7 @@ char 	*creat_hd_name(void)
 void    child_heredoc(t_mini *shell, t_parser *cmds, int *fd)
 {
     int exit_;
-    
+
     exit_ = 0;
     handle_signals(IGN_QUIT);
     while(cmds->redirections)
@@ -543,8 +543,8 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
 
 int     open_heredoc(char *hd_file)
 {
-    int fd; 
-    
+    int fd;
+
     fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
     if (fd < 0)
     {
@@ -554,20 +554,25 @@ int     open_heredoc(char *hd_file)
     return fd;
 }
 
+void	fill_hd_file(char *line, int fd)
+{
+        write(fd, line, ft_strlen(line));
+        write(fd, "\n", 1);
+        free(line);
+}
+
 int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
 {
     int     fd;
     char    *line;
 
-    fd = open_herdoc(hd_file);
+    fd = open_heredoc(hd_file);
     line = readline("> ");
     while(line && ft_strcmp(delimiter, line) && !g_stop_heredoc)
     {
         if(!quote)
             line = ft_expand_herdoc(line, shell);
-        write(fd, line, ft_strlen(line));
-        write(fd, "\n", 1);
-        free(line);
+		fill_hd_file(line, fd);
         line = readline("> ");
     }
     if(g_stop_heredoc)
