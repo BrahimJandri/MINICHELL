@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/02 16:30:01 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 16:51:34 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->export = export;
 	shell->hd = 0;
 	shell->new = 0;
-	shell->syntax_error = 0;
 	shell->quoted = 0;
 }
 
@@ -145,6 +144,7 @@ void	shell_loop(t_mini *shell)
 
 	while (1)
 	{
+		shell->syntax_error = 0;
 		handle_signals(INT_HNDL);
 		input = readline("MiniShell$ ");
 		handle_signals(IGN_ALL);
