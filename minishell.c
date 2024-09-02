@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/02 13:04:44 by rachid           ###   ########.fr       */
-/*   Updated: 2024/09/01 16:53:24 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 16:06:14 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +86,8 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->env = NULL;
 	shell->envp = NULL;
 	shell->export = NULL;
-	shell->envp = arr_dup(envm);//we store the envp in our struct
-	// for(int j = 0; envm[j] != NULL; j++)
-	// 	printf("%s\n",envm[j]);
-	// exit(1);
-	shell->env = create_env(envm); //we make it a linked list so we can add/delet from it 
+	shell->envp = arr_dup(envm);//we store the envp in our struct   will we need this ??
+	shell->env = create_env(envm); //we make it a linked list
 	ft_shlvl_update(&shell->env);
 	shell->path = NULL;
 	shell->cmds = NULL;
@@ -106,6 +102,8 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->export = export;
 	shell->hd = 0;
 	shell->new = 0;
+	shell->syntax_error = 0;
+	shell->quoted = 0;
 }
 
 
@@ -124,14 +122,29 @@ void print_env(char **env)
 }
 
 
+void	re_init(t_mini *shell)
+{
+	    shell->head = NULL;
+        shell->cmds = NULL;
+		shell->new = 0;
+}
+
+void	exp_prs_exc(t_mini *shell)
+{
+	ft_expander(shell);
+	ft_parsing(shell);
+	ft_execution(shell->cmds, shell);	
+}
+
+
+
+
 void	shell_loop(t_mini *shell)
 {
 	char	*input;
 
 	while (1)
 	{
-		shell->syntax_error = 0;
-		shell->quoted = 0;
 		handle_signals(INT_HNDL);
 		input = readline("MiniShell$ ");
 		handle_signals(IGN_ALL);
@@ -150,20 +163,10 @@ void	shell_loop(t_mini *shell)
 			add_history(shell->rl);
 			ft_lexer(shell);
             if(!shell->syntax_error)
-            {
-				ft_expander(shell);
-				ft_parsing(shell);
-            	// signal(SIGINT, child_sigint);
-		        // signal(SIGQUIT, child_sigquit);
-				ft_execution(shell->cmds, shell, shell->envp);
-            }
+				exp_prs_exc(shell);
             free_tokens(shell->head);
             free_parser(shell->cmds);
-			// if(shell->heredoc_file)
-        	// 	free(shell->heredoc_file);
-            shell->head = NULL;
-            shell->cmds = NULL;
-			shell->new = 0;
+			re_init(shell);
         }
     }
 }
@@ -172,65 +175,15 @@ void	shell_loop(t_mini *shell)
 
 
 
-void	free_env_node(t_env *node)
-{
-	if(node)
-	{
-		free(node->key);
-		free(node->value);
-		if(node->pwd)
-		{
-			free(node->pwd);
-			node->pwd = NULL;
-		}
-		free(node);
-	}
-}
 
-void	free_env(t_env *head)
-{
-	t_env	*temp;
 
-	while (head)
-	{
-		temp = head;
-		head = head->next;
-		free_env_node(temp);
-	}
-}
 
-void	free_arr_dup(char **arr)
-{
-	int	i;
 
-	i = 0;
-	if (arr)
-	{
-		while (arr[i] != NULL)
-			free(arr[i++]);
-		free(arr);
-	}
-}
 
-void	free_path(char **path)
-{
-	int	i;
 
-	i = 0;
-	while (path[i])
-	{
-		free(path[i]);
-		i++;
-	}
-	free(path);
-	return ;
-}
 
-void	free_export(t_export_norm *export)
-{
-	free(export);
-}
-
+//                                      MAIN
+/*------------------------------------------------------------------------------------*/
 int		g_exit_status = 0;
 int		g_stop_heredoc = 0;
 
