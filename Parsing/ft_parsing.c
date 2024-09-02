@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/31 10:28:33 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:44:53 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static char	**ft_store_args(t_lexer *start)
+static char	**	ft_store_args(t_lexer *start)
 {
 	t_lexer	*tmp;
 	int		count;
@@ -27,11 +27,9 @@ static char	**ft_store_args(t_lexer *start)
 	i = 0;
 	while (tmp && tmp->token != PIPE)
 	{
-		if (tmp->token == ARG || tmp->token == BUILTIN)
+		if ((tmp->token == ARG || tmp->token == BUILTIN) && *tmp->word != '\0')
 		{
 			args[i] = ft_strdup(tmp->word);
-			if (!args[i])
-				return (NULL);
 			i++;
 		}
 		tmp = tmp->next;

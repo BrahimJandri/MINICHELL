@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/01 12:09:56 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/01 17:00:04 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
         free_all(shell);
         exit(0);
     }
-    else if(cmds->cmd)
+    else if(cmds->cmd[0])
     {
         err = ft_execute(shell, shell->envp, cmds);
     }
@@ -264,7 +264,7 @@ void    single_command(t_mini *shell, t_parser *cmds)
 
     built = cmds->builtin;
     // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
-    if(built)
+    if(built == EXIT || built == ENV || built == EXPORT || built == UNSET || built == CD)
     {
         execute_builtin(cmds, shell);
         return ;
