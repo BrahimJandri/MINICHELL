@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/02 16:15:00 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/02 19:20:56 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,25 @@ void	ft_execve(t_parser *cmds, char **my_envp);
 
 void	free_env_node(t_env *node);
 void    ft_close(int *fd);
+
+void	pid_alloc(t_mini *shell);
+void	set_pipe(int *fd);
+int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2]);
+int    ft_wait(int *pid, int pipes);
+int    my_wait(int pid, int status, int flag);
+int    hd_presence(t_mini *shell, int fd[2], int fd_read);
+int		launch_doc(t_mini *shell, t_parser *cmds);
+int     open_heredoc(char *hd_file);
+void	fill_hd_file(char *line, int fd);
+int    get_path(t_mini *shell, char **my_env);
+void    no_permission(t_parser *cmds);
+void	is_directory(t_parser *cmds);
+void    child_heredoc(t_mini *shell, t_parser *cmds, int *fd);
+char 	*creat_hd_name(void);
+void    fd_dup(t_mini *shell, t_parser *cmds, int fd[2], int fd_read);
+
+
+
+
+
 #endif
-    

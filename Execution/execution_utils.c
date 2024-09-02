@@ -3,28 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:41:00 by rachid            #+#    #+#             */
-/*   Updated: 2024/08/19 13:30:40 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 18:59:13 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/rachid.h"
 
-char	*join_path(char *path, char *command)
-{
-	size_t	len;
-	size_t	cmd_len;
-	char	*joined;
 
-	cmd_len = ft_strlen(command);
-	len = ft_strlen(path);
-	joined = malloc(len + cmd_len + 2);
-	if (!joined)
-		return (NULL);
-	ft_strcpy(joined, path);
-	joined[len] = '/';
-	ft_strcpy(joined + len + 1, command);
-	return (joined);
+int ft_execute(t_mini *shell, char **my_envp, t_parser *cmds)
+{
+	struct stat info;
+    (void)shell;
+
+
+    if((cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/') || (cmds->cmd[0][0] == '/'))
+	{
+		if(!access(cmds->cmd[0], F_OK))//there is a file starts whith ./ (execute something)
+		{
+			if(stat(cmds->cmd[0], &info) == 0 && S_ISDIR(info.st_mode))
+				is_directory(cmds);
+			else
+			{
+				if(!access(cmds->cmd[0], X_OK))//is it an executable if yes exec it, if no return permission denied
+					ft_execve(cmds, my_envp);
+				else
+					no_permission(cmds);
+			}
+		}
+		ft_execve(cmds, my_envp);
+	}
+	else if(cmds->cmd[0]) //a direct command whether exists or not
+		exec_cmd(shell, cmds, my_envp);
+	exit(0);
+}
+int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
+{
+	char *joined_cmd;
+	int 	i;
+
+	i = 0;
+    if(get_path(shell, my_envp))
+        	ft_execve(cmds, my_envp);
+	while(shell->path[i])
+	{
+		joined_cmd = join_path(shell->path[i], cmds->cmd[0]);
+
+		if(!access(joined_cmd, F_OK))
+		{
+			if(execve(joined_cmd, cmds->cmd, my_envp) == -1)
+			{
+				perror("execve");
+				exit(1);
+			}
+		}
+		free(joined_cmd);
+		i++;
+	}
+	if(cmds->cmd[0])
+        return(cmd_not_found(shell, cmds));
+	return (0);
+}
+void    fd_dup(t_mini *shell, t_parser *cmds, int fd[2], int fd_read)
+{
+
+    if(cmds->prev && dup2(fd_read, STDIN_FILENO) < 0)
+    {
+        perror("dup2");
+        return ;
+    }
+    if(cmds->next && dup2(fd[1], STDOUT_FILENO) < 0)
+    {
+        perror("dup22");
+        exit (1);
+    }
+	ft_close(fd);
+    if(cmds->prev)
+        close(fd_read);
+    handle_cmd(shell, cmds);
+
 }

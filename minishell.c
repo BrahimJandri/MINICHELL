@@ -3,59 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/02 16:48:51 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/02 19:04:04 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
-char	**arr_dup(char **envm)
-{
-	int		len;
-	char	**arr;
 
-	len = 0;
-	while (envm[len])
-		len++;
-	arr = malloc(sizeof(char *) * (len + 1));
-	if (!arr)
-		return (NULL);
-	arr[len] = NULL;
-	len = 0;
-	while (envm[len])
-	{
-		arr[len] = ft_strdup(envm[len]);
-		len++;
-	}
-	return (arr);
-}
 
-char	*ft_strnlen(const char *str, char delimiter)
-{
-	int		i;
-	int		j;
-	char	*result;
 
-	i = 0;
-	j = 0;
-	if(!str)
-		return (NULL);
-	while (str[i] && str[i] != delimiter)
-		i++;
-	result = malloc(i + 1);
-	if (!result)
-		return (NULL);
-	while (j < i)
-	{
-		result[j] = str[j];
-		j++;
-	}
-	result[i] = '\0';
-	return (result);
-}
 
 void	free_return(t_env *head, char *file, int c)
 {
@@ -97,7 +56,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->pipes = 0;
 	export->equal_sign_pos = NULL;
 	export->plus_equal_sign_pos = NULL;
-	export->key = NULL;	
+	export->key = NULL;
 	export->value = NULL;
 	shell->export = export;
 	shell->hd = 0;
@@ -123,16 +82,18 @@ void print_env(char **env)
 
 void	re_init(t_mini *shell)
 {
-	    shell->head = NULL;
-        shell->cmds = NULL;
-		shell->new = 0;
+    free_tokens(shell->head);
+    free_parser(shell->cmds);
+	shell->head = NULL;
+    shell->cmds = NULL;
+	shell->new = 0;
 }
 
 void	exp_prs_exc(t_mini *shell)
 {
 	ft_expander(shell);
 	ft_parsing(shell);
-	ft_execution(shell->cmds, shell);	
+	ft_execution(shell->cmds, shell);
 }
 
 
@@ -164,8 +125,6 @@ void	shell_loop(t_mini *shell)
 			ft_lexer(shell);
             if(!shell->syntax_error)
 				exp_prs_exc(shell);
-            free_tokens(shell->head);
-            free_parser(shell->cmds);
 			re_init(shell);
         }
     }
@@ -193,7 +152,7 @@ int	main(int ac, char **av, char **envm)
 
 	(void)av;
 	(void)ac;
-	
+
 	init_mini(&shell, envm);
 	shell_loop(&shell);
 	free(shell.rl);

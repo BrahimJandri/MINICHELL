@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear_leaks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:16:10 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/02 16:08:38 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/02 18:46:45 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,19 @@ void	free_env_node(t_env *node)
 		}
 		free(node);
 	}
+}
+
+void    free_all(t_mini *shell)
+{
+    free_tokens(shell->head);
+    // free_parser(shell->cmds);
+    if(shell->path)
+	    free_path(shell->path);
+    free_arr_dup(shell->envp);
+    free_env(shell->env);
+    free(shell->rl);
+    if(shell->heredoc_file)
+        free(shell->heredoc_file);
+    if (shell->export)
+		free(shell->export);
 }
