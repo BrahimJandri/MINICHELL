@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/31 12:05:23 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/02 13:04:44 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,26 +79,20 @@ void	free_return(t_env *head, char *file, int c)
 
 void	init_mini(t_mini *shell, char **envm)
 {
-	int				i;
 	t_export_norm	*export;
 
-	i = 0;
 	export = malloc(sizeof(t_export_norm));
 	shell->path = NULL;
 	shell->env = NULL;
 	shell->envp = NULL;
 	shell->export = NULL;
-	while (envm[i])
-	{
-		if (ft_strncmp("PATH=", envm[i], 5) == 0)
-		{
-			shell->path = ft_split(envm[i] + 5, ':');
-			break ;
-		}
-		i++;
-	}
-	shell->envp = arr_dup(envm);
-	shell->env = create_env(envm);
+	shell->envp = arr_dup(envm);//we store the envp in our struct
+	// for(int j = 0; envm[j] != NULL; j++)
+	// 	printf("%s\n",envm[j]);
+	// exit(1);
+	shell->env = create_env(envm); //we make it a linked list so we can add/delet from it 
+	ft_shlvl_update(&shell->env);
+	shell->path = NULL;
 	shell->cmds = NULL;
 	shell->head = NULL;
 	shell->rl = NULL;
@@ -106,7 +100,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->pipes = 0;
 	export->equal_sign_pos = NULL;
 	export->plus_equal_sign_pos = NULL;
-	export->key = NULL;
+	export->key = NULL;	
 	export->value = NULL;
 	shell->export = export;
 	shell->hd = 0;
@@ -245,11 +239,7 @@ int	main(int ac, char **av, char **envm)
 
 	(void)av;
 	(void)ac;
-	if(ac > 1)
-	{
-		printf("This program takes no arguments !");
-		exit(0);
-	}
+	
 	init_mini(&shell, envm);
 	shell_loop(&shell);
 	free(shell.rl);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/31 16:24:38 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/02 13:05:29 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ void    handle_signals(int flag);
 
 int		launch_doc(t_mini *shell, t_parser *cmds);
 
+void	ft_shlvl_update(t_env    **env);
+void print_env(char **env);
+
+void	ft_execve(t_parser *cmds, char **my_envp);
 // void	child_sigint(int pid);
 
 #endif
