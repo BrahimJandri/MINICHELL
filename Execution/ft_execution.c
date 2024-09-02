@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/02 16:04:03 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/02 17:04:36 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -540,14 +540,26 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
     return(exit);
 }
 
+
+int     open_heredoc(char *hd_file)
+{
+    int fd; 
+    
+    fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
+    if (fd < 0)
+    {
+        ft_putstr_fd("open failed to open the file", 2);
+        exit(1);
+    }
+    return fd;
+}
+
 int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
 {
     int     fd;
     char    *line;
 
-    fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
-    // if(fd < 0)
-        // ft_error();
+    fd = open_herdoc(hd_file);
     line = readline("> ");
     while(line && ft_strcmp(delimiter, line) && !g_stop_heredoc)
     {
@@ -558,11 +570,10 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
         free(line);
         line = readline("> ");
     }
-    if (g_stop_heredoc)
+    if(g_stop_heredoc)
     {
         close(fd);
-        free(line);
-        return 0;  // Indicate interruption
+        return (free(line), 0);  // Indicate interruption
     }
     if(!line)
     {
