@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:22:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/14 16:08:52 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 15:40:32 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdint.h> // SIZE_MAX
 # include <stdlib.h> // MALLOC && CALLOC
 # include <unistd.h> // I/O
+# include <limits.h> // LONG_MAX && LONG_MIN
 
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);

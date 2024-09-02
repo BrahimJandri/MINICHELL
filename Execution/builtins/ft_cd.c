@@ -25,44 +25,42 @@ int	is_valid_identifier(const char *str)
 	return (1);
 }
 
-
-int prepare_cd(char **args, t_env **env, char **path, char **oldpwd)
+int	prepare_cd(char **args, t_env **env, char **path, char **oldpwd)
 {
-    if (args[1] && args[2] )
-        return (ft_putendl_fd("minishell: cd: too many arguments", 2), 1);
-    *oldpwd = getenv_value(*env, "PWD");
-    if (!(*oldpwd))
-    {
-        *oldpwd = getcwd(NULL, 0);
-        if (!(*oldpwd))
-            return (perror("Minishell"), 1);
-        update_env(env, "PWD", *oldpwd);
-        free(*oldpwd);
-    }
-
-    if (!args[1])
-    {
-        *path = getenv_value(*env, "HOME");
-        if (!(*path))
-            return (ft_putendl_fd("cd: HOME not set", 2), 1);
-    }
-    else
-        *path = args[1];
-    return 0;
+	if (args[1] && args[2])
+		return (ft_putendl_fd("minishell: cd: too many arguments", 2), 1);
+	*oldpwd = getenv_value(*env, "PWD");
+	if (!(*oldpwd))
+	{
+		*oldpwd = getcwd(NULL, 0);
+		if (!(*oldpwd))
+			return (perror("Minishell"), 1);
+		update_env(env, "PWD", *oldpwd);
+		free(*oldpwd);
+	}
+	if (!args[1])
+	{
+		*path = getenv_value(*env, "HOME");
+		if (!(*path))
+			return (ft_putendl_fd("cd: HOME not set", 2), 1);
+	}
+	else
+		*path = args[1];
+	return (0);
 }
 
-int cd_builtin(char **args, t_env **env)
+int	cd_builtin(char **args, t_env **env)
 {
-    char *path;
-    char *oldpwd;
+	char	*path;
+	char	*oldpwd;
 
-    if (prepare_cd(args, env, &path, &oldpwd) != 0)
-        return 1;
-    if (chdir(path) == -1 || !path)
-        return (perror("Minishell"), 1);
-    free((*env)->pwd);
-    (*env)->pwd = getcwd(NULL, 0);
-    update_env(env, "OLDPWD", oldpwd);
-    update_env(env, "PWD", (*env)->pwd);
-    return 0;
+	if (prepare_cd(args, env, &path, &oldpwd) != 0)
+		return (1);
+	if (chdir(path) == -1 || !path)
+		return (perror("Minishell"), 1);
+	free((*env)->pwd);
+	(*env)->pwd = getcwd(NULL, 0);
+	update_env(env, "OLDPWD", oldpwd);
+	update_env(env, "PWD", (*env)->pwd);
+	return (0);
 }

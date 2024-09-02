@@ -3,9 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
+
 /*   Updated: 2024/09/02 13:06:51 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -43,7 +44,7 @@ void	ft_shlvl_update(t_env  **envp)
 void    free_all(t_mini *shell)
 {
     free_tokens(shell->head);
-    // free_parser(shell->cmds);
+    free_parser(shell->cmds);
     if(shell->path)
 	    free_path(shell->path);
     free_arr_dup(shell->envp);
@@ -228,7 +229,7 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
         free_all(shell);
         exit(0);
     }
-    else if(cmds->cmd)
+    else if(cmds->cmd[0])
     {
         // print_env(shell->new_envp);
         // exit(1);
@@ -247,19 +248,13 @@ void    single_command(t_mini *shell, t_parser *cmds)
     t_builtins built;
 
     built = cmds->builtin;
-    // cmds->str = expander(cmds->str);// you expand if there is a dollar sig
-    if(built == EXIT || built == UNSET || built == ENV || built == EXPORT || built == CD)
+    if(built == EXIT || built == ENV || built == EXPORT || built == UNSET || built == CD)
     {
         execute_builtin(cmds, shell);
         return ;
     }
     check_heredoc(shell, cmds); 
-	// hd_id = fork();
-	// if(hd_id == 0)
-	// else
-	// {
-    // print_env(shell->new_envp);
-    // exit(0);
+	
     pid = fork();
     if(pid < 0)
     {
@@ -463,6 +458,8 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
         ft_putstr_fd("fork error !", 2);
     else if (pid == 0)
     {
+	// fprintf(stderr,"child %d\n", bid = getpid());
+
         handle_signals(IGN_QUIT);
         while(cmds->redirections)
         {
@@ -481,12 +478,14 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
             }
             cmds->redirections = cmds->redirections->next;
         }
-		write(fd[1], shell->heredoc_file, ft_strlen(shell->heredoc_file));
+		if(shell->heredoc_file)
+			write(fd[1], shell->heredoc_file, ft_strlen(shell->heredoc_file));
         cmds->redirections = tmp;
 		close(fd[1]);
 		close(fd[0]);
         exit(0);
     }
+
     int status;
     waitpid(pid, &status, 0);
     if (WIFSIGNALED(status) && WTERMSIG(status))
@@ -498,10 +497,12 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
 	char *name = ft_calloc(16,sizeof(char));
 	if(!name)
 		return 2;
-	read(fd[0], name, 16);
+	close(fd[1]);
+	// fprintf(stderr,"parent underne%d\n", bid = getpid());
+	if(read(fd[0], name, 16) == -1)
+		return 1;
 	close(fd[0]);
 	shell->heredoc_file = name;
-	// fprintf(stderr,"%s", name);
     return 0;
 }
 

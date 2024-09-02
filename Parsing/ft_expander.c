@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 09:24:26 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/31 17:53:29 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 09:59:58 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,6 @@ void	expand_and_replace_word(t_lexer *tmp, t_mini *shell)
 		tmp->word = expanded;
 }
 
-int only_quotes(char *str)
-{
-	if(str[0] == '"' && str[1] == '"' && str[2] == '\0')
-		return (1);
-	else if(str[0] == '\'' && str[1] == '\'' && str[2] == '\0')
-		return (1);
-	return (0);
-}
-
 void	ft_expander(t_mini *shell)
 {
 	t_lexer	*tmp;
@@ -89,7 +80,8 @@ void	ft_expander(t_mini *shell)
 		next_node = tmp->next;
 		if (is_empty(tmp->word))
 			break ;
-		if ((tmp->token == FILE_TARGET || tmp->token == ARG) && !only_quotes(tmp->word))
+		if ((tmp->token == FILE_TARGET || tmp->token == ARG)
+			&& !only_quotes(tmp->word))
 		{
 			has_quotes = has_double_quotes(tmp->word);
 			expanded = expand_var(tmp->word, shell);

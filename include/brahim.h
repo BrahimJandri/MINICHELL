@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   brahim.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/31 17:51:38 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 10:00:28 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 typedef struct s_mini	t_mini;
 typedef struct s_env	t_env;
 
-#define INT_HNDL 	0
-#define IGN_ALL 	1
-#define DFL_ALL		2
-#define IGN_QUIT 	3
+# define INT_HNDL 0
+# define IGN_ALL 1
+# define DFL_ALL 2
+# define IGN_QUIT 3
 
 typedef enum e_tokens
 {
@@ -98,10 +98,10 @@ int						is_whitespace(char c);
 int						check_next(char *first, char next);
 int						type(char *p);
 int						check_pipe(t_lexer *redirection);
-int						handle_quotes(char *dst, const char *src, int i, int length);
+int						handle_quotes(char *dst, const char *src, int i,
+							int length);
 int						check_redir(t_lexer *head);
-int 					ft_tokinezer(t_mini *shell);
-void					check_errors(t_mini *shell);
+int						ft_tokinezer(t_mini *shell);
 
 /*************************** Parsing ***************************/
 
@@ -116,8 +116,9 @@ void					ft_lstadd_back(t_lexer **lst, t_lexer *new);
 t_lexer					*ft_new_token(char *content);
 t_lexer					*ft_new_token_expand(char *content, int token);
 void					ft_lstadd(t_env **lst, t_env *new);
-t_lexer	                *ft_create_redir_node(t_lexer *tmp);
-void					ft_add_redir_node(t_lexer **redirections, t_lexer *redir_node);
+t_lexer					*ft_create_redir_node(t_lexer *tmp);
+void					ft_add_redir_node(t_lexer **redirections,
+							t_lexer *redir_node);
 char					*expand_var(char *val, t_mini *shell);
 
 /*************************** Expander ***************************/
@@ -125,20 +126,21 @@ char					*expand_var(char *val, t_mini *shell);
 void					ft_expander(t_mini *shell);
 void					add_to_str(char *val, char **str, int i);
 int						is_val_char(int c);
-int	                    has_double_quotes(const char *str);
+int						has_double_quotes(const char *str);
 char					*ft_append_char(char *str, char c);
 int						check_quotes(char *str, int indx);
 int						is_whitespace_in_string(char *str);
-char	                *skip_tabs(char *str);
-void	                split_and_add_nodes(t_lexer *tmp, t_mini *shell);
-void	                ft_split_args(t_lexer *tmp, char *expanded);
-char	                *get_value_env(char *str, t_mini *shell);
-void	                get_value(char *val, int *i, char **str, t_mini *shell);
-char	                *extract_name(char *val, int *index, t_mini *shell);
-char 					*ft_expand_herdoc(char *val, t_mini *shell);
-void					process_dollar_sign(char *val, int *i, char **str, t_mini *shell);
+char					*skip_tabs(char *str);
+void					split_and_add_nodes(t_lexer *tmp, t_mini *shell);
+void					ft_split_args(t_lexer *tmp, char *expanded);
+char					*get_value_env(char *str, t_mini *shell);
+void					get_value(char *val, int *i, char **str, t_mini *shell);
+char					*extract_name(char *val, int *index, t_mini *shell);
+char					*ft_expand_herdoc(char *val, t_mini *shell);
+void					process_dollar_sign(char *val, int *i, char **str,
+							t_mini *shell);
 char					*initialize_expansion(char *val, t_mini *shell);
-int 					only_quotes(char *str);
+int						only_quotes(char *str);
 
 /* minishell */
 

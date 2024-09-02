@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:11 by bjandri           #+#    #+#             */
-/*   Updated: 2023/11/22 12:12:17 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 14:55:34 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,3 @@ int	ft_atoi(const char *str)
 	}
 	return (resu * sign);
 }
-
-// #include <stdio.h>
-
-// int main()
-// {
-// 	char a[] = " 	\n \t -2147483649";
-// 	char b[] = " 	2147483647lkjds";
-// 	char c[] = "snckj28899    \n";
-// 	char d[] = "             492-384dssdsnckj28899    \n";
-// 	char e[] = "             2147483649-384dssdsnckj28899    \n";
-
-// 	printf("%d\n", ft_atoi(a));
-// 	printf("%d\n", ft_atoi(b));
-// 	printf("%d\n", ft_atoi(c));
-// 	printf("%d\n", ft_atoi(d));
-// 	printf("%d\n", ft_atoi(e));
-
-// 	return (0);
-// }

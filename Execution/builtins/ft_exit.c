@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/22 18:40:36 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/02 15:39:32 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ int	exit_builtin(char **args, t_mini *shell)
 		return (exit_msg("minishell: exit: too many arguments\n", 0, shell), 1);
 	while (args[1][i])
 	{
-		if (!ft_isdigit(args[1][i]))
-			return (exit_msg("minishell: exit: numeric argument required\n", 1, shell), 1);
+		if (!ft_isdigit(args[1][i]) || ft_strcmp(args[1], "9223372036854775807") > 0)
+			return (exit_msg("minishell: exit: numeric argument required\n", 1,
+					shell), 1);
 		i++;
 	}
 	ft_putstr_fd("exit\n", 2);
 	g_exit_status = ft_atoi(args[1]);
 	free_all(shell);
 	exit(g_exit_status);
-
 	return (0);
 }
