@@ -12,32 +12,34 @@
 
 #include "../include/rachid.h"
 
-void	ft_shlvl_update(t_env  **envp)
+void    ft_shlvl_update(t_env  **envp)
 {
-	t_env	*tmp;
-	char	*shlvl;
+    t_env    *tmp;
+    char    *shlvl;
 
-	tmp = *envp;
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->key, "SHLVL", 5))
-		{
+  
+    tmp = *envp;
+    while (tmp)
+    {
+        if (!ft_strncmp(tmp->key, "SHLVL", 5))
+        {
             if(ft_atoi(tmp->value) > 999)
             {
                 ft_putstr_fd("warning: shell level (1001) too high, resetting to 1\n",2);
                 free(tmp->value);
                 tmp->value = ft_strdup("0");
             }
-			shlvl = ft_itoa(ft_atoi(tmp->value) + 1);
-			if (!shlvl)
-				return ;
+            shlvl = ft_itoa(ft_atoi(tmp->value) + 1);
+            if (!shlvl)
+                return ;
             free(tmp->value);
-			tmp->value = ft_strdup(shlvl);
-			free(shlvl);
-			break ;
-		}
-		tmp = tmp->next;
-	}
+            tmp->value = ft_strdup(shlvl);
+            free(shlvl);
+            break ;
+        }
+        tmp = tmp->next;
+    }
+
 }
 
 void    free_all(t_mini *shell)
@@ -529,9 +531,9 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
     int exit;
 
     delimiter = heredoc->word;
-    if((delimiter[0] == '\'' && delimiter[ft_strlen(delimiter) - 1] == '\'')
-    || (delimiter[0] == '\"' && delimiter[ft_strlen(delimiter) - 1] == '\"'))
-        quote = 1;
+    if((delimiter[0] == '\'' || delimiter[ft_strlen(delimiter) - 1] == '\'')
+    || (delimiter[0] == '\"' || delimiter[ft_strlen(delimiter) - 1] == '\"'))
+        quote = 1;    
     else
         quote = 0;
     remove_quotes(delimiter);

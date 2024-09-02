@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:52:45 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/28 11:54:39 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/02 17:50:21 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,29 @@ static void	exit_status(char *str, int c)
 	return ;
 }
 
-static void	ft_syntax_err(char *str)
+static int	ft_syntax_err(char *str)
 {
 	if (str[0] == '>')
 	{
 		if (str[1] == '<' && !str[2])
-			return (exit_status(str + 1, 1));
+			return (exit_status(str + 1, 1), 1);
 		if (str[0] == str[1] && str[1] == str[2])
-			return (exit_status(str + 2, 1));
+			return (exit_status(str + 2, 1), 1);
 		if ((str[1] == '>' || str[1] == '<') && (str[2] == '>'
 				|| str[2] == '<'))
-			return (exit_status(str + 2, 1));
+			return (exit_status(str + 2, 1), 1);
 	}
 	if (str[0] == '<')
 	{
 		if (str[1] == '>' && !str[2])
-			return (exit_status("newline", 2));
+			return (exit_status("newline", 2), 1);
 		if ((str[0] == str[1] && str[1] == str[2]))
-			return (exit_status("newline", 2));
+			return (exit_status("newline", 2), 1);
 		if ((str[1] == '>' || str[1] == '<') && (str[2] == '<'
 				|| str[2] == '>'))
-			return (exit_status(str + 2, 1));
+			return (exit_status(str + 2, 1), 1);
 	}
+	return (0);
 }
 
 int	is_quoted(char *str)
@@ -81,8 +82,8 @@ int	check_redir(t_lexer *head)
 	{
 		if (tmp->token == ARG && (tmp->word[0] == '>' || tmp->word[0] == '<'))
 		{
-			ft_syntax_err(tmp->word);
-			return (1);
+			if(ft_syntax_err(tmp->word))
+				return (1);
 		}
 		else if (tmp->token >= OUTFILE && tmp->token <= APPEND)
 		{
