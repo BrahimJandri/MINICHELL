@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/03 21:14:56 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 22:26:42 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,18 @@ void    ft_execution(t_parser *cmds, t_mini *shell)
 
 int 	no_child_builtin(t_mini *shell, t_parser *cmds, t_builtins built)
 {
-
 	int saved_fd;
 
-	saved_fd = dup(STDOUT_FILENO);
 	if(built == EXPORT && cmds->redirections)
-			which_redirection(shell, cmds->redirections);
-    execute_builtin(cmds, shell);
-	dup2(saved_fd, STDOUT_FILENO);
-	close(saved_fd);
-	// free_parser(cmds);
-    return 0;
+    {
+	    saved_fd = dup(STDOUT_FILENO);
+		which_redirection(shell, cmds->redirections);    
+        export_builtin(cmds->cmd, shell);
+	    dup2(saved_fd, STDOUT_FILENO);
+	    close(saved_fd);
+        return(1);
+    }
+    return(0);
 }
 
 int		find_heredoc(t_lexer *redirections)
@@ -91,10 +92,16 @@ int    single_command(t_mini *shell, t_parser *cmds)
     int status;
     int pid;
     t_builtins built;
+
     status = 0;
     built = cmds->builtin;
     if(built == EXIT || built == UNSET || built == CD || built == EXPORT)
-		no_child_builtin(shell, cmds, built);
+    {
+		if(no_child_builtin(shell, cmds, built))
+            return 0;
+        return(execute_builtin(cmds, shell),0);
+        
+    }
 	if(cmds && find_heredoc(cmds->redirections))
     	check_heredoc(shell, cmds);
     pid = fork();
@@ -132,5 +139,6 @@ int    handle_cmd(t_mini *shell, t_parser *cmds)
 	    shell->new_envp = ft_new_envp(shell->env); /* we make this list 2D array to be executed */
         err = ft_execute(shell, shell->new_envp, cmds);
     }
+    free_all(shell);
     exit(err);
 }
