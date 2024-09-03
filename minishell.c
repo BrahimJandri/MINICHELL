@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 11:33:43 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 12:13:08 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,35 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->quoted = 0;
 }
 
+void update_last_command(t_env *env, const char *last_cmd)
+{
+    t_env *current;
+
+    if (!env || !last_cmd)
+        return;
+    current = env;
+    while (current)
+    {
+        if (ft_strncmp(current->key, "_", 1) == 0 && current->key[1] == '\0')
+        {
+            free(current->value);
+            current->value = ft_strdup(last_cmd);
+            return;
+        }
+        current = current->next;
+    }
+    t_env *new_node = malloc(sizeof(t_env));
+    if (!new_node)
+        return;
+    new_node->key = ft_strdup("_");
+    new_node->value = ft_strdup(last_cmd);
+    new_node->next = NULL;
+    current = env;
+    while (current->next)
+        current = current->next;
+    current->next = new_node;
+}
+
 
 
 void print_env(char **env)
@@ -140,7 +169,6 @@ void print_env(char **env)
     }
 }
 
-
 void	re_init(t_mini *shell)
 {
 	    shell->head = NULL;
@@ -154,9 +182,6 @@ void	exp_prs_exc(t_mini *shell)
 	ft_parsing(shell);
 	ft_execution(shell->cmds, shell);	
 }
-
-
-
 
 void	shell_loop(t_mini *shell)
 {
@@ -184,13 +209,13 @@ void	shell_loop(t_mini *shell)
 			ft_lexer(shell);
             if(!shell->syntax_error)
 				exp_prs_exc(shell);
+			update_last_command(shell->env, shell->rl);
             free_tokens(shell->head);
             free_parser(shell->cmds);
 			re_init(shell);
         }
     }
 }
-
 
 
 
