@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 13:06:47 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 16:19:53 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,24 @@ void	exp_prs_exc(t_mini *shell)
 	ft_execution(shell->cmds, shell);	
 }
 
+char	*get_last_argument(t_parser *cmds)
+{
+	t_parser *current_cmd;
+	char	**args;
+	int		i;
+
+	current_cmd = cmds;
+	while (current_cmd->next)
+		current_cmd = current_cmd->next;
+
+	args = current_cmd->cmd;
+	i = 0;
+	while (args[i + 1])
+		i++;
+
+	return (ft_strdup(args[i]));
+}
+
 void	shell_loop(t_mini *shell)
 {
 	char	*input;
@@ -197,7 +215,7 @@ void	shell_loop(t_mini *shell)
 			ft_lexer(shell);
             if(!shell->syntax_error)
 				exp_prs_exc(shell);
-			update_last_command(shell->env, shell->rl);
+			update_last_command(shell->env, get_last_argument(shell->cmds));
             free_tokens(shell->head);
             free_parser(shell->cmds);
 			re_init(shell);
