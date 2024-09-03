@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/03 12:01:30 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/03 20:34:56 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int    single_command(t_mini *shell, t_parser *cmds)
         handle_cmd(shell, cmds);
     }
     my_wait(pid, status, 0);
-
 	return 0;
 }
 

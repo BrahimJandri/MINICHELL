@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:41:28 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/03 18:22:43 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/03 20:34:32 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ char 	*creat_hd_name(void)
 	char 		*index;
 
 	index = ft_itoa(i++);
-	if(i == 15)
-
 	file_name = ft_strjoin("/tmp/.hd_file", index);
 	free(index);
 	return file_name;

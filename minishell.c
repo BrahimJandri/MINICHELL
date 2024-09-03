@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 14:32:00 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/03 20:41:36 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->pid = 0;
 }
 
-void update_last_command(t_env *env, const char *last_cmd)
+void update_last_command(t_env *env, char *last_cmd)
 {
     t_env *current;
 
@@ -99,6 +99,7 @@ void update_last_command(t_env *env, const char *last_cmd)
         {
             free(current->value);
             current->value = ft_strdup(last_cmd);
+			free(last_cmd);
             return;
         }
         current = current->next;
@@ -181,8 +182,6 @@ void	shell_loop(t_mini *shell)
             if(!shell->syntax_error)
 				exp_prs_exc(shell);
 			update_last_command(shell->env, get_last_argument(shell->cmds));
-            free_tokens(shell->head);
-            free_parser(shell->cmds);
 			re_init(shell);
         }
     }
