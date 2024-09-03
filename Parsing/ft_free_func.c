@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_func.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:08:55 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 11:15:59 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 11:11:32 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	free_redirections(t_lexer *redirections)
 void	free_parser(t_parser *parser_list)
 {
 	t_parser	*tmp;
+
 
 	while (parser_list)
 	{

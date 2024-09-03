@@ -3,59 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 16:42:42 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 14:32:00 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
-char	**arr_dup(char **envm)
-{
-	int		len;
-	char	**arr;
 
-	len = 0;
-	while (envm[len])
-		len++;
-	arr = malloc(sizeof(char *) * (len + 1));
-	if (!arr)
-		return (NULL);
-	arr[len] = NULL;
-	len = 0;
-	while (envm[len])
-	{
-		arr[len] = ft_strdup(envm[len]);
-		len++;
-	}
-	return (arr);
-}
 
-char	*ft_strnlen(const char *str, char delimiter)
-{
-	int		i;
-	int		j;
-	char	*result;
 
-	i = 0;
-	j = 0;
-	if(!str)
-		return (NULL);
-	while (str[i] && str[i] != delimiter)
-		i++;
-	result = malloc(i + 1);
-	if (!result)
-		return (NULL);
-	while (j < i)
-	{
-		result[j] = str[j];
-		j++;
-	}
-	result[i] = '\0';
-	return (result);
-}
 
 void	free_return(t_env *head, char *file, int c)
 {
@@ -102,9 +61,10 @@ void	init_mini(t_mini *shell, char **envm)
 	export = malloc(sizeof(t_export_norm));
 	shell->path = NULL;
 	shell->env = NULL;
-	shell->envp = NULL;
+	// shell->envp = NULL;
+	shell->new_envp = NULL;
 	shell->export = NULL;
-	shell->envp = arr_dup(envm);//we store the envp in our struct   will we need this ??
+	// shell->envp = arr_dup(envm);//we store the envp in our struct   will we need this ??
 	shell->env = create_env(envm); //we make it a linked list
 	if(!shell->env)
 		shell->env = create_env(create_new_env());
@@ -117,12 +77,13 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->pipes = 0;
 	export->equal_sign_pos = NULL;
 	export->plus_equal_sign_pos = NULL;
-	export->key = NULL;	
+	export->key = NULL;
 	export->value = NULL;
 	shell->export = export;
 	shell->hd = 0;
 	shell->new = 0;
 	shell->quoted = 0;
+	shell->pid = 0;
 }
 
 void update_last_command(t_env *env, const char *last_cmd)
@@ -159,16 +120,18 @@ void print_env(char **env)
 
 void	re_init(t_mini *shell)
 {
-	    shell->head = NULL;
-        shell->cmds = NULL;
-		shell->new = 0;
+    free_tokens(shell->head);
+    free_parser(shell->cmds);
+	shell->head = NULL;
+    shell->cmds = NULL;
+	shell->new = 0;
 }
 
 void	exp_prs_exc(t_mini *shell)
 {
 	ft_expander(shell);
 	ft_parsing(shell);
-	ft_execution(shell->cmds, shell);	
+	ft_execution(shell->cmds, shell);
 }
 
 char	*get_last_argument(t_parser *cmds)
@@ -227,14 +190,6 @@ void	shell_loop(t_mini *shell)
 
 
 
-
-
-
-
-
-
-
-
 //                                      MAIN
 /*------------------------------------------------------------------------------------*/
 int		g_exit_status = 0;
@@ -246,14 +201,14 @@ int	main(int ac, char **av, char **envm)
 
 	(void)av;
 	(void)ac;
-	
+
 	init_mini(&shell, envm);
 	shell_loop(&shell);
 	free(shell.rl);
 	free_env(shell.env);
 	if(shell.path)
 		free_path(shell.path);
-	free_arr_dup(shell.envp);
+	// free_arr_dup(shell.envp);
 	if(shell.heredoc_file)
 		free(shell.heredoc_file);
 	if (shell.export)

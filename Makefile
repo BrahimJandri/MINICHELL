@@ -14,7 +14,9 @@ SRC = minishell.c ./Parsing/lexer.c ./Parsing/ft_nodes.c ./Parsing/ft_lexer_hepl
 	./Execution/ft_execution.c ./Execution/execution_utils.c ./Execution/redirection.c \
 	./Execution/builtins/ft_cd.c ./Execution/builtins/ft_echo.c ./Execution/builtins/ft_env.c ./Execution/builtins/ft_exit.c \
 	./Execution/builtins/ft_export.c ./Execution/builtins/ft_pwd.c ./Execution/builtins/ft_unset.c ./Execution/builtins/ft_export_utils.c \
-	signals.c clear_leaks.c\
+	signals.c clear_leaks.c ./Execution/environment_utils.c \
+	./Execution/ft_heredoc.c ./Execution/helper_functions.c ./Execution/heredoc_utils.c \
+	./Execution/multi_cmd_utils.c ./Execution/single_cmd_utils.c \
 
 OBJ = $(SRC:.c=.o)
 
