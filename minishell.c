@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 12:13:08 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 13:06:47 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void update_last_command(t_env *env, const char *last_cmd)
     current = env;
     while (current)
     {
-        if (ft_strncmp(current->key, "_", 1) == 0 && current->key[1] == '\0')
+        if (ft_strcmp(current->key, "_") == 0)
         {
             free(current->value);
             current->value = ft_strdup(last_cmd);
@@ -142,19 +142,7 @@ void update_last_command(t_env *env, const char *last_cmd)
         }
         current = current->next;
     }
-    t_env *new_node = malloc(sizeof(t_env));
-    if (!new_node)
-        return;
-    new_node->key = ft_strdup("_");
-    new_node->value = ft_strdup(last_cmd);
-    new_node->next = NULL;
-    current = env;
-    while (current->next)
-        current = current->next;
-    current->next = new_node;
 }
-
-
 
 void print_env(char **env)
 {
