@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/02 18:28:02 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/03 11:21:06 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
 			if(execve(joined_cmd, cmds->cmd, my_envp) == -1)
 			{
 				perror("execve");
+                free_all(shell);
 				exit(1);
 			}
 		}
