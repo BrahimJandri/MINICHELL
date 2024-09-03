@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:16:10 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/02 18:46:45 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:22:41 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,49 @@ void	free_env_node(t_env *node)
 	}
 }
 
+// void	free_redirections(t_mini *shell)
+// {
+// 	t_lexer *tmp;
+// 	int i;
+
+// 	tmp = shell->cmds->redirections;
+// 	i = 0;
+// 	while(tmp)
+// 	{
+
+// 	}
+// }
+
+
 void    free_all(t_mini *shell)
 {
     free_tokens(shell->head);
-    // free_parser(shell->cmds);
+    free_parser(shell->cmds);
     if(shell->path)
 	    free_path(shell->path);
-    free_arr_dup(shell->envp);
+    // free_arr_dup(shell->envp);
     free_env(shell->env);
     free(shell->rl);
-    if(shell->heredoc_file)
+    if(shell->heredoc_file )
         free(shell->heredoc_file);
     if (shell->export)
 		free(shell->export);
+	if(shell->new_envp)
+		free_new_envp(shell->new_envp);
+	if(shell->pid)
+		free(shell->pid);
+
+}
+
+void	free_new_envp(char **new_envp)
+{
+	int i;
+
+	i = 0;
+	while(new_envp[i])
+	{
+		free(new_envp[i]);
+		i++;
+	}
+	free(new_envp);
 }

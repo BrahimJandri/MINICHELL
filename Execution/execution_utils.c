@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:41:00 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/02 18:59:13 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:02:15 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ int ft_execute(t_mini *shell, char **my_envp, t_parser *cmds)
 		if(!access(cmds->cmd[0], F_OK))//there is a file starts whith ./ (execute something)
 		{
 			if(stat(cmds->cmd[0], &info) == 0 && S_ISDIR(info.st_mode))
-				is_directory(cmds);
+				is_directory(shell, cmds);
 			else
 			{
 				if(!access(cmds->cmd[0], X_OK))//is it an executable if yes exec it, if no return permission denied
-					ft_execve(cmds, my_envp);
+					ft_execve(shell, cmds, my_envp);
 				else
-					no_permission(cmds);
+					no_permission(shell, cmds);
 			}
 		}
-		ft_execve(cmds, my_envp);
+		ft_execve(shell, cmds, my_envp);
 	}
 	else if(cmds->cmd[0]) //a direct command whether exists or not
 		exec_cmd(shell, cmds, my_envp);
@@ -46,7 +46,7 @@ int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
 
 	i = 0;
     if(get_path(shell, my_envp))
-        	ft_execve(cmds, my_envp);
+        	ft_execve(shell, cmds, my_envp);
 	while(shell->path[i])
 	{
 		joined_cmd = join_path(shell->path[i], cmds->cmd[0]);

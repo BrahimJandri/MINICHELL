@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:45:01 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/02 19:00:04 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/03 08:47:43 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,11 @@ int		launch_doc(t_mini *shell, t_parser *cmds)
 	tmp = cmds;
 	while(cmds)
 	{
-        if (check_heredoc(shell, cmds) > 128)
-            return 1;
+		if(cmds->redirections)
+		{
+        	if (check_heredoc(shell, cmds) > 128)
+            	return 1;
+		}
 		cmds = cmds->next;
 	}
 	cmds = tmp;

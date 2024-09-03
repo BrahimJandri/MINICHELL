@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:48:02 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/02 18:49:51 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/03 08:32:55 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,30 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 		g_exit_status = exit_builtin(args->cmd, shell);
 }
 
-void	is_directory(t_parser *cmds)
+void	is_directory(t_mini *shell, t_parser *cmds)
 {
     ft_putstr_fd("minishell: ", 2);
 	write(2, cmds->cmd[0], ft_strlen(cmds->cmd[0]));
     ft_putstr_fd(": Is a directory\n", 2);
+	free_all(shell);
 	exit(126);
 }
 
-void    no_permission(t_parser *cmds)
+void    no_permission(t_mini *shell, t_parser *cmds)
 {
     ft_putstr_fd("minishell: ", 2);
 	write(2, cmds->cmd[0], ft_strlen(cmds->cmd[0]));
     ft_putstr_fd(": Permission denied\n", 2);
+	free_all(shell);
 	exit(126);
 }
-void	ft_execve(t_parser *cmds, char **my_envp)
+void	ft_execve(t_mini *shell, t_parser *cmds, char **my_envp)
 {
     if(execve(cmds->cmd[0], cmds->cmd, my_envp) == -1)//envp will be changed to our envp
     {
 		// if(errno == ENOEXEC)
 		// 	exit(0);
+		free_all(shell);
         perror("minishell");
 	    exit(127);
 	}

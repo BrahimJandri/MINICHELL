@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/02 19:04:04 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:32:00 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ void	init_mini(t_mini *shell, char **envm)
 	export = malloc(sizeof(t_export_norm));
 	shell->path = NULL;
 	shell->env = NULL;
-	shell->envp = NULL;
+	// shell->envp = NULL;
+	shell->new_envp = NULL;
 	shell->export = NULL;
-	shell->envp = arr_dup(envm);//we store the envp in our struct   will we need this ??
+	// shell->envp = arr_dup(envm);//we store the envp in our struct   will we need this ??
 	shell->env = create_env(envm); //we make it a linked list
 	ft_shlvl_update(&shell->env);
 	shell->path = NULL;
@@ -62,6 +63,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->hd = 0;
 	shell->new = 0;
 	shell->quoted = 0;
+	shell->pid = 0;
 }
 
 
@@ -132,15 +134,6 @@ void	shell_loop(t_mini *shell)
 
 
 
-
-
-
-
-
-
-
-
-
 //                                      MAIN
 /*------------------------------------------------------------------------------------*/
 int		g_exit_status = 0;
@@ -159,7 +152,7 @@ int	main(int ac, char **av, char **envm)
 	free_env(shell.env);
 	if(shell.path)
 		free_path(shell.path);
-	free_arr_dup(shell.envp);
+	// free_arr_dup(shell.envp);
 	if(shell.heredoc_file)
 		free(shell.heredoc_file);
 	if (shell.export)

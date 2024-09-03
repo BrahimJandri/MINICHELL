@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:53:30 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/02 18:57:44 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/03 08:19:11 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int    get_path(t_mini *shell, char **my_env)
 char    **ft_new_envp(t_env *env)
 {
     char **new_envp;
+	char *tmp;
 
     new_envp = malloc(sizeof(char *) * (count_env(env) + 1));
     if(!new_envp)
@@ -71,8 +72,9 @@ char    **ft_new_envp(t_env *env)
     int i = 0;
     while(env)
     {
-        new_envp[i] = ft_strjoin(env->key, "=");
-        new_envp[i] = ft_strjoin(new_envp[i], env->value);
+        tmp = ft_strjoin(env->key, "=");
+        new_envp[i] = ft_strjoin(tmp, env->value);
+		free(tmp);
         i++;
         env = env->next;
     }
