@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 16:19:53 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 16:42:42 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,8 @@ char	*get_last_argument(t_parser *cmds)
 	char	**args;
 	int		i;
 
+	if(!cmds)
+		return NULL;
 	current_cmd = cmds;
 	while (current_cmd->next)
 		current_cmd = current_cmd->next;
