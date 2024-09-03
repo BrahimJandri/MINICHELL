@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:41:28 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/03 20:34:32 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 20:59:04 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void    child_heredoc(t_mini *shell, t_parser *cmds, int *fd)
 	t_lexer *head;
     int exit_;
 
-    exit_ = 0;
 	head = cmds->redirections;
     handle_signals(IGN_QUIT);
     while(cmds->redirections)

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/03 20:34:56 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 21:14:56 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,22 @@ int 	no_child_builtin(t_mini *shell, t_parser *cmds, t_builtins built)
     execute_builtin(cmds, shell);
 	dup2(saved_fd, STDOUT_FILENO);
 	close(saved_fd);
-	free_parser(cmds);
+	// free_parser(cmds);
     return 0;
 }
 
 int		find_heredoc(t_lexer *redirections)
 {
+    t_lexer *tmp;
+    
+    tmp = redirections;
 	while(redirections)
 	{
 		if(redirections->token == HEREDOC)
 			return 1;
 		redirections = redirections->next;
 	}
+    redirections = tmp;
 	return 0;
 }
 
@@ -91,7 +95,7 @@ int    single_command(t_mini *shell, t_parser *cmds)
     built = cmds->builtin;
     if(built == EXIT || built == UNSET || built == CD || built == EXPORT)
 		no_child_builtin(shell, cmds, built);
-	if(find_heredoc(cmds->redirections))
+	if(cmds && find_heredoc(cmds->redirections))
     	check_heredoc(shell, cmds);
     pid = fork();
     if(pid < 0)

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:10:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/27 15:34:19 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 20:58:50 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	sort_env(t_env **env_array, int count)
 		i = 0;
 		while (i < count - 1)
 		{
-			if (!env_array[i]->key || !env_array[i + 1]->key)
+			if ((env_array[i] && !env_array[i]->key) || (env_array[i + 1] && !env_array[i + 1]->key))
 				break ;
 			if (ft_strcmp(env_array[i]->key, env_array[i + 1]->key) > 0)
 			{
