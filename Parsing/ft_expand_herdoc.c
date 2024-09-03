@@ -15,9 +15,8 @@
 static void	process_dollar_sign_herdoc(char *val, int *i, char **str,
 		t_mini *shell)
 {
-	// if (*i > 0 && (val[*i - 1] == '\'' || val[*i - 1] == '\"'))
-	// 	*str = ft_append_char(*str, val[*i - 1]);
-	if (val[*i + 1] && is_val_char(val[*i + 1]) && check_quotes(val, *i) <= 1)
+  
+	if (val[*i + 1] && is_val_char(val[*i + 1]))
 	{
 		if (val[*i + 1] != '$' && !ft_isdigit(val[*i + 1]))
 			get_value(val, i, str, shell);

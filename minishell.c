@@ -36,6 +36,24 @@ void	free_return(t_env *head, char *file, int c)
 	}
 }
 
+
+char **create_new_env(void)
+{
+	char **new_env;
+
+	new_env = malloc(sizeof(char *) * 4);
+	if (!new_env)
+	{
+		perror("malloc failed");
+		exit(1);
+	}
+	new_env[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
+	new_env[1] = ft_strdup("SHLVL=1");
+	new_env[2] = ft_strdup("_=/usr/bin/env");
+	new_env[3] = NULL;
+	return new_env;
+}
+
 void	init_mini(t_mini *shell, char **envm)
 {
 	t_export_norm	*export;
@@ -48,6 +66,8 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->export = NULL;
 	// shell->envp = arr_dup(envm);//we store the envp in our struct   will we need this ??
 	shell->env = create_env(envm); //we make it a linked list
+	if(!shell->env)
+		shell->env = create_env(create_new_env());
 	ft_shlvl_update(&shell->env);
 	shell->path = NULL;
 	shell->cmds = NULL;
@@ -66,7 +86,24 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->pid = 0;
 }
 
+void update_last_command(t_env *env, const char *last_cmd)
+{
+    t_env *current;
 
+    if (!env || !last_cmd)
+        return;
+    current = env;
+    while (current)
+    {
+        if (ft_strcmp(current->key, "_") == 0)
+        {
+            free(current->value);
+            current->value = ft_strdup(last_cmd);
+            return;
+        }
+        current = current->next;
+    }
+}
 
 void print_env(char **env)
 {
@@ -80,7 +117,6 @@ void print_env(char **env)
         i++;
     }
 }
-
 
 void	re_init(t_mini *shell)
 {
@@ -98,8 +134,25 @@ void	exp_prs_exc(t_mini *shell)
 	ft_execution(shell->cmds, shell);
 }
 
+char	*get_last_argument(t_parser *cmds)
+{
+	t_parser *current_cmd;
+	char	**args;
+	int		i;
 
+	if(!cmds)
+		return NULL;
+	current_cmd = cmds;
+	while (current_cmd->next)
+		current_cmd = current_cmd->next;
 
+	args = current_cmd->cmd;
+	i = 0;
+	while (args[i + 1])
+		i++;
+
+	return (ft_strdup(args[i]));
+}
 
 void	shell_loop(t_mini *shell)
 {
@@ -127,6 +180,9 @@ void	shell_loop(t_mini *shell)
 			ft_lexer(shell);
             if(!shell->syntax_error)
 				exp_prs_exc(shell);
+			update_last_command(shell->env, get_last_argument(shell->cmds));
+            free_tokens(shell->head);
+            free_parser(shell->cmds);
 			re_init(shell);
         }
     }
