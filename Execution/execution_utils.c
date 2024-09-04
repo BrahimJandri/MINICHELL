@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:41:00 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/04 09:14:42 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:49:49 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int ft_execute(t_mini *shell, char **my_envp, t_parser *cmds)
 {
 	struct stat info;
     (void)shell;
-
 
     if((cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/') || (cmds->cmd[0][0] == '/'))
 	{
@@ -67,10 +66,9 @@ int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
 	i = 0;
     if(get_path(shell, my_envp))
         	ft_execve(shell, cmds, my_envp);
-	while(shell->path[i])
+	while(shell->path[i] && cmds->cmd[0][0])
 	{
 		joined_cmd = join_path(shell->path[i], cmds->cmd[0]);
-
 		if(!access(joined_cmd, F_OK))
 		{
 			if(execve(joined_cmd, cmds->cmd, my_envp) == -1)
@@ -89,6 +87,7 @@ int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
         return(cmd_not_found(shell, cmds));
 	return (0);
 }
+
 void    fd_dup(t_mini *shell, t_parser *cmds, int fd[2], int fd_read)
 {
 

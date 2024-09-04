@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 10:15:55 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 12:33:02 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	**ft_store_args(t_lexer *start)
 	i = 0;
 	while (tmp && tmp->token != PIPE)
 	{
-		if ((tmp->token == ARG || tmp->token == BUILTIN) && *tmp->word != '\0')
+		if (tmp->token == ARG || tmp->token == BUILTIN )
 		{
 			args[i] = ft_strdup(tmp->word);
 			i++;
@@ -104,5 +104,5 @@ void	ft_parsing(t_mini *shell)
 	if (shell->head && shell->head->token == ARG)
 		ft_get_type(shell->head);
 	shell->pipes = ft_count_pipe(shell->head);
-	ft_parse_commands(shell);
+	ft_parse_commands(shell);	
 }

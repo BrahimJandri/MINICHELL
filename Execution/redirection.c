@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 08:41:20 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/03 14:43:07 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:18:16 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int    handle_outfile(t_lexer *redirection, char *file)
 
     if(fd == -1)
     {
-        ft_putstr_fd("outfile : error file discriptor\n",2);
+        ft_putstr_fd("Minishell: No such file or directory\n",2);
         return 1;
     }
     if(dup2(fd, STDOUT_FILENO) == -1)

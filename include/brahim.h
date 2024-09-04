@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/02 10:00:28 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 13:35:35 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ char					*ft_expand_herdoc(char *val, t_mini *shell);
 void					process_dollar_sign(char *val, int *i, char **str,
 							t_mini *shell);
 char					*initialize_expansion(char *val, t_mini *shell);
-int						only_quotes(char *str);
+// int						only_quotes(char *str);
 
 /* minishell */
 
