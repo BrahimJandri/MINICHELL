@@ -1,0 +1,12 @@
+""
+clear_leaks.c
+Execution
+include
+Libft
+Makefile
+minishell
+minishell.c
+Parsing
+readline.supp
+README.md
+signals.c

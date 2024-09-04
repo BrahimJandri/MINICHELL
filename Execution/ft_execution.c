@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/03 22:26:42 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 09:20:46 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,38 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
     free(shell->pid);
 }
 
+int 	count_heredoc(t_parser *cmds)
+{
+	int hd;
+	t_parser *head_cmds;
+	t_lexer *head_redirections;
+
+	hd = 0;
+	head_cmds = cmds;
+	head_redirections = cmds->redirections;
+	while(cmds)
+	{
+		while(cmds->redirections)
+		{
+			if(cmds->redirections->token == HEREDOC)
+				hd++;
+			cmds->redirections = cmds->redirections->next;
+		}
+		cmds = cmds->next;
+	}
+	cmds = head_cmds;
+	cmds->redirections = head_redirections;
+	return hd;
+}
+
 
 void    ft_execution(t_parser *cmds, t_mini *shell)
 {
 
     if(!cmds)
-        return ;
+    	    return ;
+	if(count_heredoc(cmds) > 16)
+		return(ft_putstr_fd("Minishell: maximum here-document count exceeded\n", 2), (void)NULL);
     if(shell->pipes == 0)
     {
         single_command(shell, cmds);
@@ -63,7 +89,7 @@ int 	no_child_builtin(t_mini *shell, t_parser *cmds, t_builtins built)
 	if(built == EXPORT && cmds->redirections)
     {
 	    saved_fd = dup(STDOUT_FILENO);
-		which_redirection(shell, cmds->redirections);    
+		which_redirection(shell, cmds->redirections);
         export_builtin(cmds->cmd, shell);
 	    dup2(saved_fd, STDOUT_FILENO);
 	    close(saved_fd);
@@ -75,7 +101,7 @@ int 	no_child_builtin(t_mini *shell, t_parser *cmds, t_builtins built)
 int		find_heredoc(t_lexer *redirections)
 {
     t_lexer *tmp;
-    
+
     tmp = redirections;
 	while(redirections)
 	{
@@ -100,7 +126,7 @@ int    single_command(t_mini *shell, t_parser *cmds)
 		if(no_child_builtin(shell, cmds, built))
             return 0;
         return(execute_builtin(cmds, shell),0);
-        
+
     }
 	if(cmds && find_heredoc(cmds->redirections))
     	check_heredoc(shell, cmds);

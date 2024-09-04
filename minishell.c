@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 21:55:06 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 09:05:13 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ int	main(int ac, char **av, char **envm)
 	free(shell.rl);
 	free_env(shell.env);
 	if(shell.path)
-		free_path(shell.path);
+		free_path(&shell);
 	// free_arr_dup(shell.envp);
 	if(shell.heredoc_file)
 		free(shell.heredoc_file);

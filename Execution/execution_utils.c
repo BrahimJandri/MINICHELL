@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:41:00 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/03 17:02:15 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/04 09:14:42 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,26 @@ int ft_execute(t_mini *shell, char **my_envp, t_parser *cmds)
 		exec_cmd(shell, cmds, my_envp);
 	exit(0);
 }
+
+
+void	free_path(t_mini *shell)
+{
+	int i;
+
+	i = 0;
+	while(shell->path[i])
+	{
+		free(shell->path[i]);
+		i++;
+	}
+	free(shell->path);
+	shell->path = NULL;
+}
+
+
+
+
+
 int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
 {
 	char *joined_cmd;
@@ -55,6 +75,9 @@ int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
 		{
 			if(execve(joined_cmd, cmds->cmd, my_envp) == -1)
 			{
+				free_all(shell);
+				if(shell->path)
+					free_path(shell);
 				perror("execve");
 				exit(1);
 			}

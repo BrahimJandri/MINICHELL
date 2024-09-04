@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 09:40:08 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/04 09:04:14 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote);
 
 
 int     cmd_not_found(t_mini *shell, t_parser *cmds);
-void	free_path(char **path);
+void	free_path(t_mini *shell);
 void    free_all(t_mini *shell);
 /************************** Builtins ************************************/
 
