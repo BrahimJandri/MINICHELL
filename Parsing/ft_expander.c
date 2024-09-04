@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 09:24:26 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 10:36:54 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 20:47:04 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	ft_expander(t_mini *shell)
 				&& is_whitespace_in_string(expanded))
 				ft_split_args(tmp, expanded);
 		}
+		printf("tmp->word %s\n", tmp->word);
 		tmp = next_node;
 	}
 }

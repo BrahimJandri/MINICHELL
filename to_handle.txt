@@ -1,0 +1,5 @@
+ls >ls <ls| ls
+
+ls > a => permission of a 000
+
+export $a=$a
