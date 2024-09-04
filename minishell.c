@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 17:00:43 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 17:06:35 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,19 @@ char **create_new_env(void)
 	free(pwd);
 	return new_env;
 }
+void init_shell(t_mini *shell)
+{
+	shell->path = NULL;
+	shell->cmds = NULL;
+	shell->head = NULL;
+	shell->rl = NULL;
+	shell->heredoc_file = NULL;
+	shell->pipes = 0;
+	shell->hd = 0;
+	shell->new = 0;
+	shell->quoted = 0;
+	shell->pid = 0;
+}
 
 void	init_mini(t_mini *shell, char **envm)
 {
@@ -74,21 +87,12 @@ void	init_mini(t_mini *shell, char **envm)
 		free_arr_dup(new_envp);
 	}
 	ft_shlvl_update(&shell->env);
-	shell->path = NULL;
-	shell->cmds = NULL;
-	shell->head = NULL;
-	shell->rl = NULL;
-	shell->heredoc_file = NULL;
-	shell->pipes = 0;
+	init_shell(shell);
+	shell->export = export;
 	export->equal_sign_pos = NULL;
 	export->plus_equal_sign_pos = NULL;
 	export->key = NULL;
 	export->value = NULL;
-	shell->export = export;
-	shell->hd = 0;
-	shell->new = 0;
-	shell->quoted = 0;
-	shell->pid = 0;
 }
 
 void update_last_command(t_env *env, char *last_cmd)
