@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 15:30:55 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 15:39:30 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ int	check_overflow(char *str)
 	long long	exit_num;
 
 	exit_num = ft_atol(str);
-	if(ft_strlen(str) > 19 || ((exit_num < 0 && str[0] != '-') || (exit_num > 0 && str[0] == '-')))
+	if (exit_num > LLONG_MAX || exit_num < LLONG_MIN)
+		return (1);
+	if ((exit_num < 0 && str[0] != '-') || (exit_num > 0 && str[0] == '-'))
 		return (1);
 	return (0);
 }
