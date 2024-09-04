@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 09:04:14 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:35:02 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ char    **ft_new_envp(t_env *env);
 char    *expand_var(char *val, t_mini *shell);
 void    handle_signals(int flag);
 
-int		launch_doc(t_mini *shell, t_parser *cmds);
 
 void	ft_shlvl_update(t_env    **env);
 void 	print_env(char **env);
@@ -95,8 +94,9 @@ void	is_directory(t_mini *shell, t_parser *cmds);
 void    child_heredoc(t_mini *shell, t_parser *cmds, int *fd);
 char 	*creat_hd_name(void);
 void    fd_dup(t_mini *shell, t_parser *cmds, int fd[2], int fd_read);
-
+int     count_heredoc(t_parser *cmds);
 void	free_new_envp(char **new_envp);
+int     count_docs(t_lexer *redirections);
 
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/04 09:20:46 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:33:41 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,38 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
 int 	count_heredoc(t_parser *cmds)
 {
 	int hd;
-	t_parser *head_cmds;
-	t_lexer *head_redirections;
-
-	hd = 0;
-	head_cmds = cmds;
-	head_redirections = cmds->redirections;
-	while(cmds)
-	{
-		while(cmds->redirections)
-		{
-			if(cmds->redirections->token == HEREDOC)
-				hd++;
-			cmds->redirections = cmds->redirections->next;
-		}
-		cmds = cmds->next;
-	}
-	cmds = head_cmds;
-	cmds->redirections = head_redirections;
-	return hd;
+    t_parser *tmp;
+    
+    hd = 0;
+    tmp = cmds;
+    while(cmds)
+    {
+        hd += count_docs(cmds->redirections);
+        cmds = cmds->next;
+    }
+    cmds = tmp;
+    return hd;
 }
+int     count_docs(t_lexer *redirections)
+{
+    int hd;
+    t_lexer *redir_tmp;
 
+    hd = 0;
+    redir_tmp = redirections;
+    while(redirections)
+    {
+        if(redirections->token == HEREDOC)
+            hd++;
+        redirections = redirections->next;
+    }
+    redirections = redir_tmp;
+    return hd;
+}
 
 void    ft_execution(t_parser *cmds, t_mini *shell)
 {
+
 
     if(!cmds)
     	    return ;
