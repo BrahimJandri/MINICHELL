@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:08:55 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 13:35:21 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 14:27:24 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	free_args(char **args)
 	int	i;
 
 	i = 0;
-	if (!args)
+	if(!args)
 		return ;
 	while (args[i])
 	{

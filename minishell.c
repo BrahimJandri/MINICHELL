@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 12:33:14 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 14:22:16 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,9 +149,11 @@ char	*get_last_argument(t_parser *cmds)
 
 	args = current_cmd->cmd;
 	i = 0;
-	while (args[i] && args[i + 1])
+	while (args && args[i])
 		i++;
-	return (ft_strdup(args[i]));
+	if (i == 0)
+		return NULL;
+	return ft_strdup(args[i - 1]);
 }
 
 void	shell_loop(t_mini *shell)

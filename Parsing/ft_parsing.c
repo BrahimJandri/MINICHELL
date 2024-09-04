@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 12:33:02 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 14:26:58 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	**ft_store_args(t_lexer *start)
 	i = 0;
 	while (tmp && tmp->token != PIPE)
 	{
-		if (tmp->token == ARG || tmp->token == BUILTIN )
+		if ((tmp->token == ARG || tmp->token == BUILTIN) && tmp->word != NULL)
 		{
 			args[i] = ft_strdup(tmp->word);
 			i++;
