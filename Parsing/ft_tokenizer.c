@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 14:20:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/02 10:42:26 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/04 10:18:52 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ static int	process_token(t_lexer *token, t_mini *shell)
 	if (token->token >= OUTFILE && token->token <= APPEND)
 	{
 		if (token->next && token->next->token == ARG && token->token != PIPE)
+		{
+			remove_quotes(token->next->word);
 			token->next->token = FILE_TARGET;
+		}
 		else
 			return (error_newline(shell), -1);
 	}
