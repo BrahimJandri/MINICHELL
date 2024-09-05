@@ -6,56 +6,54 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 09:24:26 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 08:55:47 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 14:56:28 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char	*initialize_expansion(char *val, t_mini *shell)
-{
-	if (!val || !shell)
-		return (ft_strdup(val));
-	return (ft_strdup(""));
+char	*initialize_expansion(char *val)
+{ 
+	if (!val || !*val)
+        return ft_strdup(val);
+	return ft_strdup("");
 }
 
-void	process_dollar_sign(char *val, int *i, char **str, t_mini *shell)
+void process_dollar_sign(char *val, int *i, char **str, t_mini *shell)
 {
-	if (val[*i + 1] && is_val_char(val[*i + 1]) && check_quotes(val, *i) <= 1)
-	{
-		if (val[*i + 1] != '$' && !ft_isdigit(val[*i + 1]))
-			get_value(val, i, str, shell);
-		else
-			(*i)++;
-	}
-	else if (val[*i + 1] && !check_quotes(val, *i))
-		add_to_str(val, str, ++(*i));
-	else
-		add_to_str(val, str, *i);
+    if (val[*i + 1] && is_val_char(val[*i + 1]) && check_quotes(val, *i) <= 1)
+    {
+        if (val[*i + 1] != '$' && !ft_isdigit(val[*i + 1]))
+            get_value(val, i, str, shell);
+        else
+            (*i)++;
+    }
+    else if (val[*i + 1] && !check_quotes(val, *i))
+        add_to_str(val, str, ++(*i)); // Handle literal dollar sign
+    else
+        add_to_str(val, str, *i); // Append $ as literal if not valid var
 }
 
-char	*expand_var(char *val, t_mini *shell)
-{
-	char	*str;
-	int		i;
 
-	str = initialize_expansion(val, shell);
-	if (!str)
-		return (NULL);
-	i = -1;
-	while (val[++i])
-	{
-		if (val[i] == '$')
-			process_dollar_sign(val, &i, &str, shell);
-		else
-			add_to_str(val, &str, i);
-	}
-	if (str && *str == '\0') // Return NULL if the result is an empty string
-	{
-		free(str);
-		return (NULL);
-	}
-	return (str);
+char *expand_var(char *val, t_mini *shell)
+{
+    char *str;
+    int i = -1;
+
+	str = initialize_expansion(val);
+    while (val[++i])
+    {
+        if (val[i] == '$')
+            process_dollar_sign(val, &i, &str, shell);
+        else
+            str = ft_append_char(str, val[i]); // Handle literal characters
+    }
+    if (str && *str == '\0') // Handle case of resulting empty string
+    {
+        free(str);
+        return NULL; // Return NULL for empty expanded string (e.g., $EMPTY)
+    }
+    return str; // Return expanded result
 }
 
 void	expand_and_replace_word(t_lexer *tmp, t_mini *shell)

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 14:26:58 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 15:01:12 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,34 @@ static void	ft_parse_commands(t_mini *shell)
 	shell->cmds = parser_list;
 }
 
+void	remove_quotes_from_lexer(t_lexer *head)
+{
+    t_lexer *current;
+    char    *new_str;
+    int     i;
+
+    current = head;
+    while (current)
+    {
+        if (current->word)
+        {
+            new_str = ft_strdup("");
+            i = 0;
+            while (current->word[i])
+            {
+                add_to_str(current->word, &new_str, i);
+                i++;
+            }
+            free(current->word);
+            current->word = new_str;
+        }
+        current = current->next;
+    }
+}
+
 void	ft_parsing(t_mini *shell)
 {
+	remove_quotes_from_lexer(shell->head);
 	if (check_redir(shell->head))
 		return ;
 	if (shell->head && shell->head->token == ARG)
