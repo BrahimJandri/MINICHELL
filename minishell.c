@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 10:46:06 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 14:29:58 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,8 @@ char	*get_last_argument(t_parser *cmds)
 	i = 0;
 	while (args && args[i])
 		i++;
+	if (i == 0)
+		return NULL;
 	return ft_strdup(args[i - 1]);
 }
 
