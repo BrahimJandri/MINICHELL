@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 15:01:12 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 16:05:00 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,18 @@ void	remove_quotes_from_lexer(t_lexer *head)
     {
         if (current->word)
         {
-            new_str = ft_strdup("");
-            i = 0;
-            while (current->word[i])
-            {
-                add_to_str(current->word, &new_str, i);
-                i++;
-            }
-            free(current->word);
-            current->word = new_str;
+			if(current->token != DELIME)
+			{
+				new_str = ft_strdup("");
+				i = 0;
+				while (current->word[i])
+				{
+					add_to_str(current->word, &new_str, i);
+					i++;
+				}
+				free(current->word);
+				current->word = new_str;
+			}
         }
         current = current->next;
     }
