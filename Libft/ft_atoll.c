@@ -6,13 +6,13 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:46:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 15:46:08 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 08:54:56 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long long 	ft_atol(const char *str)
+long long 	ft_atoll(const char *str)
 {
 	int		sign;
 	long long	resu;
@@ -36,3 +36,5 @@ long long 	ft_atol(const char *str)
 	}
 	return (resu * sign);
 }
+
+

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 09:24:26 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 23:10:57 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 08:55:47 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,30 +33,6 @@ void	process_dollar_sign(char *val, int *i, char **str, t_mini *shell)
 	else
 		add_to_str(val, str, *i);
 }
-
-// char	*expand_var(char *val, t_mini *shell)
-// {
-// 	char	*str;
-// 	int		i;
-
-// 	str = ft_strdup("");
-// 	if (!str)
-// 		return (NULL);
-// 	i = -1;
-// 	while (val[++i])
-// 	{
-// 		if (val[i] == '$')
-// 			get_value(val, &i, &str, shell);
-// 		else
-// 			str = ft_append_char(str, val[i]);
-// 	}
-// 	if (str && *str == '\0') // Return NULL if the result is an empty string
-// 	{
-// 		free(str);
-// 		return (NULL);
-// 	}
-// 	return (str);
-// }
 
 char	*expand_var(char *val, t_mini *shell)
 {
