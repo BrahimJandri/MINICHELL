@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/04 18:33:41 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 10:31:35 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ void    multiple_command(t_mini *shell, t_parser *cmds)
     }
     ft_wait(shell->pid, shell->pipes + 1);
     free(shell->pid);
+	shell->pid = 0;
 }
 
 int 	count_heredoc(t_parser *cmds)
 {
 	int hd;
     t_parser *tmp;
-    
+
     hd = 0;
     tmp = cmds;
     while(cmds)

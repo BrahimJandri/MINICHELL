@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expander_utils3.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:21:52 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 08:49:45 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 10:11:40 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*get_value_env(char *str, t_mini *shell)
 		}
 		ptr = ptr->next;
 	}
-	return (NULL);
+	return (ft_strdup(""));
 }
 
 void	get_value(char *val, int *i, char **str, t_mini *shell)
@@ -50,7 +50,7 @@ void	get_value(char *val, int *i, char **str, t_mini *shell)
 		}
 		else
 			return;
-	}	
+	}
 	new_str = ft_strjoin(*str, tmp);
 	free(*str);
 	free(tmp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_redir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:52:45 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 09:06:41 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 10:10:32 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	check_redir(t_lexer *head)
 		{
 			if (!tmp->next || tmp->next->token == PIPE)
 				return (1);
-			if (tmp->next->word == NULL && is_whitespace_in_string(tmp->next->word))
+			if (tmp->next->word == NULL || is_whitespace_in_string(tmp->next->word))
 			{
     			ft_putstr_fd("minishell: ambiguous redirect\n", 2);
     			g_exit_status = 1;
