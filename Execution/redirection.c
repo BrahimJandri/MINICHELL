@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 08:41:20 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/05 19:40:19 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 19:44:24 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int    handle_outfile(t_lexer *redirection, char *file)
     }
     if(dup2(fd, STDOUT_FILENO) == -1)
     {
-        perror("dup2");
+        perror("Minishell");
         return 1;
     }
     if(fd) // if fd opened successfully and the operation has been done successfully close it.
@@ -48,7 +48,7 @@ int     handle_infile(char *file)
     }
     if(dup2(fd, STDIN_FILENO) == -1)
     {
-        perror("dup2");
+        perror("Minishell");
         return 1;
     }
     if(fd)
@@ -68,7 +68,7 @@ int     handle_heredoc(char *file_name)
     }
     if(dup2(fd, STDIN_FILENO) == -1)
     {
-        perror("dup2");
+        perror("Minishell");
         return 1;
     }
     if(fd)
