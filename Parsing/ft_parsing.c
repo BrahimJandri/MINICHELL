@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/01 16:44:53 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 16:05:00 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	**ft_store_args(t_lexer *start)
 	i = 0;
 	while (tmp && tmp->token != PIPE)
 	{
-		if ((tmp->token == ARG || tmp->token == BUILTIN) && *tmp->word != '\0')
+		if ((tmp->token == ARG || tmp->token == BUILTIN) && tmp->word != NULL)
 		{
 			args[i] = ft_strdup(tmp->word);
 			i++;
@@ -97,12 +97,41 @@ static void	ft_parse_commands(t_mini *shell)
 	shell->cmds = parser_list;
 }
 
+void	remove_quotes_from_lexer(t_lexer *head)
+{
+    t_lexer *current;
+    char    *new_str;
+    int     i;
+
+    current = head;
+    while (current)
+    {
+        if (current->word)
+        {
+			if(current->token != DELIME)
+			{
+				new_str = ft_strdup("");
+				i = 0;
+				while (current->word[i])
+				{
+					add_to_str(current->word, &new_str, i);
+					i++;
+				}
+				free(current->word);
+				current->word = new_str;
+			}
+        }
+        current = current->next;
+    }
+}
+
 void	ft_parsing(t_mini *shell)
 {
+	remove_quotes_from_lexer(shell->head);
 	if (check_redir(shell->head))
 		return ;
 	if (shell->head && shell->head->token == ARG)
 		ft_get_type(shell->head);
 	shell->pipes = ft_count_pipe(shell->head);
-	ft_parse_commands(shell);
+	ft_parse_commands(shell);	
 }

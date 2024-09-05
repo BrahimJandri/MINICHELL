@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:45:01 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/03 08:47:43 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:32:23 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int    hd_presence(t_mini *shell, int fd[2], int fd_read)
         fd_read = fd[0];
     return fd_read;
 }
-void	fill_hd_file(char *line, int fd)
+void    fill_hd_file(char *line, int fd)
 {
         write(fd, line, ft_strlen(line));
         write(fd, "\n", 1);
@@ -42,21 +42,21 @@ int     open_heredoc(char *hd_file)
     }
     return fd;
 }
-int		launch_doc(t_mini *shell, t_parser *cmds)
+int        launch_doc(t_mini *shell, t_parser *cmds)
 {
-	t_parser *tmp;
+    t_parser *tmp;
 
-	tmp = cmds;
-	while(cmds)
-	{
-		if(cmds->redirections)
-		{
-        	if (check_heredoc(shell, cmds) > 128)
-            	return 1;
-		}
-		cmds = cmds->next;
-	}
-	cmds = tmp;
-	return 0;
+    tmp = cmds;
+    while(cmds)
+    {
+        if(cmds->redirections)
+        {
+            if (check_heredoc(shell, cmds) > 128)
+                return 1;
+        }
+        cmds = cmds->next;
+    }
+    cmds = tmp;
+    return 0;
 
 }

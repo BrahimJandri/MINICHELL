@@ -6,25 +6,25 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:16:10 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/03 14:22:41 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/05 10:29:19 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
-void	free_path(char **path)
-{
-	int	i;
+// void	free_path(char **path)
+// {
+// 	int	i;
 
-	i = 0;
-	while (path[i])
-	{
-		free(path[i]);
-		i++;
-	}
-	free(path);
-	return ;
-}
+// 	i = 0;
+// 	while (path[i])
+// 	{
+// 		free(path[i]);
+// 		i++;
+// 	}
+// 	free(path);
+// 	return ;
+// }
 
 void	free_export(t_export_norm *export)
 {
@@ -90,7 +90,7 @@ void    free_all(t_mini *shell)
     free_tokens(shell->head);
     free_parser(shell->cmds);
     if(shell->path)
-	    free_path(shell->path);
+	    free_path(shell);
     // free_arr_dup(shell->envp);
     free_env(shell->env);
     free(shell->rl);

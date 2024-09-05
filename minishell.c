@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 19:38:37 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:05:34 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
-
-
-
-
 
 void	free_return(t_env *head, char *file, int c)
 {
@@ -40,24 +36,42 @@ void	free_return(t_env *head, char *file, int c)
 char **create_new_env(void)
 {
 	char **new_env;
-
+	char *pwd;
+	
 	new_env = malloc(sizeof(char *) * 4);
 	if (!new_env)
 	{
 		perror("malloc failed");
 		exit(1);
 	}
-	new_env[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
+	pwd = getcwd(NULL, 0);
+	new_env[0] = ft_strjoin("PWD=", pwd);
 	new_env[1] = ft_strdup("SHLVL=1");
 	new_env[2] = ft_strdup("_=/usr/bin/env");
 	new_env[3] = NULL;
+	free(pwd);
 	return new_env;
+}
+void init_shell(t_mini *shell)
+{
+	shell->path = NULL;
+	shell->cmds = NULL;
+	shell->head = NULL;
+	shell->rl = NULL;
+	shell->heredoc_file = NULL;
+	shell->pipes = 0;
+	shell->hd = 0;
+	shell->new = 0;
+	shell->quoted = 0;
+	shell->pid = 0;
 }
 
 void	init_mini(t_mini *shell, char **envm)
 {
 	t_export_norm	*export;
 
+	char **new_envp;
+	
 	export = malloc(sizeof(t_export_norm));
 	shell->path = NULL;
 	shell->env = NULL;
@@ -67,26 +81,21 @@ void	init_mini(t_mini *shell, char **envm)
 	// shell->envp = arr_dup(envm);//we store the envp in our struct   will we need this ??
 	shell->env = create_env(envm); //we make it a linked list
 	if(!shell->env)
-		shell->env = create_env(create_new_env());
+	{
+		new_envp = create_new_env();	
+		shell->env = create_env(new_envp);
+		free_arr_dup(new_envp);
+	}
 	ft_shlvl_update(&shell->env);
-	shell->path = NULL;
-	shell->cmds = NULL;
-	shell->head = NULL;
-	shell->rl = NULL;
-	shell->heredoc_file = NULL;
-	shell->pipes = 0;
+	init_shell(shell);
+	shell->export = export;
 	export->equal_sign_pos = NULL;
 	export->plus_equal_sign_pos = NULL;
 	export->key = NULL;
 	export->value = NULL;
-	shell->export = export;
-	shell->hd = 0;
-	shell->new = 0;
-	shell->quoted = 0;
-	shell->pid = 0;
 }
 
-void update_last_command(t_env *env, const char *last_cmd)
+void update_last_command(t_env *env, char *last_cmd)
 {
     t_env *current;
 
@@ -99,7 +108,8 @@ void update_last_command(t_env *env, const char *last_cmd)
         {
             free(current->value);
             current->value = ft_strdup(last_cmd);
-            return;
+			free(last_cmd);
+            return ;
         }
         current = current->next;
     }
@@ -131,6 +141,7 @@ void	exp_prs_exc(t_mini *shell)
 {
 	ft_expander(shell);
 	ft_parsing(shell);
+	print_parser(&shell->cmds);
 	ft_execution(shell->cmds, shell);
 }
 
@@ -148,10 +159,11 @@ char	*get_last_argument(t_parser *cmds)
 
 	args = current_cmd->cmd;
 	i = 0;
-	while (args[i + 1])
+	while (args && args[i])
 		i++;
-
-	return (ft_strdup(args[i]));
+	if (i == 0)
+		return NULL;
+	return ft_strdup(args[i - 1]);
 }
 
 void	shell_loop(t_mini *shell)
@@ -181,14 +193,10 @@ void	shell_loop(t_mini *shell)
             if(!shell->syntax_error)
 				exp_prs_exc(shell);
 			update_last_command(shell->env, get_last_argument(shell->cmds));
-            free_tokens(shell->head);
-            free_parser(shell->cmds);
 			re_init(shell);
         }
     }
 }
-
-
 
 //                                      MAIN
 /*------------------------------------------------------------------------------------*/
@@ -207,7 +215,7 @@ int	main(int ac, char **av, char **envm)
 	free(shell.rl);
 	free_env(shell.env);
 	if(shell.path)
-		free_path(shell.path);
+		free_path(&shell);
 	// free_arr_dup(shell.envp);
 	if(shell.heredoc_file)
 		free(shell.heredoc_file);

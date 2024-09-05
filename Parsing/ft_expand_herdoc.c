@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand_herdoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 16:39:18 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 14:59:47 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:57:00 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*ft_expand_herdoc(char *val, t_mini *shell)
 	char	*str;
 	int		i;
 
-	str = initialize_expansion(val, shell);
+	str = initialize_expansion(val);
 	if (!str)
 		return (NULL);
 	i = -1;

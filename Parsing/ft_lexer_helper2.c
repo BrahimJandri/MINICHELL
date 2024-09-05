@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:15:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/21 18:21:05 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/03 20:56:14 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	is_empty(char *str)
 	i = -1;
 	while (str && str[++i] && is_whitespace(str[i]))
 		;
-	if (str[i])
+	if (str && str[i])
 		return (0);
 	return (1);
 }

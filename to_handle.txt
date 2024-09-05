@@ -1,0 +1,12 @@
+ls >ls <ls| ls
+
+ls > a => permission of a 000
+
+export $a=$a => handled al hamdulilah
+
+MiniShell$ << cat cat 
+> $PWD
+> ^C
+Minishell: No such file or directory
+MiniShell$
+

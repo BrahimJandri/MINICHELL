@@ -1,35 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 12:18:48 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 12:01:48 by bjandri          ###   ########.fr       */
+/*   Created: 2024/09/04 15:46:01 by bjandri           #+#    #+#             */
+/*   Updated: 2024/09/05 08:54:56 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s)
+long long 	ft_atoll(const char *str)
 {
-	size_t	i;
-	size_t	len;
-	char	*dup;
+	int		sign;
+	long long	resu;
+	char	*s;
 
-	i = 0;
-	if(!s)
-		return (NULL);
-	len = ft_strlen(s);
-	dup = (char *)malloc((len * sizeof(char)) + 1);
-	if (!dup)
-		return (NULL);
-	while (s[i])
+	sign = 1;
+	resu = 0;
+	s = (char *)str;
+	while ((*s >= 9 && *s <= 13) || *s == 32)
+		s++;
+	if (*s == '-' || *s == '+')
 	{
-		dup[i] = s[i];
-		i++;
+		if (*s == '-')
+			sign *= -1;
+		s++;
 	}
-	dup[i] = '\0';
-	return (dup);
+	while (*s >= '0' && *s <= '9')
+	{
+		resu = resu * 10 + *s - '0';
+		s++;
+	}
+	return (resu * sign);
 }
+
+
