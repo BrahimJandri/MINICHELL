@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/05 10:31:35 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:02:39 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void    ft_execution(t_parser *cmds, t_mini *shell)
     if(!cmds)
     	    return ;
 	if(count_heredoc(cmds) > 16)
-		return(ft_putstr_fd("Minishell: maximum here-document count exceeded\n", 2), (void)NULL);
+		return(ft_putstr_fd("Minishell: maximum here-document count exceeded\n", 2), g_exit_status = 2, (void)NULL);
     if(shell->pipes == 0)
     {
         single_command(shell, cmds);

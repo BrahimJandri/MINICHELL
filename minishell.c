@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 16:33:47 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 17:57:21 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void update_last_command(t_env *env, char *last_cmd)
             free(current->value);
             current->value = ft_strdup(last_cmd);
 			free(last_cmd);
+			last_cmd = NULL;
             return ;
         }
         current = current->next;
