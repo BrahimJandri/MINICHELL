@@ -8,6 +8,7 @@ void	handle_sigint(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+	g_exit_status = 130;
 }
 
 void handle_signals(int flag)

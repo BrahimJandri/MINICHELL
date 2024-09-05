@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 16:39:18 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 16:33:17 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 21:08:39 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static char *extract_name_hrd(char *val, int *index, t_mini *shell)
         str = ft_append_char(str, val[i]);
     *index = i - 1;
     char *ptr = get_value_env(str, shell);
+	if(!ptr)
+		return ft_strdup("");
     free(str);
     return ptr;
 }
