@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 19:39:50 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 21:14:05 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,26 +145,28 @@ void	exp_prs_exc(t_mini *shell)
 	ft_execution(shell->cmds, shell);
 }
 
-char	*get_last_argument(t_parser *cmds)
+char *get_last_argument(t_parser *cmds)
 {
-	t_parser *current_cmd;
-	char	**args;
-	int		i;
+    t_parser *current_cmd;
+    char **args;
+    int i;
 
-	if(!cmds)
-		return NULL;
-	current_cmd = cmds;
-	while (current_cmd->next)
-		current_cmd = current_cmd->next;
-
-	args = current_cmd->cmd;
-	i = 0;
-	while (args && args[i])
-		i++;
-	if (!args || !args[i - 1])
-		return NULL;
-	return ft_strdup(args[i - 1]);
+    if (!cmds)
+        return NULL;
+    current_cmd = cmds;
+    while (current_cmd->next)
+        current_cmd = current_cmd->next;
+    args = current_cmd->cmd;
+    if (!args)  // Check if the command's arguments are NULL
+        return NULL;
+    i = 0;
+    while (args[i])
+        i++;
+    if (i == 0)  // No arguments found
+        return NULL;
+    return ft_strdup(args[i - 1]);
 }
+
 
 void	shell_loop(t_mini *shell)
 {
