@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:21:52 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 14:18:13 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 06:40:35 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,17 @@ void	get_value(char *val, int *i, char **str, t_mini *shell)
 	}
 	else
 		tmp = extract_name(val, i, shell);
+	if (!tmp)
+	{
+		if (*i == 1 && **str == '\0') // If variable is not found and `$` is at the start of the string
+		{
+			free(*str);
+			*str = NULL;
+			return;
+		}
+		else
+			return;
+	}	
 	new_str = ft_strjoin(*str, tmp);
 	free(*str);
 	free(tmp);
@@ -54,7 +65,7 @@ char	*extract_name(char *val, int *index, t_mini *shell)
 
 	str = ft_strdup("");
 	i = *index;
-	if (!check_quotes(val, i + 2) && !ft_isalnum(val[i + 1]) && val[i \
+	if (!check_quotes(val, i + 2) && !ft_isalnum(val[i + 1]) && val[i 
 		+ 1] != '?' && val[i + 1] != '_')
 	{
 		while (val[i] && val[i] != '$')
