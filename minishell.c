@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 17:57:21 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 19:39:50 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ char	*get_last_argument(t_parser *cmds)
 	i = 0;
 	while (args && args[i])
 		i++;
-	if (i == 0)
+	if (!args || !args[i - 1])
 		return NULL;
 	return ft_strdup(args[i - 1]);
 }
@@ -221,5 +221,5 @@ int	main(int ac, char **av, char **envm)
 		free(shell.heredoc_file);
 	if (shell.export)
 		free_export(shell.export);
-	return (0);
+	return (g_exit_status);
 }

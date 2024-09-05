@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:21 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 10:52:44 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 18:18:16 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,7 @@ int	process_arg(char *arg, t_mini *shell)
 	handle_assignment(arg, shell);
 	if (!is_valid_identifier(shell->export->key))
 	{
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(shell->export->key, 2);
-		ft_putendl_fd("': not a valid identifier", 2);
+		ft_putstr_fd("minishell: export: `': not a valid identifier\n", 2);
 		free(shell->export->key);
 		if (shell->export->value)
 			free(shell->export->value);

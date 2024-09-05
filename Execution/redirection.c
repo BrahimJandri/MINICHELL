@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 08:41:20 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/04 11:18:16 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/05 19:40:19 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int    handle_outfile(t_lexer *redirection, char *file)
 
     if(fd == -1)
     {
-        ft_putstr_fd("Minishell: No such file or directory\n",2);
+        perror("Minshell");
         return 1;
     }
     if(dup2(fd, STDOUT_FILENO) == -1)
@@ -43,7 +43,7 @@ int     handle_infile(char *file)
     fd = open(file, O_RDWR);
     if(fd == -1)
     {
-        ft_putstr_fd("Minishell: No such file or directory\n",2);
+        perror("Minishell");
         return 1;
     }
     if(dup2(fd, STDIN_FILENO) == -1)
@@ -63,7 +63,7 @@ int     handle_heredoc(char *file_name)
     fd = open(file_name, O_RDONLY);
     if(fd == -1)
     {
-        ft_putstr_fd("Error: File does not exist\n",2);
+        perror("Minishell");
         return 1;
     }
     if(dup2(fd, STDIN_FILENO) == -1)
