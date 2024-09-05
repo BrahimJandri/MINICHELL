@@ -9,3 +9,4 @@ MiniShell$ << cat cat
 > ^C
 Minishell: No such file or directory
 MiniShell$
+
