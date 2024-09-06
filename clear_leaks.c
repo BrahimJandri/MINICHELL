@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear_leaks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:16:10 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/05 10:29:19 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:03:21 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ void	free_env_node(t_env *node)
 			free(node->pwd);
 			node->pwd = NULL;
 		}
+		if(node->oldpwd)
+		{
+			free(node->oldpwd);
+			node->oldpwd = NULL;
+		}
 		free(node);
 	}
 }
@@ -102,7 +107,6 @@ void    free_all(t_mini *shell)
 		free_new_envp(shell->new_envp);
 	if(shell->pid)
 		free(shell->pid);
-
 }
 
 void	free_new_envp(char **new_envp)

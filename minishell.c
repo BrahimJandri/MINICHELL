@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 16:36:17 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 17:02:25 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void init_shell(t_mini *shell)
 	shell->new = 0;
 	shell->quoted = 0;
 	shell->pid = 0;
+	shell->last_arg = NULL;
 }
 
 void	init_mini(t_mini *shell, char **envm)
@@ -155,7 +156,7 @@ char *get_last_argument(t_parser *cmds)
     while (current_cmd->next)
         current_cmd = current_cmd->next;
     args = current_cmd->cmd;
-    if (!args)  // Check if the command's arguments are NULL
+    if (!args)
         return NULL;
     i = 0;
     while (args[i])
@@ -192,7 +193,8 @@ void	shell_loop(t_mini *shell)
 			ft_lexer(shell);
             if(!shell->syntax_error)
 				exp_prs_exc(shell);
-			update_last_command(shell->env, get_last_argument(shell->cmds));
+			shell->last_arg = get_last_argument(shell->cmds);
+			update_last_command(shell->env, shell->last_arg);
 			re_init(shell);
         }
     }

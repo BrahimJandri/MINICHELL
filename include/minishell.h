@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 12:30:05 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 16:58:59 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_mini
 	int				new;
 	int				pipes;
 	int				*pid;
+	char			*last_arg;
 	char			**envp;
 	char			**new_envp;
 	char			**path;
