@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 07:25:02 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 10:22:35 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	exp_prs_exc(t_mini *shell)
 {
 	ft_expander(shell);
 	ft_parsing(shell);
-	print_parser(&shell->cmds);
+	// print_parser(&shell->cmds);
 	ft_execution(shell->cmds, shell);
 }
 
@@ -204,7 +204,6 @@ void	shell_loop(t_mini *shell)
 //                                      MAIN
 /*------------------------------------------------------------------------------------*/
 int		g_exit_status = 0;
-int		g_stop_heredoc = 0;
 
 int	main(int ac, char **av, char **envm)
 {

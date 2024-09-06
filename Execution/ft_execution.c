@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/05 18:02:39 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 11:06:26 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ int    single_command(t_mini *shell, t_parser *cmds)
     }
 	if(cmds && find_heredoc(cmds->redirections))
     	check_heredoc(shell, cmds);
+    if(!cmds->cmd[0])
+        return 0;
     pid = fork();
     if(pid < 0)
 		return(ft_putstr_fd("Failed to fork", 2), 1);
@@ -148,7 +150,7 @@ int    single_command(t_mini *shell, t_parser *cmds)
         handle_cmd(shell, cmds);
     }
     my_wait(pid, status, 0);
-	return 0;
+	return(free(shell->heredoc_file), shell->heredoc_file = 0, 0);
 }
 
 int    handle_cmd(t_mini *shell, t_parser *cmds)

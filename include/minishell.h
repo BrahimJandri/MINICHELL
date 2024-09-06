@@ -6,7 +6,7 @@
 /*   By: rachid <rachid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:52:39 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/02 16:08:54 by rachid           ###   ########.fr       */
+/*   Updated: 2024/09/06 10:22:51 by rachid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 # include <unistd.h>
 
 extern int			g_exit_status;
-extern int			g_stop_heredoc;
 
 typedef struct s_export_norm
 {
