@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:21:52 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 15:02:09 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 10:58:08 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ char	*get_value_env(char *str, t_mini *shell)
 
 void get_value(char *val, int *i, char **str, t_mini *shell)
 {
-    char *tmp = NULL;
+    char *tmp;
     char *new_str;
-
+    
+    tmp = NULL;
     if (val[*i + 1] == '?')
     {
         (*i)++;
@@ -43,7 +44,6 @@ void get_value(char *val, int *i, char **str, t_mini *shell)
     }
     else
         tmp = extract_name(val, i, shell);
-    // If the variable is not found, return without modifying str
     if (!tmp)
     {
         if (*i == 1 && **str == '\0') // Special case for `$EMPTY` with no prefix
@@ -60,16 +60,18 @@ void get_value(char *val, int *i, char **str, t_mini *shell)
     *str = new_str;
 }
 
-
 char *extract_name(char *val, int *index, t_mini *shell)
 {
-    int i = *index;
-    char *str = ft_strdup("");
-
+    int i;
+    char *ptr;
+    char *str;
+    
+    i = *index;
+    str = ft_strdup("");
     while (val[++i] && (ft_isalnum(val[i]) || val[i] == '_'))
         str = ft_append_char(str, val[i]);
-    *index = i - 1; // Adjust the index
-    char *ptr = get_value_env(str, shell);
+    *index = i - 1; // Adjust the index to the last character of the variable name
+    ptr = get_value_env(str, shell);
     free(str);
     return ptr; // Return NULL if not found
 }

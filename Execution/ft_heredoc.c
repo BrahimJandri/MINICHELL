@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:41:28 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/04 18:37:22 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 10:54:27 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
     while(line && ft_strcmp(delimiter, line) && !g_stop_heredoc)
     {
         if(!quote)
-            line = ft_expand_herdoc(line, shell);
+            line = expand_var(line, shell);
 		fill_hd_file(line, fd);
         line = readline("> ");
     }

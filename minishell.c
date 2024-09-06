@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 07:25:02 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 10:58:35 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,8 @@ void	init_mini(t_mini *shell, char **envm)
 	export = malloc(sizeof(t_export_norm));
 	shell->path = NULL;
 	shell->env = NULL;
-	// shell->envp = NULL;
 	shell->new_envp = NULL;
 	shell->export = NULL;
-	// shell->envp = arr_dup(envm);//we store the envp in our struct   will we need this ??
 	shell->env = create_env(envm); //we make it a linked list
 	if(!shell->env)
 	{
@@ -142,7 +140,6 @@ void	exp_prs_exc(t_mini *shell)
 {
 	ft_expander(shell);
 	ft_parsing(shell);
-	print_parser(&shell->cmds);
 	ft_execution(shell->cmds, shell);
 }
 
