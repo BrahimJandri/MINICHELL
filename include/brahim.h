@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 10:55:33 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 16:26:21 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ typedef struct s_lexer
 typedef struct s_parser
 {
 	char				**cmd;
-	int					n_redirections;
 	t_lexer				*redirections;
 	t_builtins			builtin;
 	struct s_parser		*next;
