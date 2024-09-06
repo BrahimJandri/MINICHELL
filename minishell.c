@@ -6,32 +6,11 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 17:02:25 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 18:26:04 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
-
-void	free_return(t_env *head, char *file, int c)
-{
-	if (c == 1)
-	{
-		free_env(head);
-		free(file);
-		return ;
-	}
-	if (c == 2)
-	{
-		free(file);
-		return ;
-	}
-	else
-	{
-		free_env(head);
-		return ;
-	}
-}
-
 
 char **create_new_env(void)
 {
@@ -214,7 +193,8 @@ int	main(int ac, char **av, char **envm)
 	init_mini(&shell, envm);
 	shell_loop(&shell);
 	free(shell.rl);
-	free_env(shell.env);
+	if(shell.env)
+		free_env(shell.env);
 	if(shell.path)
 		free_path(&shell);
 	if(shell.heredoc_file)

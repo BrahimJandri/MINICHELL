@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:41:00 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/04 11:49:49 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 18:14:46 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,6 @@ void	free_path(t_mini *shell)
 	shell->path = NULL;
 }
 
-
-
-
-
 int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
 {
 	char *joined_cmd;
@@ -74,8 +70,7 @@ int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
 			if(execve(joined_cmd, cmds->cmd, my_envp) == -1)
 			{
 				free_all(shell);
-				if(shell->path)
-					free_path(shell);
+				free(joined_cmd);
 				perror("execve");
 				exit(1);
 			}

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 16:26:21 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 18:25:37 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,6 @@ char					*initialize_expansion(char *val);
 char					**arr_dup(char **envm);
 char					*ft_strnlen(const char *str, char delimiter);
 t_env					*ft_new_env(const char *key, const char *value);
-void					free_return(t_env *head, char *file, int c);
 t_env					*create_env(char **env);
 void					init_mini(t_mini *shell, char **envm);
 void					shell_loop(t_mini *shell);

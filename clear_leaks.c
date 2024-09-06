@@ -6,25 +6,11 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:16:10 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/06 17:03:21 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 18:45:28 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
-
-// void	free_path(char **path)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (path[i])
-// 	{
-// 		free(path[i]);
-// 		i++;
-// 	}
-// 	free(path);
-// 	return ;
-// }
 
 void	free_export(t_export_norm *export)
 {
@@ -67,27 +53,10 @@ void	free_env_node(t_env *node)
 			free(node->pwd);
 			node->pwd = NULL;
 		}
-		if(node->oldpwd)
-		{
-			free(node->oldpwd);
-			node->oldpwd = NULL;
-		}
 		free(node);
 	}
+	node = NULL;
 }
-
-// void	free_redirections(t_mini *shell)
-// {
-// 	t_lexer *tmp;
-// 	int i;
-
-// 	tmp = shell->cmds->redirections;
-// 	i = 0;
-// 	while(tmp)
-// 	{
-
-// 	}
-// }
 
 
 void    free_all(t_mini *shell)
@@ -96,8 +65,8 @@ void    free_all(t_mini *shell)
     free_parser(shell->cmds);
     if(shell->path)
 	    free_path(shell);
-    // free_arr_dup(shell->envp);
-    free_env(shell->env);
+	if(shell->env)
+    	free_env(shell->env);
     free(shell->rl);
     if(shell->heredoc_file )
         free(shell->heredoc_file);

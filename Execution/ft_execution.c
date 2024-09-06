@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/06 12:24:56 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 18:31:46 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ int     count_docs(t_lexer *redirections)
 
 void    ft_execution(t_parser *cmds, t_mini *shell)
 {
-
-
     if(!cmds)
     	    return ;
 	if(count_heredoc(cmds) > 16)
