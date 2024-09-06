@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 10:58:35 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 12:29:58 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,6 @@ void	shell_loop(t_mini *shell)
 //                                      MAIN
 /*------------------------------------------------------------------------------------*/
 int		g_exit_status = 0;
-int		g_stop_heredoc = 0;
 
 int	main(int ac, char **av, char **envm)
 {

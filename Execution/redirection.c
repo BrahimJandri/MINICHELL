@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 08:41:20 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/05 19:44:24 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:18:38 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int    handle_outfile(t_lexer *redirection, char *file)
 
     if(fd == -1)
     {
-        perror("Minshell");
+        perror("Minishell");
         return 1;
     }
     if(dup2(fd, STDOUT_FILENO) == -1)
@@ -40,7 +40,7 @@ int     handle_infile(char *file)
 {
     int fd;
 
-    fd = open(file, O_RDWR);
+    fd = open(file, O_RDONLY);
     if(fd == -1)
     {
         perror("Minishell");

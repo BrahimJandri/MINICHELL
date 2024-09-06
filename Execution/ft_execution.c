@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/05 18:02:39 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 12:24:56 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ int    single_command(t_mini *shell, t_parser *cmds)
 		if(no_child_builtin(shell, cmds, built))
             return 0;
         return(execute_builtin(cmds, shell),0);
-
     }
 	if(cmds && find_heredoc(cmds->redirections))
     	check_heredoc(shell, cmds);
@@ -148,7 +147,7 @@ int    single_command(t_mini *shell, t_parser *cmds)
         handle_cmd(shell, cmds);
     }
     my_wait(pid, status, 0);
-	return 0;
+	return(free(shell->heredoc_file), shell->heredoc_file = 0, 0);
 }
 
 int    handle_cmd(t_mini *shell, t_parser *cmds)

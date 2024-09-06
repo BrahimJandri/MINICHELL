@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:41:28 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/06 10:54:27 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 12:31:08 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int    here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
     else
         quote = 0;
     remove_quotes(delimiter);
-	g_stop_heredoc = 0;
     exit = exec_heredoc(shell, file_name, delimiter, quote);
     return(exit);
 }
@@ -90,21 +89,16 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
 	unlink(hd_file);
     fd = open_heredoc(hd_file);
     line = readline("> ");
-    while(line && ft_strcmp(delimiter, line) && !g_stop_heredoc)
+    while(line && ft_strcmp(delimiter, line))
     {
         if(!quote)
             line = expand_var(line, shell);
 		fill_hd_file(line, fd);
         line = readline("> ");
     }
-    if(g_stop_heredoc)
-    {
-        close(fd);
-        return (free(line), 0);  // Indicate interruption
-    }
     if(!line)
     {
-        printf("warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delimiter);
+        printf("warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
         return (close(fd), 0);
     } // there is still something global for the heredoc
     close(fd);
