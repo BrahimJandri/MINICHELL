@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 12:29:58 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 16:36:17 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ char *get_last_argument(t_parser *cmds)
     i = 0;
     while (args[i])
         i++;
-    if (i == 0)  // No arguments found
+    if (i == 0 && !*args)
         return NULL;
     return ft_strdup(args[i - 1]);
 }
@@ -215,7 +215,6 @@ int	main(int ac, char **av, char **envm)
 	free_env(shell.env);
 	if(shell.path)
 		free_path(&shell);
-	// free_arr_dup(shell.envp);
 	if(shell.heredoc_file)
 		free(shell.heredoc_file);
 	if (shell.export)

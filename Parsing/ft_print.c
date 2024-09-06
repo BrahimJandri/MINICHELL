@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:49:05 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/17 10:34:34 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 16:28:17 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	print_parser(t_parser **head)
 		}
 		else
 			printf("cmd ==> [NULL]\n");
-		printf("n_red ==> [%d]\n", tmp->n_redirections);
 		printf("builtins ==> [%d]\n", tmp->builtin);
 		printf("Redirections: \n");
 		redir_tmp = tmp->redirections;
