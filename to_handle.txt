@@ -10,3 +10,13 @@ MiniShell$ << cat cat
 Minishell: No such file or directory
 MiniShell$
 
+MiniShell$ export $a=$a << a
+CMD : 
+cmd[0] ==> [export]
+cmd[1] ==> [=]
+n_red ==> [0]
+builtins ==> [4]
+Redirections: 
+redirection type ==> [4], file ==> [a]
+Minishell: Bad address
+minishell: export: `': not a valid identifier

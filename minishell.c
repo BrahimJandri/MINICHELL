@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 21:14:05 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 07:25:02 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void	exp_prs_exc(t_mini *shell)
 {
 	ft_expander(shell);
 	ft_parsing(shell);
+	print_parser(&shell->cmds);
 	ft_execution(shell->cmds, shell);
 }
 
