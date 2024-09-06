@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:16:10 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/06 18:45:28 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 21:56:08 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@ void	free_arr_dup(char **arr)
 	int	i;
 
 	i = 0;
+	if(!*arr)
+		return ;
 	if (arr)
 	{
 		while (arr[i] != NULL)
 			free(arr[i++]);
 		free(arr);
 	}
+	arr = NULL;
 }
 
 void	free_env(t_env *head)

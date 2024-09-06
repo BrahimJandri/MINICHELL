@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 21:32:51 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 22:10:30 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ int cd_builtin(char **args, t_env **env)
     char *oldpwd;
 
     if (prepare_cd(args, env, &path, &oldpwd) != 0)
+    {
+        free(oldpwd);
         return (1);
+    }
     if (chdir(path) == -1)
     {
         free(oldpwd);   
