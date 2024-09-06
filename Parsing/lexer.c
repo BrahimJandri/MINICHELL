@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 07:46:41 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/02 09:59:46 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/06 16:24:21 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	ft_lexer(t_mini *shell)
 		return ;
 	}
 	split_args(shell);
-	rm_quote(shell);
 	if (check_pipe(shell->head))
 	{
 		shell->syntax_error = 1;
