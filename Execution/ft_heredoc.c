@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:41:28 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/06 12:31:08 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 00:30:28 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,29 @@ int     exec_heredoc(t_mini *shell, char *hd_file, char *delimiter, int quote)
     close(fd);
     return 0;
 }
+unsigned int ft_random()
+{
+	static int num;
+
+	num = num * 223 + 142345;
+	return(num++, num / 14) % 123;
+}
+
 char 	*creat_hd_name(void)
 {
-	static int 	i;
-	char 		*file_name;
-	char 		*index;
+	char *file_name;
+	char *joined;
+	int i;
 
-	index = ft_itoa(i++);
-	file_name = ft_strjoin("/tmp/.hd_file", index);
-	free(index);
-	return file_name;
+	i = 0;
+	file_name = malloc(sizeof(char) * 11);
+	while(i < 10)
+	{
+		file_name[i] = SET[ft_random() % 51];
+		i++;
+	}
+	file_name[i] = '\0';
+	joined = ft_strjoin("/tmp/", file_name);
+	free(file_name);
+	return(joined);
 }
