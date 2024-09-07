@@ -6,12 +6,11 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:48:02 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 02:20:59 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 04:07:13 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
 
 void	execute_builtin(t_parser *args, t_mini *shell)
 {
@@ -35,34 +34,36 @@ void	execute_builtin(t_parser *args, t_mini *shell)
 
 void	is_directory(t_mini *shell, t_parser *cmds)
 {
-    ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("minishell: ", 2);
 	write(2, cmds->cmd[0], ft_strlen(cmds->cmd[0]));
-    ft_putstr_fd(": Is a directory\n", 2);
+	ft_putstr_fd(": Is a directory\n", 2);
 	free_all(shell);
 	exit(126);
 }
 
-void    no_permission(t_mini *shell, t_parser *cmds)
+void	no_permission(t_mini *shell, t_parser *cmds)
 {
-    ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("minishell: ", 2);
 	write(2, cmds->cmd[0], ft_strlen(cmds->cmd[0]));
-    ft_putstr_fd(": Permission denied\n", 2);
+	ft_putstr_fd(": Permission denied\n", 2);
 	free_all(shell);
 	exit(126);
 }
+
 void	ft_execve(t_mini *shell, t_parser *cmds, char **my_envp)
 {
-    if(execve(cmds->cmd[0], cmds->cmd, my_envp) == -1)//envp will be changed to our envp
-    {
+	if (execve(cmds->cmd[0], cmds->cmd, my_envp) == -1)
+	{
 		free_all(shell);
-        perror("minishell");
-	    exit(127);
+		perror("minishell");
+		exit(127);
 	}
 }
-int     	cmd_not_found(t_mini *shell, t_parser *cmds)
+
+int	cmd_not_found(t_mini *shell, t_parser *cmds)
 {
-    ft_putstr_fd(cmds->cmd[0],2);
-    ft_putstr_fd(": command not found\n", 2);
-    free_all(shell);
-    exit(127);
+	ft_putstr_fd(cmds->cmd[0], 2);
+	ft_putstr_fd(": command not found\n", 2);
+	free_all(shell);
+	exit(127);
 }

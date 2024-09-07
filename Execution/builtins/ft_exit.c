@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 16:06:34 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 04:21:42 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,25 @@ int	exit_builtin(char **args, t_mini *shell)
 
 	if (!args[1])
 	{
-		ft_putstr_fd("exit\n", 2);
-		free_all(shell);
-		exit(g_exit_status);
+		return (ft_putstr_fd("exit\n", 2), free_all(shell),
+			exit(g_exit_status), 0);
 	}
 	if (args[2] != NULL)
 		return (exit_msg("minishell: exit: too many arguments\n", 0, shell), 1);
-	if((args[1][0] == '-' || args[1][0] == '+') && args[1][1] == '\0')
-		return (exit_msg("minishell: exit: numeric argument required\n", 1, shell), 1);
-	if(check_overflow(args[1]))
-		return (exit_msg("minishell: exit: numeric argument required\n", 1, shell), 1);
+	if ((args[1][0] == '-' || args[1][0] == '+') && args[1][1] == '\0')
+		return (exit_msg("minishell: exit: numeric argument required\n", 1,
+				shell), 1);
+	if (check_overflow(args[1]))
+		return (exit_msg("minishell: exit: numeric argument required\n", 1,
+				shell), 1);
 	i = 0;
 	while (args[1][++i])
 	{
 		if (!ft_isdigit(args[1][i]))
-			return (exit_msg("minishell: exit: numeric argument required\n", 1, shell), 1);
+			return (exit_msg("minishell: exit: numeric argument required\n", 1,
+					shell), 1);
 	}
 	ft_putstr_fd("exit\n", 2);
 	g_exit_status = ft_atoi(args[1]);
-	free_all(shell);
-	exit(g_exit_status);
-	return (0);
+	return (free_all(shell), exit(g_exit_status), 0);
 }

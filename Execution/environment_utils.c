@@ -6,46 +6,47 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:53:30 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/03 08:19:11 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 04:01:51 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void    ft_shlvl_update(t_env  **envp)
+void	ft_shlvl_update(t_env **envp)
 {
-    t_env    *tmp;
-    char    *shlvl;
+	t_env	*tmp;
+	char	*shlvl;
 
-    tmp = *envp;
-    while (tmp)
-    {
-        if (!ft_strncmp(tmp->key, "SHLVL", 5))
-        {
-            if(ft_atoi(tmp->value) > 999)
-            {
-                ft_putstr_fd("warning: shell level (1001) too high, resetting to 1\n",2);
-                free(tmp->value);
-                tmp->value = ft_strdup("0");
-            }
-            shlvl = ft_itoa(ft_atoi(tmp->value) + 1);
-            if (!shlvl)
-                return ;
-            free(tmp->value);
-            tmp->value = ft_strdup(shlvl);
-            free(shlvl);
-            break ;
-        }
-        tmp = tmp->next;
-    }
+	tmp = *envp;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->key, "SHLVL", 5))
+		{
+			if (ft_atoi(tmp->value) > 999)
+			{
+				ft_putstr_fd ("warning: shell level (1001)", 2);
+				ft_putstr_fd(" too high,resetting to 1\n", 2);
+				free(tmp->value);
+				tmp->value = ft_strdup("0");
+			}
+			shlvl = ft_itoa(ft_atoi(tmp->value) + 1);
+			if (!shlvl)
+				return ;
+			free(tmp->value);
+			tmp->value = ft_strdup(shlvl);
+			free(shlvl);
+			break ;
+		}
+		tmp = tmp->next;
+	}
 }
 
-int    get_path(t_mini *shell, char **my_env)
+int	get_path(t_mini *shell, char **my_env)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (my_env[i])
+	i = 0;
+	while (my_env[i])
 	{
 		if (ft_strncmp("PATH=", my_env[i], 5) == 0)
 		{
@@ -54,32 +55,34 @@ int    get_path(t_mini *shell, char **my_env)
 		}
 		i++;
 	}
-    if(!shell->path)
-        return 1;
-    return 0;
+	if (!shell->path)
+		return (1);
+	return (0);
 }
-char    **ft_new_envp(t_env *env)
-{
-    char **new_envp;
-	char *tmp;
 
-    new_envp = malloc(sizeof(char *) * (count_env(env) + 1));
-    if(!new_envp)
-    {
-        perror("malloc failed");
-        exit(1);
-    }
-    int i = 0;
-    while(env)
-    {
-        tmp = ft_strjoin(env->key, "=");
-        new_envp[i] = ft_strjoin(tmp, env->value);
+char	**ft_new_envp(t_env *env)
+{
+	char	**new_envp;
+	char	*tmp;
+	int		i;
+
+	new_envp = malloc(sizeof(char *) * (count_env(env) + 1));
+	if (!new_envp)
+	{
+		perror("malloc failed");
+		exit(1);
+	}
+	i = 0;
+	while (env)
+	{
+		tmp = ft_strjoin(env->key, "=");
+		new_envp[i] = ft_strjoin(tmp, env->value);
 		free(tmp);
-        i++;
-        env = env->next;
-    }
-    new_envp[i] = NULL;
-    return new_envp;
+		i++;
+		env = env->next;
+	}
+	new_envp[i] = NULL;
+	return (new_envp);
 }
 
 char	*join_path(char *path, char *command)

@@ -46,7 +46,8 @@ void	sort_env(t_env **env_array, int count)
 		i = 0;
 		while (i < count - 1)
 		{
-			if ((env_array[i] && !env_array[i]->key) || (env_array[i + 1] && !env_array[i + 1]->key))
+			if ((env_array[i] && !env_array[i]->key) || (env_array[i + 1]
+					&& !env_array[i + 1]->key))
 				break ;
 			if (ft_strcmp(env_array[i]->key, env_array[i + 1]->key) > 0)
 			{
