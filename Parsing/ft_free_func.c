@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:08:55 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 18:09:49 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 08:57:01 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,20 @@ void	free_parser(t_parser *parser_list)
 		free(tmp);
 	}
 	parser_list = NULL;
+}
+
+void	free_arr_dup(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (!*arr)
+		return ;
+	if (arr)
+	{
+		while (arr[i] != NULL)
+			free(arr[i++]);
+		free(arr);
+	}
+	arr = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 07:25:41 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 08:31:07 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,9 @@ void					remove_quotes_from_lexer(t_lexer *head);
 
 /*************************** Parsing ***************************/
 
+char					**create_new_env(void);
+void					update_last_command(t_env *env, char *last_cmd);
+char					*get_last_argument(t_parser *cmds);
 void					ft_parsing(t_mini *shell);
 int						ft_count_pipe(t_lexer *head);
 void					ft_get_builtin(t_lexer *tmp);
