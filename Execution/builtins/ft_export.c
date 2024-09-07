@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:21 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 18:18:16 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 17:54:15 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	process_arg(char *arg, t_mini *shell)
 			free(shell->export->value);
 		return (1);
 	}
-	update_env(&shell->env, shell->export->key, shell->export->value);
+	update_env(&shell->env, shell->export->key, shell->export->value, 0);
 	free(shell->export->key);
 	if (shell->export->value)
 		free(shell->export->value);

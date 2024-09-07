@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 08:41:20 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/07 11:44:12 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 18:19:37 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	handle_outfile(t_lexer *redirection, char *file)
 	int		fd;
 
 	fd = 0;
+	if(file == NULL)
+		return (1);
 	if (redirection->token == APPEND)
 		fd = open(file, O_CREAT | O_APPEND | O_RDWR, 0664);
 	else if (redirection->token == OUTFILE)
@@ -40,6 +42,8 @@ int	handle_infile(char *file)
 {
 	int	fd;
 
+	if(file == NULL)
+		return (1);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:52:45 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 07:18:48 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 18:01:14 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	check_redir(t_lexer *head)
 				|| is_whitespace_in_string(tmp->next->word))
 			{
 				ft_putstr_fd("minishell: ambiguous redirect\n", 2);
-				return (g_exit_status = 1, 1);
+				return (g_exit_status = 1, 0);
 			}
 		}
 		tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 16:43:15 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 17:53:50 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ int	cd_builtin(char **args, t_env **env)
 		free(oldpwd);
 		return (perror("Minishell"), 1);
 	}
-	update_env(env, "OLDPWD", oldpwd);
-	update_env(env, "PWD", (*env)->pwd);
+	update_env(env, "OLDPWD", oldpwd, 1);
+	update_env(env, "PWD", (*env)->pwd, 1);
 	free(oldpwd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 12:35:52 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 17:53:57 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int				cd_builtin(char **args, t_env **env);
 int				echo_builtin(char **args);
 int				is_n_flag(char *arg);
 int				env_builtin(t_env **env);
-void			update_env(t_env **env, const char *key, const char *value);
+void			update_env(t_env **env, const char *key, const char *value, int c);
 t_env			*ft_new_env(const char *key, const char *value);
 char			*getenv_value(t_env *env, const char *key);
 t_env			*create_env(char **env);
