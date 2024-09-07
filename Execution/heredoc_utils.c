@@ -31,7 +31,7 @@ void	fill_hd_file(char *line, int fd)
 	free(line);
 }
 
-int		open_heredoc(char *hd_file)
+int	open_heredoc(char *hd_file)
 {
 	int	fd;
 

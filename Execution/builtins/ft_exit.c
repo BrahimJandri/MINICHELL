@@ -41,8 +41,8 @@ int	exit_builtin(char **args, t_mini *shell)
 
 	if (!args[1])
 	{
-		return (ft_putstr_fd("exit\n", 2), free_all(shell),
-			exit(g_exit_status), 0);
+		return (ft_putstr_fd("exit\n", 2), free_all(shell), exit(g_exit_status),
+			0);
 	}
 	if ((args[1][0] == '-' || args[1][0] == '+') && args[1][1] == '\0')
 		return (exit_msg("minishell: exit: numeric argument required\n", 1,

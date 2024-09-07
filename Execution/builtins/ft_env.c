@@ -71,12 +71,12 @@ void	update_env(t_env **env, const char *key, const char *value, int c)
 	t_env	*temp;
 	t_env	*new_node;
 
-	if(c == 1)
+	if (c == 1)
 	{
 		if (!(ft_strcmp(key, "PWD")) && getenv_value(*env, "PWD") == NULL)
-			return;
-		if(!(ft_strcmp(key, "OLDPWD")) && getenv_value(*env, "OLDPWD") == NULL)
-			return;
+			return ;
+		if (!(ft_strcmp(key, "OLDPWD")) && getenv_value(*env, "OLDPWD") == NULL)
+			return ;
 	}
 	temp = *env;
 	while (temp)
@@ -89,14 +89,13 @@ void	update_env(t_env **env, const char *key, const char *value, int c)
 				temp->value = ft_strdup(value);
 			else
 				temp->value = NULL;
-			return;
+			return ;
 		}
 		temp = temp->next;
 	}
 	new_node = ft_new_env(key, value);
 	ft_lstadd(env, new_node);
 }
-
 
 int	env_builtin(t_env **env)
 {
@@ -105,7 +104,7 @@ int	env_builtin(t_env **env)
 	tmp = *env;
 	while (tmp)
 	{
-		if (tmp->value )
+		if (tmp->value)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}

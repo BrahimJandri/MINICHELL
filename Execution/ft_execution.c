@@ -91,7 +91,7 @@ int	single_command(t_mini *shell, t_parser *cmds)
 		return (execute_builtin(cmds, shell), 0);
 	}
 	if (cmds && find_heredoc(cmds->redirections))
-		if(check_heredoc(shell, cmds) > 128)
+		if (check_heredoc(shell, cmds) > 128)
 			return (free(shell->heredoc_file), shell->heredoc_file = 0, 0);
 	pid = fork();
 	if (pid < 0)

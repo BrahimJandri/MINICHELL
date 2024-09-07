@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:01:03 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 12:24:08 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 22:15:00 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,18 @@ int	ft_wait(int *pid, int pipes)
 	return (0);
 }
 
+int		hd_wait(int pid, int status)
+{
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status) && WTERMSIG(status))
+	{
+		write(1, "\n", 1);
+		return (g_exit_status = 128 + WTERMSIG(status), 128
+			+ WTERMSIG(status));
+	}
+	return (0);
+}
+
 int	my_wait(int pid, int status, int flag)
 {
 	if (flag == 0)
@@ -47,6 +59,7 @@ int	my_wait(int pid, int status, int flag)
 		{
 			write(2, "Quit (core dumped)\n", 19);
 			g_exit_status = 128 + WTERMSIG(status);
+			return(g_exit_status);
 		}
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{
@@ -57,17 +70,10 @@ int	my_wait(int pid, int status, int flag)
 		{
 			g_exit_status = WEXITSTATUS(status);
 		}
-
 	}
 	if (flag == 1)
 	{
-		waitpid(pid, &status, 0);
-		if (WIFSIGNALED(status) && WTERMSIG(status))
-		{
-			write(1, "\n", 1);
-			return (g_exit_status = 128 + WTERMSIG(status), 128
-				+ WTERMSIG(status));
-		}
+		return(hd_wait(pid, status));
 	}
 	return (0);
 }
@@ -95,4 +101,3 @@ char	*ft_strnlen(const char *str, char delimiter)
 	result[i] = '\0';
 	return (result);
 }
-

@@ -14,10 +14,10 @@
 
 int	handle_outfile(t_lexer *redirection, char *file)
 {
-	int		fd;
+	int	fd;
 
 	fd = 0;
-	if(file == NULL)
+	if (file == NULL)
 		return (1);
 	if (redirection->token == APPEND)
 		fd = open(file, O_CREAT | O_APPEND | O_RDWR, 0664);
@@ -42,7 +42,7 @@ int	handle_infile(char *file)
 {
 	int	fd;
 
-	if(file == NULL)
+	if (file == NULL)
 		return (1);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)

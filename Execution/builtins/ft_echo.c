@@ -30,20 +30,20 @@ int	is_n_flag(char *arg)
 	return (1);
 }
 
-void    remove_quotes(char *str)
+void	remove_quotes(char *str)
 {
-    char    *result;
-    int     i;
-	
+	char	*result;
+	int		i;
+
 	result = NULL;
 	i = 0;
-    while (str[i])
-    {
-        add_to_str(str, &result, i);
-        i++;
-    }
-    strcpy(str, result);
-    free(result);
+	while (str[i])
+	{
+		add_to_str(str, &result, i);
+		i++;
+	}
+	strcpy(str, result);
+	free(result);
 }
 
 int	echo_builtin(char **args)

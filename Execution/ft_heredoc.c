@@ -34,7 +34,7 @@ int	check_heredoc(t_mini *shell, t_parser *cmds)
 	close(fd[1]);
 	read(fd[0], name, 17);
 	close(fd[0]);
-	if(shell->heredoc_file)
+	if (shell->heredoc_file)
 		free(shell->heredoc_file);
 	shell->heredoc_file = name;
 	return (g_exit_status);
@@ -56,7 +56,7 @@ void	child_heredoc(t_mini *shell, t_parser *cmds, int *fd)
 			shell->heredoc_file = creat_hd_name();
 			exit_ = here_doc(shell->heredoc_file, shell, cmds->redirections);
 			if (exit_)
-				return (shell->hd = 0, (void) NULL);
+				return (shell->hd = 0, (void)NULL);
 			shell->hd = 1;
 		}
 		cmds->redirections = cmds->redirections->next;
@@ -75,7 +75,7 @@ int	here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
 	delimiter = heredoc->word;
 	if ((delimiter[0] == '\'' || delimiter[ft_strlen(delimiter) - 1] == '\'')
 		|| (delimiter[0] == '\"' || delimiter[ft_strlen(delimiter)
-				- 1] == '\"'))
+			- 1] == '\"'))
 		quote = 1;
 	else
 		quote = 0;

@@ -24,7 +24,7 @@ void	ft_shlvl_update(t_env **envp)
 		{
 			if (ft_atoi(tmp->value) > 999)
 			{
-				ft_putstr_fd ("warning: shell level (1001)", 2);
+				ft_putstr_fd("warning: shell level (1001)", 2);
 				ft_putstr_fd(" too high,resetting to 1\n", 2);
 				free(tmp->value);
 				tmp->value = ft_strdup("0");
@@ -76,7 +76,7 @@ char	**ft_new_envp(t_env *env)
 	while (env)
 	{
 		tmp = ft_strjoin(env->key, "=");
-		if(env->value)
+		if (env->value)
 			new_envp[i] = ft_strjoin(tmp, env->value);
 		else
 			new_envp[i] = ft_strdup(env->key);
