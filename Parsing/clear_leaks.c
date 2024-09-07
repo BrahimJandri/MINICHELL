@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   clear_leaks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:16:10 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/07 11:46:09 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 13:38:39 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/minishell.h"
+#include "../include/minishell.h"
 
 void	free_export(t_export_norm *export)
 {
@@ -71,8 +71,10 @@ void	free_new_envp(char **new_envp)
 	i = 0;
 	while (new_envp[i])
 	{
+		printf("new = %s\n", new_envp[i]);
 		free(new_envp[i]);
 		i++;
 	}
 	free(new_envp);
+	new_envp = NULL;
 }

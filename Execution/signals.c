@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 00:27:17 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 10:43:07 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 13:24:36 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/rachid.h"
+#include "../include/rachid.h"
 
 void	handle_sigint(int sig)
 {

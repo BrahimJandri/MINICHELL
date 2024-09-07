@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_cmd_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:48:02 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 10:00:19 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 13:33:38 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,5 @@ int	cmd_not_found(t_mini *shell, t_parser *cmds)
 	ft_putstr_fd(cmds->cmd[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
 	free_all(shell);
-	g_exit_status = 127;
-	exit(g_exit_status);
+	exit(127);
 }

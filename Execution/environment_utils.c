@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:53:30 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 04:01:51 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 13:43:58 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,17 @@ char	**ft_new_envp(t_env *env)
 	new_envp = malloc(sizeof(char *) * (count_env(env) + 1));
 	if (!new_envp)
 	{
-		perror("malloc failed");
+		ft_putstr_fd("malloc failed", 2);
 		exit(1);
 	}
 	i = 0;
 	while (env)
 	{
 		tmp = ft_strjoin(env->key, "=");
-		new_envp[i] = ft_strjoin(tmp, env->value);
+		if(env->value)
+			new_envp[i] = ft_strjoin(tmp, env->value);
+		else
+			new_envp[i] = ft_strdup(env->key);
 		free(tmp);
 		i++;
 		env = env->next;
