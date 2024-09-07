@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear_leaks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:16:10 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/07 13:38:39 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:25:52 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	free_new_envp(char **new_envp)
 	i = 0;
 	while (new_envp[i])
 	{
-		printf("new = %s\n", new_envp[i]);
 		free(new_envp[i]);
 		i++;
 	}
