@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:01:03 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 02:07:58 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 03:54:25 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,15 @@ int    ft_wait(int *pid, int pipes)
     }
     if(WEXITSTATUS(status))
         g_exit_status = WEXITSTATUS(status);
-    if (WIFSIGNALED(status) && WTERMSIG(status))
+    if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+    {
+        write(2, "Quit (core dumped)\n", 19);
+        g_exit_status = 128 + WTERMSIG(status);
+    }
+    if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
     {
         write(1, "\n", 1);
-        g_exit_status = 128 + WIFSIGNALED(status);
+        g_exit_status = 128 + WTERMSIG(status);
     }
     return 0;
 }
@@ -41,21 +46,24 @@ int    my_wait(int pid, int status, int flag)
     {
         waitpid(pid, &status, 0);
         g_exit_status = WEXITSTATUS(status);
-        if (WIFSIGNALED(status) && WTERMSIG(status))
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+        {
+            write(2, "Quit (core dumped)\n", 19);
+            g_exit_status = 128 + WTERMSIG(status);
+        }
+        if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
         {
             write(1, "\n", 1);
             g_exit_status = 128 + WTERMSIG(status);
         }
     }
-
     if(flag == 1)//in heredoc
     {
         waitpid(pid, &status, 0);
         if (WIFSIGNALED(status) && WTERMSIG(status))
         {
             write(1, "\n", 1);
-            g_exit_status = 128 + WTERMSIG(status);
-            return (128 + WTERMSIG(status));
+            return(g_exit_status = 128 + WTERMSIG(status), 128 + WTERMSIG(status));
         }
     }
     return 0;

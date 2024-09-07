@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/07 02:55:45 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 03:42:38 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ int    single_command(t_mini *shell, t_parser *cmds)
 		return(perror("Minishell"), 1);
     else if(pid == 0)
     {
-		handle_signals(QUIT_HNDL);
+		handle_signals(DFL_ALL);
         handle_cmd(shell, cmds);
     }
     my_wait(pid, status, 0);

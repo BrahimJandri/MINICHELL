@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:50:39 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 02:54:36 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 03:43:05 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2])
     }
     if(shell->pid[i] == 0)
     {
-        handle_signals(QUIT_HNDL);
+        handle_signals(DFL_ALL);
         fd_dup(shell, cmds,fd, fd_read);
     }
     i++;
