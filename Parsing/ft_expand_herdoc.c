@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 09:32:46 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 09:33:15 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 10:47:21 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void	process_dollar_sign_herdoc(char *val, int *i, char **str,
 		t_mini *shell)
 {
-  
 	if (val[*i + 1] && is_val_char(val[*i + 1]))
 	{
 		if (val[*i + 1] != '$' && !ft_isdigit(val[*i + 1]))
@@ -29,8 +28,8 @@ static void	process_dollar_sign_herdoc(char *val, int *i, char **str,
 
 char	*ft_expand_herdoc(char *val, t_mini *shell)
 {
-	char	*str;
 	int		i;
+	char	*str;
 
 	str = initialize_expansion(val);
 	if (!str)

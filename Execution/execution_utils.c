@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:41:00 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/07 08:05:57 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 10:30:08 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,12 @@ void	fd_dup(t_mini *shell, t_parser *cmds, int fd[2], int fd_read)
 {
 	if (cmds->prev && dup2(fd_read, STDIN_FILENO) < 0)
 	{
-		perror("dup2");
+		perror("Minishell");
 		return ;
 	}
 	if (cmds->next && dup2(fd[1], STDOUT_FILENO) < 0)
 	{
-		perror("dup22");
+		perror("Minishell");
 		exit(1);
 	}
 	ft_close(fd);
