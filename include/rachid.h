@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 07:26:56 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 12:35:52 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ char			*expand_var(char *val, t_mini *shell);
 void			handle_signals(int flag);
 
 void			ft_shlvl_update(t_env **env);
-void			print_env(char **env);
 
 void			ft_execve(t_mini *shell, t_parser *cmds, char **my_envp);
 
@@ -96,7 +95,5 @@ void			free_new_envp(char **new_envp);
 int				count_docs(t_lexer *redirections);
 int				find_heredoc(t_lexer *redirections);
 unsigned int	ft_random(void);
-
-void			handle_sigquit(int sig);
 
 #endif

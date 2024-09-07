@@ -6,20 +6,11 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 08:25:27 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 10:46:31 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 12:35:19 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-void	re_init(t_mini *shell)
-{
-	free_tokens(shell->head);
-	free_parser(shell->cmds);
-	shell->head = NULL;
-	shell->cmds = NULL;
-	shell->new = 0;
-}
 
 void	exp_prs_exc(t_mini *shell)
 {
@@ -32,7 +23,11 @@ void	ft_update_(t_mini *shell)
 {
 	shell->last_arg = get_last_argument(shell->cmds);
 	update_last_command(shell->env, shell->last_arg);
-	re_init(shell);
+	free_tokens(shell->head);
+	free_parser(shell->cmds);
+	shell->head = NULL;
+	shell->cmds = NULL;
+	shell->new = 0;
 }
 
 void	shell_loop(t_mini *shell)
