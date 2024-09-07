@@ -22,7 +22,7 @@ void	free_arr_dup(char **arr)
 	int	i;
 
 	i = 0;
-	if(!*arr)
+	if (!*arr)
 		return ;
 	if (arr)
 	{
@@ -47,11 +47,11 @@ void	free_env(t_env *head)
 
 void	free_env_node(t_env *node)
 {
-	if(node)
+	if (node)
 	{
 		free(node->key);
 		free(node->value);
-		if(node->pwd)
+		if (node->pwd)
 		{
 			free(node->pwd);
 			node->pwd = NULL;
@@ -61,32 +61,31 @@ void	free_env_node(t_env *node)
 	node = NULL;
 }
 
-
-void    free_all(t_mini *shell)
+void	free_all(t_mini *shell)
 {
-    free_tokens(shell->head);
-    free_parser(shell->cmds);
-    if(shell->path)
-	    free_path(shell);
-	if(shell->env)
-    	free_env(shell->env);
-    free(shell->rl);
-    if(shell->heredoc_file )
-        free(shell->heredoc_file);
-    if (shell->export)
+	free_tokens(shell->head);
+	free_parser(shell->cmds);
+	if (shell->path)
+		free_path(shell);
+	if (shell->env)
+		free_env(shell->env);
+	free(shell->rl);
+	if (shell->heredoc_file)
+		free(shell->heredoc_file);
+	if (shell->export)
 		free(shell->export);
-	if(shell->new_envp)
+	if (shell->new_envp)
 		free_new_envp(shell->new_envp);
-	if(shell->pid)
+	if (shell->pid)
 		free(shell->pid);
 }
 
 void	free_new_envp(char **new_envp)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(new_envp[i])
+	while (new_envp[i])
 	{
 		free(new_envp[i]);
 		i++;

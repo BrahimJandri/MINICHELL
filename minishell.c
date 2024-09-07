@@ -12,10 +12,10 @@
 
 #include "./include/minishell.h"
 
-char **create_new_env(void)
+char	**create_new_env(void)
 {
-	char **new_env;
-	char *pwd;
+	char	**new_env;
+	char	*pwd;
 
 	new_env = malloc(sizeof(char *) * 4);
 	if (!new_env)
@@ -29,9 +29,9 @@ char **create_new_env(void)
 	new_env[2] = ft_strdup("_=/usr/bin/env");
 	new_env[3] = NULL;
 	free(pwd);
-	return new_env;
+	return (new_env);
 }
-void init_shell(t_mini *shell)
+void	init_shell(t_mini *shell)
 {
 	shell->path = NULL;
 	shell->cmds = NULL;
@@ -49,16 +49,15 @@ void init_shell(t_mini *shell)
 void	init_mini(t_mini *shell, char **envm)
 {
 	t_export_norm	*export;
-
-	char **new_envp;
+	char			**new_envp;
 
 	export = malloc(sizeof(t_export_norm));
 	shell->path = NULL;
 	shell->env = NULL;
 	shell->new_envp = NULL;
 	shell->export = NULL;
-	shell->env = create_env(envm); //we make it a linked list
-	if(!shell->env)
+	shell->env = create_env(envm); // we make it a linked list
+	if (!shell->env)
 	{
 		new_envp = create_new_env();
 		shell->env = create_env(new_envp);
@@ -73,44 +72,44 @@ void	init_mini(t_mini *shell, char **envm)
 	export->value = NULL;
 }
 
-void update_last_command(t_env *env, char *last_cmd)
+void	update_last_command(t_env *env, char *last_cmd)
 {
-    t_env *current;
+	t_env	*current;
 
-    if (!env || !last_cmd)
-        return;
-    current = env;
-    while (current)
-    {
-        if (ft_strcmp(current->key, "_") == 0)
-        {
-            free(current->value);
-            current->value = ft_strdup(last_cmd);
-            return ;
-        }
-        current = current->next;
-    }
+	if (!env || !last_cmd)
+		return ;
+	current = env;
+	while (current)
+	{
+		if (ft_strcmp(current->key, "_") == 0)
+		{
+			free(current->value);
+			current->value = ft_strdup(last_cmd);
+			return ;
+		}
+		current = current->next;
+	}
 }
 
-void print_env(char **env)
+void	print_env(char **env)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(env[i])
-    {
-        ft_putstr_fd(env[i], 2);
-        ft_putstr_fd("\n", 2);
-        i++;
-    }
+	i = 0;
+	while (env[i])
+	{
+		ft_putstr_fd(env[i], 2);
+		ft_putstr_fd("\n", 2);
+		i++;
+	}
 }
 
 void	re_init(t_mini *shell)
 {
-    free_tokens(shell->head);
-    free_parser(shell->cmds);
+	free_tokens(shell->head);
+	free_parser(shell->cmds);
 	shell->head = NULL;
-    shell->cmds = NULL;
+	shell->cmds = NULL;
 	shell->new = 0;
 }
 
@@ -121,28 +120,27 @@ void	exp_prs_exc(t_mini *shell)
 	ft_execution(shell->cmds, shell);
 }
 
-char *get_last_argument(t_parser *cmds)
+char	*get_last_argument(t_parser *cmds)
 {
-    t_parser *current_cmd;
-    char **args;
-    int i;
+	t_parser	*current_cmd;
+	char		**args;
+	int			i;
 
-    if (!cmds)
-        return NULL;
-    current_cmd = cmds;
-    while (current_cmd->next)
-        current_cmd = current_cmd->next;
-    args = current_cmd->cmd;
-    if (!args)
-        return NULL;
-    i = 0;
-    while (args[i])
-        i++;
-    if (i == 0 && !*args)
-        return NULL;
-    return (args[i - 1]);
+	if (!cmds)
+		return (NULL);
+	current_cmd = cmds;
+	while (current_cmd->next)
+		current_cmd = current_cmd->next;
+	args = current_cmd->cmd;
+	if (!args)
+		return (NULL);
+	i = 0;
+	while (args[i])
+		i++;
+	if (i == 0 && !*args)
+		return (NULL);
+	return (args[i - 1]);
 }
-
 
 void	shell_loop(t_mini *shell)
 {
@@ -168,13 +166,13 @@ void	shell_loop(t_mini *shell)
 				break ;
 			add_history(shell->rl);
 			ft_lexer(shell);
-            if(!shell->syntax_error)
+			if (!shell->syntax_error)
 				exp_prs_exc(shell);
 			shell->last_arg = get_last_argument(shell->cmds);
 			update_last_command(shell->env, shell->last_arg);
 			re_init(shell);
-        }
-    }
+		}
+	}
 }
 
 //                                      MAIN
@@ -187,15 +185,14 @@ int	main(int ac, char **av, char **envm)
 
 	(void)av;
 	(void)ac;
-
 	init_mini(&shell, envm);
 	shell_loop(&shell);
 	free(shell.rl);
-	if(shell.env)
+	if (shell.env)
 		free_env(shell.env);
-	if(shell.path)
+	if (shell.path)
 		free_path(&shell);
-	if(shell.heredoc_file)
+	if (shell.heredoc_file)
 		free(shell.heredoc_file);
 	if (shell.export)
 		free_export(shell.export);

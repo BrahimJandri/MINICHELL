@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:15:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/03 20:56:14 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 07:22:26 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,6 @@ int	handle_quotes(char *dst, const char *src, int i, int length)
 	return (j);
 }
 
-void	rm_quote(t_mini *shell)
-{
-	int		length;
-	char	*dst;
-
-	if (shell->head->word == NULL || shell->syntax_error)
-		return ;
-	length = ft_strlen(shell->head->word);
-	dst = (char *)malloc(length + 1);
-	if (!dst)
-		return ;
-	handle_quotes(dst, shell->head->word, 0, length);
-	ft_strcpy(shell->head->word, dst);
-	free(dst);
-}
-
 int	check_pipe(t_lexer *redirection)
 {
 	if (redirection->token == PIPE)
@@ -104,4 +88,32 @@ int	is_empty(char *str)
 	if (str && str[i])
 		return (0);
 	return (1);
+}
+
+void	remove_quotes_from_lexer(t_lexer *head)
+{
+	t_lexer	*current;
+	char	*new_str;
+	int		i;
+
+	current = head;
+	while (current)
+	{
+		if (current->word)
+		{
+			if (current->token != DELIME)
+			{
+				new_str = ft_strdup("");
+				i = 0;
+				while (current->word[i])
+				{
+					add_to_str(current->word, &new_str, i);
+					i++;
+				}
+				free(current->word);
+				current->word = new_str;
+			}
+		}
+		current = current->next;
+	}
 }

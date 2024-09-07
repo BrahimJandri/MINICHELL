@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_redir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:52:45 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/05 10:10:32 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 07:18:48 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,20 +80,21 @@ int	check_redir(t_lexer *head)
 	tmp = head;
 	while (tmp)
 	{
-		if (tmp->word && tmp->token == ARG && (tmp->word[0] == '>' || tmp->word[0] == '<'))
+		if (tmp->word && tmp->token == ARG && (tmp->word[0] == '>'
+				|| tmp->word[0] == '<'))
 		{
-			if(ft_syntax_err(tmp->word))
+			if (ft_syntax_err(tmp->word))
 				return (1);
 		}
 		else if (tmp->token >= OUTFILE && tmp->token <= APPEND)
 		{
 			if (!tmp->next || tmp->next->token == PIPE)
 				return (1);
-			if (tmp->next->word == NULL || is_whitespace_in_string(tmp->next->word))
+			if (tmp->next->word == NULL
+				|| is_whitespace_in_string(tmp->next->word))
 			{
-    			ft_putstr_fd("minishell: ambiguous redirect\n", 2);
-    			g_exit_status = 1;
-			    return (1);
+				ft_putstr_fd("minishell: ambiguous redirect\n", 2);
+				return (g_exit_status = 1, 1);
 			}
 		}
 		tmp = tmp->next;

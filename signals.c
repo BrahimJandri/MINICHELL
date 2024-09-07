@@ -12,7 +12,6 @@
 
 #include "./include/rachid.h"
 
-
 void	handle_sigint(int sig)
 {
 	(void)sig;
@@ -23,7 +22,7 @@ void	handle_sigint(int sig)
 	g_exit_status = 130;
 }
 
-void handle_signals(int flag)
+void	handle_signals(int flag)
 {
 	if (flag == INT_HNDL)
 	{

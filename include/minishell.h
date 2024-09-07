@@ -68,5 +68,5 @@ typedef struct s_mini
 	t_lexer			*head;
 }					t_mini;
 
-void	free_export(t_export_norm *export);
+void				free_export(t_export_norm *export);
 #endif

@@ -31,7 +31,7 @@ void	free_args(char **args)
 	int	i;
 
 	i = 0;
-	if(!args)
+	if (!args)
 		return ;
 	while (args[i])
 	{
@@ -59,7 +59,6 @@ void	free_redirections(t_lexer *redirections)
 void	free_parser(t_parser *parser_list)
 {
 	t_parser	*tmp;
-
 
 	while (parser_list)
 	{

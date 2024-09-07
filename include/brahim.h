@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   brahim.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 03:42:28 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 07:25:41 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,10 @@ typedef struct s_parser
 	struct s_parser		*prev;
 }						t_parser;
 
-/******************* print **********************************/
-
-void					print_parser(t_parser **head);
-void					print_lexer(t_lexer **head);
-
 /*************************** Lexer ***************************/
 
 void					ft_lexer(t_mini *shell);
 int						parse_quote(char *rl);
-void					rm_quote(t_mini *shell);
 int						is_empty(char *str);
 int						count_redirec(char *p, int index);
 int						is_redirec(char c);
@@ -102,6 +96,7 @@ int						handle_quotes(char *dst, const char *src, int i,
 							int length);
 int						check_redir(t_lexer *head);
 int						ft_tokinezer(t_mini *shell);
+void					remove_quotes_from_lexer(t_lexer *head);
 
 /*************************** Parsing ***************************/
 

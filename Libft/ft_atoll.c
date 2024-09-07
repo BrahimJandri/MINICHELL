@@ -12,11 +12,11 @@
 
 #include "libft.h"
 
-long long 	ft_atoll(const char *str)
+long long	ft_atoll(const char *str)
 {
-	int		sign;
+	int			sign;
 	long long	resu;
-	char	*s;
+	char		*s;
 
 	sign = 1;
 	resu = 0;
@@ -36,5 +36,3 @@ long long 	ft_atoll(const char *str)
 	}
 	return (resu * sign);
 }
-
-
