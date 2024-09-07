@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 10:33:57 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 11:44:08 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,20 @@ int	is_n_flag(char *arg)
 	return (1);
 }
 
-void	remove_quotes(char *str)
+void    remove_quotes(char *str)
 {
-	t_remove_quote	rm_quote;
-
-	ft_memset(&rm_quote, 0, sizeof(t_remove_quote));
-	rm_quote.src = str;
-	rm_quote.dst = str;
-	while (*rm_quote.src)
-	{
-		if (*rm_quote.src == '"' && !rm_quote.sngl_qt)
-		{
-			rm_quote.dbl_qt = !rm_quote.dbl_qt;
-			rm_quote.src++;
-		}
-		else if (*rm_quote.src == '\'' && !rm_quote.dbl_qt)
-		{
-			rm_quote.sngl_qt = !rm_quote.sngl_qt;
-			rm_quote.src++;
-		}
-		else if (!rm_quote.sngl_qt && !rm_quote.dbl_qt && (*rm_quote.src == '"'
-				|| *rm_quote.src == '\''))
-			rm_quote.src++;
-		else
-			*rm_quote.dst++ = *rm_quote.src++;
-	}
-	*rm_quote.dst = '\0';
+    char    *result;
+    int     i;
+	
+	result = NULL;
+	i = 0;
+    while (str[i])
+    {
+        add_to_str(str, &result, i);
+        i++;
+    }
+    strcpy(str, result);
+    free(result);
 }
 
 int	echo_builtin(char **args)
