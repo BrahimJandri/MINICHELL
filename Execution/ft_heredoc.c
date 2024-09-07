@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:41:28 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 09:34:09 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 11:44:04 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@ int	check_heredoc(t_mini *shell, t_parser *cmds)
 
 	status = 0;
 	if (pipe(fd) < 0)
-		return (ft_putstr_fd("pipe error !", 2), 1);
+		return (perror("Minishell"), 1);
 	pid = fork();
 	if (pid < 0)
-		return (ft_putstr_fd("fork error !", 2), ft_close(fd), 1);
+		return (perror("Minishell"), ft_close(fd), 1);
 	else if (pid == 0)
 		child_heredoc(shell, cmds, fd);
 	my_wait(pid, status, 1);
-	name = ft_calloc(16, sizeof(char));
+	name = ft_calloc(17, sizeof(char));
 	if (!name)
 		return (ft_putstr_fd("Calloc Failed", 2), 1);
 	close(fd[1]);
-	read(fd[0], name, 16);
+	read(fd[0], name, 17);
 	close(fd[0]);
 	shell->heredoc_file = name;
 	return (g_exit_status);

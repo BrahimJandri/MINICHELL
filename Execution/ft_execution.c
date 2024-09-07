@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/07 10:30:53 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 11:12:28 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ int	single_command(t_mini *shell, t_parser *cmds)
 		return (execute_builtin(cmds, shell), 0);
 	}
 	if (cmds && find_heredoc(cmds->redirections))
-		check_heredoc(shell, cmds);
-			// return (free(shell->heredoc_file), shell->heredoc_file = 0, 0);
+		if(check_heredoc(shell, cmds) > 128)
+			return (free(shell->heredoc_file), shell->heredoc_file = 0, 0);
 	pid = fork();
 	if (pid < 0)
 		return (perror("Minishell"), 1);

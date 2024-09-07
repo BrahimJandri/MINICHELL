@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:01:03 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 04:14:08 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 11:08:29 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ int	my_wait(int pid, int status, int flag)
 			write(1, "\n", 1);
 			g_exit_status = 128 + WTERMSIG(status);
 		}
+		else
+		{
+			g_exit_status = WEXITSTATUS(status);
+		}
+
 	}
 	if (flag == 1)
 	{

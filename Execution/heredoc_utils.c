@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:45:01 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 04:12:29 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 11:34:52 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ void	fill_hd_file(char *line, int fd)
 	free(line);
 }
 
-int	open_heredoc(char *hd_file)
+int		open_heredoc(char *hd_file)
 {
 	int	fd;
 
 	fd = open(hd_file, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd < 0)
 	{
-		ft_putstr_fd("open failed to open the file", 2);
+		perror("Minishell");
 		exit(1);
 	}
 	return (fd);

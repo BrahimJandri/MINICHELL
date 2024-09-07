@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 04:22:50 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 04:24:35 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 11:39:19 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ unsigned int	ft_random(void)
 {
 	static int	num;
 
-	num = num * 223 + 142345;
+	num = num * 1223 + 142345;
 	return ((num++, num / 14) % 123);
 }

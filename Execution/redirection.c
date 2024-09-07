@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 08:41:20 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/07 04:11:17 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 11:44:12 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,6 @@ int	handle_infile(char *file)
 	int	fd;
 
 	fd = open(file, O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Minishell");
-		return (1);
-	}
-	if (dup2(fd, STDIN_FILENO) == -1)
-	{
-		perror("Minishell");
-		return (1);
-	}
-	if (fd)
-		close(fd);
-	return (0);
-}
-
-int	handle_heredoc(char *file_name)
-{
-	int	fd;
-
-	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Minishell");
