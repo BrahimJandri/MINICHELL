@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:01:13 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 16:33:11 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 17:06:09 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ void	update_env(t_env **env, const char *key, const char *value)
 
 	if (!ft_strcmp(key, "PWD") && getenv_value(*env, "PWD") == NULL)
 		return;
-
+	if(!ft_strcmp(key, "OLDPWD") && getenv_value(*env, "OLDPWD") == NULL)
+		return;
 	temp = *env;
 	while (temp)
 	{
