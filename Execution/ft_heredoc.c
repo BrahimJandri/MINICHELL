@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:41:28 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 11:44:04 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 18:47:19 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	check_heredoc(t_mini *shell, t_parser *cmds)
 	close(fd[1]);
 	read(fd[0], name, 17);
 	close(fd[0]);
+	if(shell->heredoc_file)
+		free(shell->heredoc_file);
 	shell->heredoc_file = name;
 	return (g_exit_status);
 }
