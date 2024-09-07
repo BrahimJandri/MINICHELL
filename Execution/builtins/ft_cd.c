@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:11 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 22:10:30 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 10:15:31 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	prepare_cd(char **args, t_env **env, char **path, char **oldpwd)
 	{
 		*path = getenv_value(*env, "HOME");
 		if (!(*path))
-			return (ft_putendl_fd("cd: HOME not set", 2), 1);
+			return (ft_putendl_fd("cd: HOME not set", 2), free(*oldpwd), 1);
 	}
 	else
 		*path = args[1];
@@ -55,10 +55,7 @@ int	cd_builtin(char **args, t_env **env)
 	char	*oldpwd;
 
 	if (prepare_cd(args, env, &path, &oldpwd) != 0)
-	{
-		free(oldpwd);
 		return (1);
-	}
 	if (chdir(path) == -1)
 	{
 		free(oldpwd);
