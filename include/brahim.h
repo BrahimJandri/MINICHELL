@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 09:33:30 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 12:28:30 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,6 @@ typedef struct s_split_params
 	int					inside;
 }						t_split_params;
 
-typedef struct s_remove_quote
-{
-	int					sngl_qt;
-	int					dbl_qt;
-	char				*src;
-	char				*dst;
-}						t_remove_quote;
 
 typedef struct s_lexer
 {
@@ -141,7 +134,6 @@ char					*ft_expand_herdoc(char *val, t_mini *shell);
 
 /* minishell */
 
-char					**arr_dup(char **envm);
 char					*ft_strnlen(const char *str, char delimiter);
 t_env					*ft_new_env(const char *key, const char *value);
 t_env					*create_env(char **env);

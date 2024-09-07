@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:01:03 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 11:08:29 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 12:24:08 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,23 +96,3 @@ char	*ft_strnlen(const char *str, char delimiter)
 	return (result);
 }
 
-char	**arr_dup(char **envm)
-{
-	int		len;
-	char	**arr;
-
-	len = 0;
-	while (envm[len])
-		len++;
-	arr = malloc(sizeof(char *) * (len + 1));
-	if (!arr)
-		return (NULL);
-	arr[len] = NULL;
-	len = 0;
-	while (envm[len])
-	{
-		arr[len] = ft_strdup(envm[len]);
-		len++;
-	}
-	return (arr);
-}
