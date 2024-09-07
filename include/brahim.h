@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 00:28:04 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 02:51:24 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ typedef struct s_env	t_env;
 
 # define INT_HNDL 0
 # define IGN_ALL 1
-# define DFL_ALL 2
+# define QUIT_HNDL 2
 # define IGN_QUIT 3
 # define SET "AaDEFGmdJL_OPQRSU.VWXQZqetyuioljnhgb.fcdsa098654321"
 

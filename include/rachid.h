@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rachid.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:50 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/04 18:35:02 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 02:53:17 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ void	free_new_envp(char **new_envp);
 int     count_docs(t_lexer *redirections);
 
 
+void	handle_sigquit(int sig);
 
 #endif

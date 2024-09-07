@@ -6,22 +6,12 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 00:27:17 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 00:27:31 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 02:56:04 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/rachid.h"
 
-
-void	handle_sigint(int sig)
-{
-	(void)sig;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	g_exit_status = 130;
-}
 
 void	handle_sigquit(int sig)
 {
@@ -31,6 +21,16 @@ void	handle_sigquit(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 	g_exit_status = 131;
+}
+
+void	handle_sigint(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	g_exit_status = 130;
 }
 
 void handle_signals(int flag)
@@ -45,7 +45,7 @@ void handle_signals(int flag)
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	if (flag == DFL_ALL)
+	if (flag == QUIT_HNDL)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, handle_sigquit);

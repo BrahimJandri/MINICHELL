@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/06 22:06:04 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 01:52:34 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char **create_new_env(void)
 {
 	char **new_env;
 	char *pwd;
-	
+
 	new_env = malloc(sizeof(char *) * 4);
 	if (!new_env)
 	{
@@ -51,7 +51,7 @@ void	init_mini(t_mini *shell, char **envm)
 	t_export_norm	*export;
 
 	char **new_envp;
-	
+
 	export = malloc(sizeof(t_export_norm));
 	shell->path = NULL;
 	shell->env = NULL;
@@ -60,7 +60,7 @@ void	init_mini(t_mini *shell, char **envm)
 	shell->env = create_env(envm); //we make it a linked list
 	if(!shell->env)
 	{
-		new_envp = create_new_env();	
+		new_envp = create_new_env();
 		shell->env = create_env(new_envp);
 		free_arr_dup(new_envp);
 	}

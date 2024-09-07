@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:01:03 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/03 21:00:13 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 02:07:58 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int    my_wait(int pid, int status, int flag)
         if (WIFSIGNALED(status) && WTERMSIG(status))
         {
             write(1, "\n", 1);
-            g_exit_status = 128 + WIFSIGNALED(status);
+            g_exit_status = 128 + WTERMSIG(status);
         }
     }
 
@@ -54,8 +54,8 @@ int    my_wait(int pid, int status, int flag)
         if (WIFSIGNALED(status) && WTERMSIG(status))
         {
             write(1, "\n", 1);
-            g_exit_status = 128 + WIFSIGNALED(status);
-            return (128 + WIFSIGNALED(status));
+            g_exit_status = 128 + WTERMSIG(status);
+            return (128 + WTERMSIG(status));
         }
     }
     return 0;

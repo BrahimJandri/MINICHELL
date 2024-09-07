@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 12:53:33 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/06 18:31:46 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 02:55:45 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void    ft_execution(t_parser *cmds, t_mini *shell)
     if(!cmds)
     	    return ;
 	if(count_heredoc(cmds) > 16)
-		return(ft_putstr_fd("Minishell: maximum here-document count exceeded\n", 2), g_exit_status = 2, (void)NULL);
+		return(ft_putstr_fd("Minishell: maximum here-document count exceeded\n", 2), free_all(shell), exit(2));
     if(shell->pipes == 0)
     {
         single_command(shell, cmds);
@@ -135,13 +135,15 @@ int    single_command(t_mini *shell, t_parser *cmds)
         return(execute_builtin(cmds, shell),0);
     }
 	if(cmds && find_heredoc(cmds->redirections))
-    	check_heredoc(shell, cmds);
+    	if(check_heredoc(shell, cmds) > 128)
+				return(free(shell->heredoc_file), shell->heredoc_file = 0, 0);
+
     pid = fork();
     if(pid < 0)
-		return(ft_putstr_fd("Failed to fork", 2), 1);
+		return(perror("Minishell"), 1);
     else if(pid == 0)
     {
-        handle_signals(DFL_ALL);
+		handle_signals(QUIT_HNDL);
         handle_cmd(shell, cmds);
     }
     my_wait(pid, status, 0);
@@ -151,7 +153,6 @@ int    single_command(t_mini *shell, t_parser *cmds)
 int    handle_cmd(t_mini *shell, t_parser *cmds)
 {
     int err = 0;
-
     if(cmds->redirections)
     {
         if(!which_redirection(shell, cmds->redirections))

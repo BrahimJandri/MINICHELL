@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:41:28 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 00:30:28 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 01:57:39 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
         return(ft_putstr_fd("fork error !", 2), ft_close(fd), 1);
     else if (pid == 0)
         	child_heredoc(shell, cmds, fd);
-	// sleep(10);
-    my_wait(pid, status, 1);
+	my_wait(pid, status, 1);
 	name = ft_calloc(16, sizeof(char));
 	if(!name)
 		return(ft_putstr_fd("Calloc Failed",2), 1);
@@ -37,7 +36,7 @@ int    check_heredoc(t_mini *shell, t_parser *cmds)
 	read(fd[0], name, 16);
 	close(fd[0]);
 	shell->heredoc_file = name;
-    return 0;
+    return (g_exit_status);
 }
 void    child_heredoc(t_mini *shell, t_parser *cmds, int *fd)
 {

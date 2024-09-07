@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:41:00 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/06 18:14:46 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 02:48:11 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int ft_execute(t_mini *shell, char **my_envp, t_parser *cmds)
 	{
 		if(!access(cmds->cmd[0], F_OK))//there is a file starts whith ./ (execute something)
 		{
-			if(stat(cmds->cmd[0], &info) == 0 && S_ISDIR(info.st_mode))
+			if(stat(cmds->cmd[0], &info) == 0 && S_ISDIR(info.st_mode))//what is S_ISDIR
 				is_directory(shell, cmds);
 			else
 			{
@@ -71,7 +71,7 @@ int		exec_cmd(t_mini *shell, t_parser *cmds, char **my_envp)
 			{
 				free_all(shell);
 				free(joined_cmd);
-				perror("execve");
+				perror("Minishell");
 				exit(1);
 			}
 		}

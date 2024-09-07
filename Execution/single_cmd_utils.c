@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_cmd_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:48:02 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/04 11:45:45 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/07 02:20:59 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ void	ft_execve(t_mini *shell, t_parser *cmds, char **my_envp)
 {
     if(execve(cmds->cmd[0], cmds->cmd, my_envp) == -1)//envp will be changed to our envp
     {
-		// if(errno == ENOEXEC)
-		// 	exit(0);
 		free_all(shell);
         perror("minishell");
 	    exit(127);
@@ -63,7 +61,6 @@ void	ft_execve(t_mini *shell, t_parser *cmds, char **my_envp)
 }
 int     	cmd_not_found(t_mini *shell, t_parser *cmds)
 {
-    // remove_quotes(cmds->cmd[0]);
     ft_putstr_fd(cmds->cmd[0],2);
     ft_putstr_fd(": command not found\n", 2);
     free_all(shell);

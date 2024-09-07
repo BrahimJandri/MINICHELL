@@ -6,7 +6,7 @@
 /*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:50:39 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/02 18:59:59 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/07 02:54:36 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	pid_alloc(t_mini *shell)
 	shell->pid = malloc(sizeof(int) * (shell->pipes + 1));
     if(!shell->pid)
     {
-        printf("failed to allocate pid");
+        ft_putstr_fd("failed to allocate pid", 2);
         return ;
     }
 }
@@ -25,7 +25,7 @@ void	set_pipe(int *fd)
 {
     if(pipe(fd) < 0)
     {
-        perror("pipe");
+        perror("Minishell");
         exit(1);
     }
 }
@@ -40,12 +40,12 @@ int    forking(t_mini *shell, t_parser *cmds, int fd_read, int fd[2])
     shell->pid[i] = fork();
     if(shell->pid[i] < 0)
     {
-        ft_putstr_fd("forking error",2);
+        perror("Minishell");
         exit(1);
     }
     if(shell->pid[i] == 0)
     {
-        handle_signals(DFL_ALL);
+        handle_signals(QUIT_HNDL);
         fd_dup(shell, cmds,fd, fd_read);
     }
     i++;
