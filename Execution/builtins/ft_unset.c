@@ -6,11 +6,19 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:43 by bjandri           #+#    #+#             */
-/*   Updated: 2024/08/20 14:43:04 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/08 08:48:42 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void  unset_pwd_oldpwd(char *key, t_env **env)
+{
+	if (!(ft_strcmp(key, "PWD")) && getenv_value(*env, "PWD") == NULL)
+		return ;
+	if (!(ft_strcmp(key, "OLDPWD")) && getenv_value(*env, "OLDPWD") == NULL)
+		return ;
+}
 
 void	unsetenv_custom(t_env **env, const char *key)
 {
