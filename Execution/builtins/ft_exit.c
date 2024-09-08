@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/08 08:45:38 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/08 09:37:32 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	exit_builtin(char **args, t_mini *shell)
 		return (exit_msg("minishell: exit: numeric argument required\n", 1,
 				shell), 1);
 	i = 0;
-	while (args[1][++i])
+	while (args[1][i++])
 	{
 		if (!ft_isdigit(args[1][i]))
 			return (exit_msg("minishell: exit: numeric argument required\n", 1,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:41:00 by rachid            #+#    #+#             */
-/*   Updated: 2024/09/07 10:30:08 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/08 09:34:59 by reddamss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_execute(t_mini *shell, char **my_envp, t_parser *cmds)
 	struct stat	info;
 
 	(void)shell;
+	if(cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '.')
+		cmd_not_found(shell, cmds);
 	if ((cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/')
 		|| (cmds->cmd[0][0] == '/'))
 	{
