@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 10:52:01 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 12:53:01 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/08 08:45:38 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	exit_builtin(char **args, t_mini *shell)
 
 	if (!args[1])
 	{
-		return (ft_putstr_fd("exit\n", 2), free_all(shell), exit(g_exit_status),
+		return (printf("exit\n"), free_all(shell), exit(g_exit_status),
 			0);
 	}
 	if ((args[1][0] == '-' || args[1][0] == '+') && args[1][1] == '\0')
@@ -59,7 +59,7 @@ int	exit_builtin(char **args, t_mini *shell)
 	}
 	if (args[2] != NULL)
 		return (exit_msg("minishell: exit: too many arguments\n", 0, shell), 1);
-	ft_putstr_fd("exit\n", 2);
+	printf("exit\n");
 	g_exit_status = ft_atoi(args[1]);
 	return (free_all(shell), exit(g_exit_status), 0);
 }
