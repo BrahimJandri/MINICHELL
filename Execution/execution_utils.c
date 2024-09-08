@@ -17,7 +17,7 @@ int	ft_execute(t_mini *shell, char **my_envp, t_parser *cmds)
 	struct stat	info;
 
 	(void)shell;
-	if(cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '.')
+	if (cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '.')
 		cmd_not_found(shell, cmds);
 	if ((cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/')
 		|| (cmds->cmd[0][0] == '/'))

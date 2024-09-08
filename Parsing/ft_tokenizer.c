@@ -63,7 +63,6 @@ void	ft_get_builtin(t_lexer *tmp)
 	}
 }
 
-
 static void	error_newline(t_mini *shell)
 {
 	ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
@@ -100,7 +99,6 @@ int	ft_tokinezer(t_mini *shell)
 	tmp = shell->head;
 	while (tmp)
 	{
-		
 		if (process_token(tmp, shell))
 		{
 			shell->syntax_error = 1;

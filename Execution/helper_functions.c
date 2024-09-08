@@ -38,14 +38,13 @@ int	ft_wait(int *pid, int pipes)
 	return (0);
 }
 
-int		hd_wait(int pid, int status)
+int	hd_wait(int pid, int status)
 {
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status) && WTERMSIG(status))
 	{
 		write(1, "\n", 1);
-		return (g_exit_status = 128 + WTERMSIG(status), 128
-			+ WTERMSIG(status));
+		return (g_exit_status = 128 + WTERMSIG(status), 128 + WTERMSIG(status));
 	}
 	return (0);
 }
@@ -59,7 +58,7 @@ int	my_wait(int pid, int status, int flag)
 		{
 			write(2, "Quit (core dumped)\n", 19);
 			g_exit_status = 128 + WTERMSIG(status);
-			return(g_exit_status);
+			return (g_exit_status);
 		}
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{
@@ -73,7 +72,7 @@ int	my_wait(int pid, int status, int flag)
 	}
 	if (flag == 1)
 	{
-		return(hd_wait(pid, status));
+		return (hd_wait(pid, status));
 	}
 	return (0);
 }

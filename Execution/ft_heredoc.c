@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:41:28 by reddamss          #+#    #+#             */
-/*   Updated: 2024/09/07 18:47:19 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/08 10:54:25 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	child_heredoc(t_mini *shell, t_parser *cmds, int *fd)
 			shell->heredoc_file = creat_hd_name();
 			exit_ = here_doc(shell->heredoc_file, shell, cmds->redirections);
 			if (exit_)
-				return (shell->hd = 0, (void)NULL);
+				return (shell->hd = 0, (void) NULL);
 			shell->hd = 1;
 		}
 		cmds->redirections = cmds->redirections->next;
@@ -74,7 +74,7 @@ int	here_doc(char *file_name, t_mini *shell, t_lexer *heredoc)
 
 	delimiter = heredoc->word;
 	if ((delimiter[0] == '\'' || delimiter[ft_strlen(delimiter) - 1] == '\'')
-		|| (delimiter[0] == '\"' || delimiter[ft_strlen(delimiter)
+		|| (delimiter[0] == '\"' || delimiter[ft_strlen(delimiter) \
 			- 1] == '\"'))
 		quote = 1;
 	else

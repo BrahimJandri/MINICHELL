@@ -55,7 +55,6 @@ typedef struct s_split_params
 	int					inside;
 }						t_split_params;
 
-
 typedef struct s_lexer
 {
 	char				*word;
@@ -74,8 +73,7 @@ typedef struct s_parser
 	struct s_parser		*prev;
 }						t_parser;
 
-
-void print_lexer(t_lexer *lexer);
+void					print_lexer(t_lexer *lexer);
 
 /*************************** Lexer ***************************/
 

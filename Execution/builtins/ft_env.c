@@ -72,7 +72,7 @@ void	update_env(t_env **env, const char *key, const char *value, int c)
 	t_env	*new_node;
 
 	if (c == 1)
-		return(unset_pwd_oldpwd(key, env));
+		return (unset_pwd_oldpwd(key, env));
 	temp = *env;
 	while (temp)
 	{

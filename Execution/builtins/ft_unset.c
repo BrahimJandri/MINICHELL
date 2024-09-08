@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void  unset_pwd_oldpwd(const char *key, t_env **env)
+void	unset_pwd_oldpwd(const char *key, t_env **env)
 {
 	if (!(ft_strcmp(key, "PWD")) && getenv_value(*env, "PWD") == NULL)
 		return ;

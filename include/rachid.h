@@ -43,7 +43,8 @@ int				cd_builtin(char **args, t_env **env);
 int				echo_builtin(char **args);
 int				is_n_flag(char *arg);
 int				env_builtin(t_env **env);
-void			update_env(t_env **env, const char *key, const char *value, int c);
+void			update_env(t_env **env, const char *key, const char *value,
+					int c);
 t_env			*ft_new_env(const char *key, const char *value);
 char			*getenv_value(t_env *env, const char *key);
 t_env			*create_env(char **env);
@@ -62,7 +63,7 @@ int				unset_builtin(char **args, t_env **env);
 void			unsetenv_custom(t_env **env, const char *key);
 void			remove_quotes(char *str);
 char			**ft_new_envp(t_env *env);
-void  			unset_pwd_oldpwd(const char *key, t_env **env);
+void			unset_pwd_oldpwd(const char *key, t_env **env);
 char			*expand_var(char *val, t_mini *shell);
 void			handle_signals(int flag);
 

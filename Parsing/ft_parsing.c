@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:24:33 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/08 06:34:11 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/08 10:48:27 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	ft_parsing(t_mini *shell)
 	remove_quotes_from_lexer(shell->head);
 	if (check_redir(shell->head))
 		return ;
-	// print_lexer(shell->head);
 	shell->pipes = ft_count_pipe(shell->head);
 	ft_parse_commands(shell);
 }

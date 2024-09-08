@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/08 06:27:51 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/08 10:58:14 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int		g_exit_status = 0;
 
-void print_lexer(t_lexer *lexer)
+void	print_lexer(t_lexer *lexer)
 {
-	t_lexer *tmp;
+	t_lexer	*tmp;
 
 	tmp = lexer;
 	while (tmp)
@@ -42,7 +42,7 @@ int	main(int ac, char **av, char **envm)
 	if (shell.path)
 		free_path(&shell);
 	if (shell.heredoc_file)
-			free(shell.heredoc_file);
+		free(shell.heredoc_file);
 	if (shell.export)
 		free_export(shell.export);
 	return (g_exit_status);
