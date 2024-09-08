@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 14:20:22 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 11:50:22 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/08 06:37:52 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,55 @@
 
 void	ft_get_type(t_lexer *tmp)
 {
-	if (ft_strcmp(tmp->word, "echo") == 0)
-		tmp->token = BUILTIN;
-	else if (ft_strcmp(tmp->word, "cd") == 0)
-		tmp->token = BUILTIN;
-	else if (ft_strcmp(tmp->word, "pwd") == 0)
-		tmp->token = BUILTIN;
-	else if (ft_strcmp(tmp->word, "export") == 0)
-		tmp->token = BUILTIN;
-	else if (ft_strcmp(tmp->word, "unset") == 0)
-		tmp->token = BUILTIN;
-	else if (ft_strcmp(tmp->word, "exit") == 0)
-		tmp->token = BUILTIN;
-	else if (ft_strcmp(tmp->word, "env") == 0)
-		tmp->token = BUILTIN;
+	t_lexer	*tmp2;
+
+	tmp2 = tmp;
+	while (tmp2)
+	{
+		if (ft_strcmp(tmp2->word, "echo") == 0)
+			tmp2->token = BUILTIN;
+		else if (ft_strcmp(tmp2->word, "cd") == 0)
+			tmp2->token = BUILTIN;
+		else if (ft_strcmp(tmp2->word, "pwd") == 0)
+			tmp2->token = BUILTIN;
+		else if (ft_strcmp(tmp2->word, "export") == 0)
+			tmp2->token = BUILTIN;
+		else if (ft_strcmp(tmp2->word, "unset") == 0)
+			tmp2->token = BUILTIN;
+		else if (ft_strcmp(tmp2->word, "exit") == 0)
+			tmp2->token = BUILTIN;
+		else if (ft_strcmp(tmp2->word, "env") == 0)
+			tmp2->token = BUILTIN;
+		tmp2 = tmp2->next;
+	}
 	ft_get_builtin(tmp);
 }
 
 void	ft_get_builtin(t_lexer *tmp)
 {
-	if (ft_strcmp(tmp->word, "echo") == 0)
-		tmp->builtins = ECHO;
-	else if (ft_strcmp(tmp->word, "cd") == 0)
-		tmp->builtins = CD;
-	else if (ft_strcmp(tmp->word, "pwd") == 0)
-		tmp->builtins = PWD;
-	else if (ft_strcmp(tmp->word, "export") == 0)
-		tmp->builtins = EXPORT;
-	else if (ft_strcmp(tmp->word, "unset") == 0)
-		tmp->builtins = UNSET;
-	else if (ft_strcmp(tmp->word, "exit") == 0)
-		tmp->builtins = EXIT;
-	else if (ft_strcmp(tmp->word, "env") == 0)
-		tmp->builtins = ENV;
+	t_lexer	*tmp2;
+
+	tmp2 = tmp;
+	while (tmp2)
+	{
+		if (ft_strcmp(tmp2->word, "echo") == 0)
+			tmp2->builtins = ECHO;
+		else if (ft_strcmp(tmp2->word, "cd") == 0)
+			tmp2->builtins = CD;
+		else if (ft_strcmp(tmp2->word, "pwd") == 0)
+			tmp2->builtins = PWD;
+		else if (ft_strcmp(tmp2->word, "export") == 0)
+			tmp2->builtins = EXPORT;
+		else if (ft_strcmp(tmp2->word, "unset") == 0)
+			tmp2->builtins = UNSET;
+		else if (ft_strcmp(tmp2->word, "exit") == 0)
+			tmp2->builtins = EXIT;
+		else if (ft_strcmp(tmp2->word, "env") == 0)
+			tmp2->builtins = ENV;
+		tmp2 = tmp2->next;
+	}
 }
+
 
 static void	error_newline(t_mini *shell)
 {
@@ -81,9 +96,11 @@ int	ft_tokinezer(t_mini *shell)
 
 	if (shell->syntax_error)
 		return (-1);
+	ft_get_type(shell->head);
 	tmp = shell->head;
 	while (tmp)
 	{
+		
 		if (process_token(tmp, shell))
 		{
 			shell->syntax_error = 1;

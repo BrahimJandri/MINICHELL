@@ -3,16 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reddamss <reddamss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:54 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 13:41:35 by reddamss         ###   ########.fr       */
+/*   Updated: 2024/09/08 06:27:51 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
 int		g_exit_status = 0;
+
+void print_lexer(t_lexer *lexer)
+{
+	t_lexer *tmp;
+
+	tmp = lexer;
+	while (tmp)
+	{
+		printf("word: %s\n", tmp->word);
+		printf("token: %d\n", tmp->token);
+		printf("builtins: %d\n", tmp->builtins);
+		tmp = tmp->next;
+	}
+}
 
 int	main(int ac, char **av, char **envm)
 {

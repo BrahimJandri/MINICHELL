@@ -6,7 +6,7 @@
 /*   By: bjandri <bjandri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:44:34 by bjandri           #+#    #+#             */
-/*   Updated: 2024/09/07 12:28:30 by bjandri          ###   ########.fr       */
+/*   Updated: 2024/09/08 06:28:34 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ typedef struct s_parser
 	struct s_parser		*next;
 	struct s_parser		*prev;
 }						t_parser;
+
+
+void print_lexer(t_lexer *lexer);
 
 /*************************** Lexer ***************************/
 
