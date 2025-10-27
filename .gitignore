@@ -27,6 +27,5 @@ minishell
 .vscode/
 
 # Editor backup files
-*~
 \#*\#
 .\#*
