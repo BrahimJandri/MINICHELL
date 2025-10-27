@@ -1,0 +1,32 @@
+# Object files
+*.o
+*.obj
+
+# Libraries
+*.a
+*.lib
+
+# Executables
+minishell
+*.exe
+*.out
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Temporary files
+*~
+*.swp
+*.swo
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Editor backup files
+*~
+\#*\#
+.\#*
