@@ -1,9 +1,12 @@
-````markdown name=README.md url=https://github.com/BrahimJandri/MINICHELL/blob/main/README.md
 # MINICHELL
 
-MINICHELL is a small, educational Unix-like command-line shell implemented to demonstrate how shells parse and execute commands. It provides a compact set of core shell features including command execution, built-in commands, I/O redirection, pipes, signal handling, and basic environment variable support.
+<div align="center">
+  <img src="minishelle.png" alt="Minishell Logo" width="400"/>
+</div>
 
-This project is ideal for students and developers who want a hands-on implementation of shell internals and process control in a compact codebase.
+MINICHELL is a lightweight Unix shell implementation written in C. This project recreates the functionality of a bash-like command-line interpreter, providing essential shell features including command execution, built-in commands, I/O redirection, pipes, signal handling, and environment variable support.
+
+This educational project demonstrates the internals of shell parsing, process control, and command execution in a compact and readable codebase.
 
 ---
 
@@ -11,208 +14,286 @@ This project is ideal for students and developers who want a hands-on implementa
 
 - [Features](#features)
 - [Dependencies](#dependencies)
+- [Installation](#installation)
 - [Build](#build)
 - [Usage](#usage)
 - [Examples](#examples)
 - [Project Structure](#project-structure)
-- [Design Notes](#design-notes)
-- [Testing](#testing)
+- [Implementation Details](#implementation-details)
 - [Contributing](#contributing)
-- [Known Issues & TODO](#known-issues--todo)
-- [License](#license)
-- [Contact](#contact)
+- [Authors](#authors)
 
 ---
 
 ## Features
 
-- Execute external commands using fork/exec
-- Built-in commands:
-  - cd
-  - echo
-  - pwd
-  - export
-  - unset
-  - env
-  - exit
-- Support for:
-  - Input (`<`) and output (`>`, `>>`) redirection
-  - Pipes (`|`)
-  - Here-documents (`<<`)
-  - Simple command parsing with quoting and escaping
-  - Environment variables
-  - Basic signal handling (SIGINT, SIGQUIT) while keeping shell stable
+### Built-in Commands
+- `cd` - Change directory with relative or absolute path
+- `echo` - Display text with `-n` option support
+- `pwd` - Print current working directory
+- `export` - Set environment variables
+- `unset` - Remove environment variables
+- `env` - Display all environment variables
+- `exit` - Exit the shell with optional exit status
 
-> Note: Implementation details (which builtins and exact behavior) may vary; consult the source for exact behavior and edge cases.
+### Shell Features
+- Execute external commands using PATH resolution
+- Input redirection (`<`)
+- Output redirection (`>` and `>>`)
+- Here-documents (`<<`)
+- Pipes (`|`) for command chaining
+- Environment variable expansion (`$VAR`)
+- Quote handling (single `'` and double `"`)
+- Signal handling (Ctrl+C, Ctrl+D, Ctrl+\\)
 
 ---
 
 ## Dependencies
 
-- POSIX-compliant system (Linux, macOS)
-- GCC or another C compiler that supports C99 or later
-- make
+### Required
+- **POSIX-compliant system** (Linux, macOS, or WSL on Windows)
+- **GCC** or compatible C compiler (C99 or later)
+- **GNU Make**
+- **readline library** - for line editing and command history
 
-If your project contains additional library dependencies (e.g., libreadline), add them here or adjust the Makefile.
+### Installing readline
+
+**On Ubuntu/Debian:**
+```bash
+sudo apt-get update
+sudo apt-get install libreadline-dev
+```
+
+**On macOS:**
+```bash
+brew install readline
+```
+
+**On Fedora/RHEL:**
+```bash
+sudo dnf install readline-devel
+```
+
+---
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/BrahimJandri/MINICHELL.git
+   cd MINICHELL
+   ```
+
+2. Ensure readline is installed (see [Dependencies](#dependencies))
+
+3. Build the project:
+   ```bash
+   make
+   ```
 
 ---
 
 ## Build
 
-From the repository root:
+### Build Commands
 
-1. Clone the repo (if you haven't already)
-   ```
-   git clone https://github.com/BrahimJandri/MINICHELL.git
-   cd MINICHELL
-   ```
-
-2. Build
-   ```
-   make
-   ```
-
-This should produce an executable, commonly named `minishell` (check the Makefile).
-
-To clean build artifacts:
+```bash
+make        # Compile the project
+make clean  # Remove object files
+make fclean # Remove object files and executable
+make re     # Rebuild the entire project
 ```
-make clean
-```
+
+The build process will:
+1. Compile the Libft library
+2. Compile all source files in `Parsing/`, `Execution/`, and root directory
+3. Link everything into the `minishell` executable
 
 ---
 
 ## Usage
 
 Start the shell:
-```
+```bash
 ./minishell
 ```
 
-Inside the shell you can run typical commands:
-```
+You'll see a prompt where you can enter commands:
+
+```bash
 $ ls -la
-$ echo "hello world"
+$ echo "Hello, World!"
 $ cd /tmp
 $ pwd
-$ export MYVAR=foo
-$ echo $MYVAR
-$ ls | grep src > result.txt
+$ export MY_VAR=hello
+$ echo $MY_VAR
+$ cat file.txt | grep "pattern" > output.txt
 ```
 
 Exit the shell:
-```
+```bash
 $ exit
 ```
+or press `Ctrl+D`
 
 ---
 
 ## Examples
 
-- Redirection:
-  ```
-  $ echo "line" > out.txt
-  $ cat < out.txt
-  ```
+### Basic Commands
+```bash
+$ echo Hello World
+Hello World
 
-- Append redirection:
-  ```
-  $ echo "more" >> out.txt
-  ```
+$ pwd
+/home/user/MINICHELL
 
-- Pipe:
-  ```
-  $ ps aux | grep bash
-  ```
+$ cd ..
+$ pwd
+/home/user
+```
 
-- Here-document:
-  ```
-  $ cat << EOF
-  > hello
-  > world
-  > EOF
-  hello
-  world
-  ```
+### Redirections
+```bash
+# Output redirection
+$ echo "Hello" > file.txt
+$ cat file.txt
+Hello
+
+# Append redirection
+$ echo "World" >> file.txt
+$ cat file.txt
+Hello
+World
+
+# Input redirection
+$ cat < file.txt
+Hello
+World
+```
+
+### Pipes
+```bash
+$ ls -l | grep minishell
+-rwxr-xr-x 1 user user 45678 Oct 27 10:00 minishell
+
+$ cat file.txt | wc -l
+2
+```
+
+### Here-documents
+```bash
+$ cat << EOF
+> First line
+> Second line
+> EOF
+First line
+Second line
+```
+
+### Environment Variables
+```bash
+$ export NAME=John
+$ echo "Hello $NAME"
+Hello John
+
+$ env | grep NAME
+NAME=John
+
+$ unset NAME
+$ echo "Hello $NAME"
+Hello
+```
 
 ---
 
 ## Project Structure
 
-A typical layout (your repo may vary):
-
-- src/            — C source files
-- include/        — Headers
-- tests/          — Tests or example scripts
-- Makefile        — Build rules
-- README.md       — This file
-- docs/           — Design notes or architecture docs (optional)
-
-Adjust these paths to match your repository layout.
+```
+MINICHELL/
+├── Parsing/              # Lexical analysis and parsing
+│   ├── lexer.c           # Tokenization
+│   ├── ft_nodes.c        # AST node creation
+│   ├── ft_parsing.c      # Parser implementation
+│   ├── ft_expander.c     # Variable expansion
+│   ├── ft_tokenizer.c    # Token handling
+│   ├── shell_loop.c      # Main shell loop
+│   └── ...               # Helper files
+├── Execution/            # Command execution
+│   ├── ft_execution.c    # Main execution logic
+│   ├── ft_heredoc.c      # Here-document handling
+│   ├── redirection.c     # I/O redirection
+│   ├── signals.c         # Signal handling
+│   ├── builtins/         # Built-in commands
+│   │   ├── ft_cd.c
+│   │   ├── ft_echo.c
+│   │   ├── ft_env.c
+│   │   ├── ft_exit.c
+│   │   ├── ft_export.c
+│   │   ├── ft_pwd.c
+│   │   └── ft_unset.c
+│   └── ...               # Helper files
+├── Libft/                # Custom C library
+│   └── ...               # String and memory functions
+├── include/              # Header files
+│   ├── minishell.h       # Main header
+│   ├── brahim.h          # Additional definitions
+│   └── rachid.h          # Additional definitions
+├── minishell.c           # Main entry point
+├── Makefile              # Build configuration
+├── readline.supp         # Valgrind suppression file
+└── README.md             # This file
+```
 
 ---
 
-## Design Notes
+## Implementation Details
 
-- The shell parses user input into tokens, handling quoting and escaping.
-- A simple AST or command data structure is used to represent pipelines, redirections and sequences.
-- Commands are executed by creating child processes (fork) and replacing the image with execve or similar.
-- Builtins are handled in-process (no fork) when possible to affect the shell environment (e.g., `cd`, `export`, `exit`).
-- Signals are handled so child processes receive interactive signals but the interactive shell continues running safely.
+### Parsing Pipeline
+1. **Lexical Analysis**: Input is tokenized into words, operators, and special characters
+2. **Token Classification**: Tokens are classified (commands, arguments, redirections, pipes)
+3. **Variable Expansion**: Environment variables are expanded (e.g., `$PATH`)
+4. **AST Construction**: Tokens are organized into an abstract syntax tree
+5. **Validation**: Syntax is validated before execution
 
-Refer to source comments for more detailed design explanations and implementation choices.
+### Execution Flow
+1. **Command Resolution**: Built-in vs external command determination
+2. **Process Management**: `fork()` for external commands
+3. **Redirection Setup**: File descriptors are configured before execution
+4. **Pipeline Handling**: Multiple commands connected via pipes
+5. **Signal Management**: Proper handling of SIGINT, SIGQUIT, and SIGTERM
 
----
-
-## Testing
-
-If the repository includes tests or example scripts, run them like:
-```
-make test
-# or
-./tests/run_tests.sh
-```
-
-If there are no automated tests, create simple scripts under `tests/` that exercise features like parsing, redirection, pipes, and builtins.
+### Memory Management
+- All allocated memory is properly freed
+- Valgrind-clean (with readline suppressions)
+- No memory leaks in normal operation
 
 ---
 
 ## Contributing
 
-Contributions are welcome. Suggested workflow:
+Contributions are welcome! To contribute:
 
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feat/your-feature`
-3. Implement your changes, add tests if applicable.
-4. Run `make` and ensure no regressions.
-5. Submit a pull request describing the change and reasoning.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Please adhere to the coding style used in the project. Add or update documentation when adding features or changing behavior.
-
----
-
-## Known Issues & TODO
-
-- Edge cases in complex quoting and escaping may not be fully supported.
-- Command history and line editing (readline-like) may not be implemented.
-- Job control (background jobs, fg/bg) may be limited or absent.
-- Additional builtins (like `history`, `jobs`, `fg`) can be added.
-- Improve parser robustness and add more tests for corner cases.
-
-Add or update this section based on project progress.
+Please ensure your code:
+- Compiles without warnings with `-Wall -Werror -Wextra`
+- Follows the existing code style
+- Is properly documented
 
 ---
 
-## License
+## Authors
 
-If not already specified in the repository, consider a license such as MIT:
-
-MIT License — see LICENSE file for details.
+- **Brahim Jandri** - [@BrahimJandri](https://github.com/BrahimJandri)
+- Additional contributors listed in the commit history
 
 ---
 
-## Contact
-
-Maintainer: BrahimJandri (GitHub: @BrahimJandri)
-
-If you want a more tailored README (for example: exact build commands, exact binary name, dependencies like readline, or specific examples from your code), tell me what language/tools your project uses and any existing Makefile or entrypoint names and I will update the README accordingly.
-````
+<div align="center">
+  Made with ❤️ for learning shell internals
+</div>
